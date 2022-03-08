@@ -41,7 +41,7 @@ public class DatabaseInitializer {
         db.classroomDao().deleteAll();
         db.reservationDao().deleteAll();
         /*
-        Insert data below
+        Insert data sample below
          */
     }
 
