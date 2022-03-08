@@ -6,7 +6,11 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 
 import com.hevs.classroom_management_app.database.AppDatabase;
+import com.hevs.classroom_management_app.database.async.teacher.CreateTeacher;
+import com.hevs.classroom_management_app.database.async.teacher.DeleteTeacher;
+import com.hevs.classroom_management_app.database.async.teacher.UpdateTeacher;
 import com.hevs.classroom_management_app.database.entity.Teacher;
+import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
 public class TeacherRepository {
     private static TeacherRepository instance;
@@ -31,19 +35,19 @@ public class TeacherRepository {
     public LiveData<Teacher> getById(final long id, Context context) {
         return AppDatabase.getInstance(context).teacherDao().getById(id);
     }
-    /*
-    public void insert(final ClientEntity client, OnAsyncEventListener callback,
+
+    public void insert(final Teacher teacher, OnAsyncEventListener callback,
                        Application application) {
-        new CreateClient(application, callback).execute(client);
+        new CreateTeacher(application, callback).execute(teacher);
     }
 
-    public void update(final ClientEntity client, OnAsyncEventListener callback,
+    public void update(final Teacher teacher, OnAsyncEventListener callback,
                        Application application) {
-        new UpdateClient(application, callback).execute(client);
+        new UpdateTeacher(application, callback).execute(teacher);
     }
 
-    public void delete(final ClientEntity client, OnAsyncEventListener callback,
+    public void delete(final Teacher teacher, OnAsyncEventListener callback,
                        Application application) {
-        new DeleteClient(application, callback).execute(client);
-    }*/
+        new DeleteTeacher(application, callback).execute(teacher);
+    }
 }
