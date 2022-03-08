@@ -17,7 +17,7 @@ import java.util.List;
 @Dao
 public interface ClassroomDao {
     @Query("SELECT * FROM classroom WHERE id = :id")
-    LiveData<Classroom> getById(int id);
+    LiveData<Classroom> getById(long id);
 
     @Query("SELECT * FROM classroom WHERE name = :name")
     LiveData<Classroom> getByName(String name);

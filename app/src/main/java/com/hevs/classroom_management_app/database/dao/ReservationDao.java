@@ -16,8 +16,8 @@ import java.util.List;
 
 @Dao
 public interface ReservationDao {
-    @Query("SELECT * FROM reservation WHERE classID = :id")
-    LiveData<List<Reservation>> getReservationsByClassId(int id);
+    @Query("SELECT * FROM reservation WHERE classroomID = :id")
+    LiveData<List<Reservation>> getReservationsByClassId(long id);
 
     @Insert
     void insert(Reservation reservation) throws SQLiteConstraintException;
