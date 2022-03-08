@@ -25,4 +25,7 @@ public interface TeacherDao {
 
     @Delete
     void delete(Teacher teacher);
+
+    @Query("DELETE FROM teacher")
+    void deleteAll();
 }

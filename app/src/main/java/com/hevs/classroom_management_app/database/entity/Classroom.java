@@ -15,6 +15,11 @@ public class Classroom {
     @ColumnInfo
     private int capacity;
 
+    public Classroom(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
+    }
+
     @Override
     public boolean equals(Object obj){
         if (obj == null) return false;

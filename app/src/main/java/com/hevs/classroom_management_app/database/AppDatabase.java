@@ -13,6 +13,9 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.lifecycle.MutableLiveData;
 
+import com.hevs.classroom_management_app.database.dao.ClassroomDao;
+import com.hevs.classroom_management_app.database.dao.ReservationDao;
+import com.hevs.classroom_management_app.database.dao.TeacherDao;
 import com.hevs.classroom_management_app.database.entity.Classroom;
 import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.entity.Teacher;
@@ -28,7 +31,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DATABASE_NAME = "intro-database";
 
-    public abstract ClientDao clientDao();
+    public abstract TeacherDao teacherDao();
+    public abstract ReservationDao reservationDao();
+    public abstract ClassroomDao classroomDao();
 
     private final MutableLiveData<Boolean> isDatabaseCreated = new MutableLiveData<>();
 

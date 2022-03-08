@@ -20,6 +20,13 @@ public class Teacher {
     @ColumnInfo
     private String password;
 
+    public Teacher(String lastname, String firstname, String email, String password) {
+        this.lastname = lastname;
+        this.firstname = firstname;
+        this.email = email;
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object obj){
         if (obj == null) return false;

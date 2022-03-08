@@ -4,25 +4,34 @@ import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.PrimaryKey;
 
 import java.sql.Date;
 
-@Entity(tableName = "Reservation", primaryKeys = {"classId", "startTime", "endTime"},
+@Entity(tableName = "Reservation", primaryKeys = {"classroomId", "startTime", "endTime"},
         foreignKeys = {
                 @ForeignKey(entity = Teacher.class, parentColumns = "id", childColumns = "teacherId"), @ForeignKey(entity = Classroom.class, parentColumns = "id", childColumns = "classroomId")
         })
 public class Reservation {
 
-    @ColumnInfo(name = "classID")
-    private long classId;
+    @ColumnInfo(name = "classroomId")
+    private long classroomId;
     @ColumnInfo(name = "startTime")
     private Date startTime;
     @ColumnInfo(name = "endTime")
     private Date endTime;
+    @ColumnInfo(name = "teacherId")
+    private long teacherId;
 
     @ColumnInfo
     private int occupantsNumber;
+
+    public Reservation(long classroomId, Date startTime, Date endTime, long teacherId, int occupantsNumber) {
+        this.classroomId = classroomId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.teacherId = teacherId;
+        this.occupantsNumber = occupantsNumber;
+    }
 
     @Override
     public boolean equals(@Nullable Object obj) {
@@ -30,15 +39,23 @@ public class Reservation {
         if (obj == this) return true;
         if (!(obj instanceof Reservation)) return false;
         Reservation o = (Reservation) obj;
-        return o.getClassId() == this.getClassId() && o.getStartTime() == this.getStartTime();
+        return o.getClassroomId() == this.getClassroomId() && o.getStartTime() == this.getStartTime();
     }
 
-    public long getClassId() {
-        return classId;
+    public long getTeacherId() {
+        return teacherId;
     }
 
-    public void setClassId(long classId) {
-        this.classId = classId;
+    public void setTeacherId(long teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    public long getClassroomId() {
+        return classroomId;
+    }
+
+    public void setClassroomId(long classroomId) {
+        this.classroomId = classroomId;
     }
 
     public Date getStartTime() {

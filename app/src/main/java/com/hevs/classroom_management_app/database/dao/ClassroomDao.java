@@ -33,4 +33,7 @@ public interface ClassroomDao {
 
     @Delete
     void delete(Classroom classroom);
+
+    @Query("DELETE FROM classroom")
+    void deleteAll();
 }
