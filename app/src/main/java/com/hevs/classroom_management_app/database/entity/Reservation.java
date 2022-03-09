@@ -1,5 +1,6 @@
 package com.hevs.classroom_management_app.database.entity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -15,9 +16,9 @@ public class Reservation {
 
     @ColumnInfo(name = "classroomId")
     private long classroomId;
-    @ColumnInfo(name = "startTime")
+    @NonNull @ColumnInfo(name = "startTime")
     private Date startTime;
-    @ColumnInfo(name = "endTime")
+    @NonNull @ColumnInfo(name = "endTime")
     private Date endTime;
     @ColumnInfo(name = "teacherId")
     private long teacherId;

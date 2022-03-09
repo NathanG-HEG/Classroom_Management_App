@@ -17,7 +17,7 @@ public class TeacherRepository {
     private TeacherRepository(){
     }
 
-    public TeacherRepository getInstance(){
+    public static TeacherRepository getInstance(){
         if (instance == null) {
             synchronized (TeacherRepository.class) {
                 if (instance == null) {
@@ -36,18 +36,15 @@ public class TeacherRepository {
         return AppDatabase.getInstance(context).teacherDao().getById(id);
     }
 
-    public void insert(final Teacher teacher, OnAsyncEventListener callback,
-                       Application application) {
+    public void insert(final Teacher teacher, OnAsyncEventListener callback, Application application) {
         new CreateTeacher(application, callback).execute(teacher);
     }
 
-    public void update(final Teacher teacher, OnAsyncEventListener callback,
-                       Application application) {
+    public void update(final Teacher teacher, OnAsyncEventListener callback, Application application) {
         new UpdateTeacher(application, callback).execute(teacher);
     }
 
-    public void delete(final Teacher teacher, OnAsyncEventListener callback,
-                       Application application) {
+    public void delete(final Teacher teacher, OnAsyncEventListener callback, Application application) {
         new DeleteTeacher(application, callback).execute(teacher);
     }
 }

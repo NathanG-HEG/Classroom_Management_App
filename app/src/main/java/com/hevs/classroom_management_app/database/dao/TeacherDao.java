@@ -10,6 +10,7 @@ import androidx.room.Update;
 
 import com.hevs.classroom_management_app.database.entity.Teacher;
 
+@Dao
 public interface TeacherDao {
     @Query("SELECT * FROM teacher WHERE email = :email AND password = :password")
     LiveData<Teacher> getByLogin(String email, String password);
