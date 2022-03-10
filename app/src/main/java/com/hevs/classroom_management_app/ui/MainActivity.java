@@ -41,12 +41,12 @@ public class MainActivity extends AppCompatActivity {
         String password = findViewById(R.id.editTextTextPassword).toString();
 
         LiveData <Teacher> teacherLiveData = teacherRepository.getByLogin(email, password, getApplication());
-        //Teacher teacher = teacherLiveData.getValue();
-        Teacher teacher = null;
+        Teacher teacher = teacherLiveData.getValue();
 
         if (teacher != null) {
             Intent i = new Intent(parent, ClassroomListActivity.class);
             i.putExtra("TeacherId", teacher.getId());
+            startActivity(i);
         } else {
             findViewById(R.id.editTextTextEmailAddress).requestFocus();
             TextView errorMessage = findViewById(R.id.loginErrorMessage);
