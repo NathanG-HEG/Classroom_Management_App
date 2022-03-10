@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.hevs.classroom_management_app.BaseApp;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        teacherRepository = ((BaseApp)getApplication()).getTeacherRepository();
+        teacherRepository = ((BaseApp) getApplication()).getTeacherRepository();
 
         Button login = findViewById(R.id.login_button);
         login.setOnClickListener(new View.OnClickListener() {
@@ -37,21 +38,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void login(AppCompatActivity parent) {
-        String email = findViewById(R.id.editTextTextEmailAddress).toString();
-        String password = findViewById(R.id.editTextTextPassword).toString();
+        String email = ((EditText) findViewById(R.id.editTextTextEmailAddress)).getText().toString();
+        String password = ((EditText) findViewById(R.id.editTextTextPassword)).getText().toString();
 
-        LiveData <Teacher> teacherLiveData = teacherRepository.getByLogin(email, password, getApplication());
-        Teacher teacher = teacherLiveData.getValue();
+        LiveData<Teacher> teacherLiveData = teacherRepository.getByLogin(email, password, getApplication());
+        //Teacher teacher = teacherLiveData.getValue();
 
-        if (teacher != null) {
-            Intent i = new Intent(parent, ClassroomListActivity.class);
-            i.putExtra("TeacherId", teacher.getId());
-            startActivity(i);
-        } else {
-            findViewById(R.id.editTextTextEmailAddress).requestFocus();
-            TextView errorMessage = findViewById(R.id.loginErrorMessage);
-            errorMessage.requestFocus();
-            errorMessage.setText("Incorrect email or password");
-        }
+        teacherRepository.getByLogin(email, password, getApplication()).observe(MainActivity.this, teacher -> {
+
+            if (teacher != null) {
+                Intent i = new Intent(parent, ClassroomListActivity.class);
+                i.putExtra("TeacherId", teacher.getId());
+                startActivity(i);
+            } else {
+                findViewById(R.id.editTextTextEmailAddress).requestFocus();
+                TextView errorMessage = findViewById(R.id.loginErrorMessage);
+                errorMessage.requestFocus();
+                errorMessage.setText("Incorrect email or password");
+            }
+
+        });
+
     }
 }
