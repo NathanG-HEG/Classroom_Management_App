@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.database.entity.Teacher;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        teacherRepository = TeacherRepository.getInstance();
+        teacherRepository = ((BaseApp)getApplication()).getTeacherRepository();
 
         Button login = findViewById(R.id.login_button);
         login.setOnClickListener(new View.OnClickListener() {
