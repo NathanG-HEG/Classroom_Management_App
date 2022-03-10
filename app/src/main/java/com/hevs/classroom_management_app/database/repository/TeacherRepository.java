@@ -5,6 +5,7 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
+import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.database.AppDatabase;
 import com.hevs.classroom_management_app.database.async.teacher.CreateTeacher;
 import com.hevs.classroom_management_app.database.async.teacher.DeleteTeacher;
@@ -28,8 +29,8 @@ public class TeacherRepository {
         return instance;
     }
 
-    public LiveData<Teacher> getByLogin(final String email, final String password, Context context) {
-        return AppDatabase.getInstance(context).teacherDao().getByLogin(email, password);
+    public LiveData<Teacher> getByLogin(final String email, final String password, Application application) {
+        return ((BaseApp) application).getDatabase().teacherDao().getByLogin(email, password);
     }
 
     public LiveData<Teacher> getById(final long id, Context context) {

@@ -16,7 +16,7 @@ public class ClassroomRepository {
     private static ClassroomRepository instance;
     private ClassroomRepository(){}
 
-    public ClassroomRepository getInstance(){
+    public static ClassroomRepository getInstance(){
         if (instance == null) {
             synchronized (ClassroomRepository.class) {
                 if (instance == null) {

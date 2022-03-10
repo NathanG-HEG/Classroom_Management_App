@@ -62,7 +62,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     @Override
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {
                         super.onCreate(db);
-                        Executors.newSingleThreadExecutor().execute(() -> {
+                        Executors.newSingleThreadExecutor().execute(()   -> {
                             AppDatabase database = AppDatabase.getInstance(appContext);
                             DatabaseInitializer.populateDatabase(database);
                             // notify that the database was created and it's ready to be used

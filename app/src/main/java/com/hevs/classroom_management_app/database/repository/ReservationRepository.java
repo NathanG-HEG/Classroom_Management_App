@@ -18,7 +18,7 @@ public class ReservationRepository {
     private static ReservationRepository instance;
     private ReservationRepository(){}
 
-    public ReservationRepository getInstance(){
+    public static ReservationRepository getInstance(){
         if (instance == null) {
             synchronized (ReservationRepository.class) {
                 if (instance == null) {
