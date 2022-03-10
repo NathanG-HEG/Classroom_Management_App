@@ -43,6 +43,10 @@ public class DatabaseInitializer {
         /*
         Insert data sample below
          */
+        addTeacher(db, "nathan@mail.ch", "Nathan", "Gaillard", "Password4Nathan");
+        addTeacher(db, "benjamin@mail.ch", "Benjamin", "Biollaz", "Password4Benjamin");
+        addClassroom(db, "SUM", 30);
+        addReservation(db, 1, new Date(2022, 3,10), new Date(2022,3,10), 1, 25);
     }
 
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
