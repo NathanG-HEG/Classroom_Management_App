@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         String email = ((EditText) findViewById(R.id.editTextTextEmailAddress)).getText().toString();
         String password = ((EditText) findViewById(R.id.editTextTextPassword)).getText().toString();
 
-        LiveData<Teacher> teacherLiveData = teacherRepository.getByLogin(email, password, getApplication());
+        //LiveData<Teacher> teacherLiveData = teacherRepository.getByLogin(email, password, getApplication());
         //Teacher teacher = teacherLiveData.getValue();
 
         teacherRepository.getByLogin(email, password, getApplication()).observe(MainActivity.this, teacher -> {

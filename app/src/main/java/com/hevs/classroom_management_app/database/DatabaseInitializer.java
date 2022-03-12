@@ -43,8 +43,8 @@ public class DatabaseInitializer {
         /*
         Insert data sample below
          */
-        addTeacher(db, "nathan@mail.ch", "Nathan", "Gaillard", "123");
-        addTeacher(db, "benjamin@mail.ch", "Benjamin", "Biollaz", "123");
+        addTeacher(db, "nathan@mail.ch", "Nathan", "Gaillard", "Password4Nathan");
+        addTeacher(db, "benjamin@mail.ch", "Benjamin", "Biollaz", "ben");
         addClassroom(db, "SUM", 30);
         addReservation(db, 1, new Date(2022, 3,10), new Date(2022,3,10), 1, 25);
     }
