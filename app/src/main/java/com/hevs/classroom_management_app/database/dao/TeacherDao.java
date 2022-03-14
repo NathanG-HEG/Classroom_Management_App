@@ -18,6 +18,9 @@ public interface TeacherDao {
     @Query("SELECT * FROM teacher WHERE id = :id")
     LiveData<Teacher> getById(long id);
 
+    @Query("SELECT * FROM teacher WHERE email = :email")
+    LiveData<Teacher> getByEmail(String email);
+
     @Insert
     void insert(Teacher teacher) throws SQLiteConstraintException;
 

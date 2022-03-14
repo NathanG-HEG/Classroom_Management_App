@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Classroom_Management_App</string>
     <string name="login_error">Incorrect email or password</string>
+    <string name="password">Password</string>
+    <string name="email">E-mail</string>
+    <string name="login">login</string>
+    <string name="signUp">Sign up</string>
+    <string name="title_activity_signUp">Sign up</string>
+    <string name="title_activity_login">Log in</string>
+    <string name="title_activity_classroom_list">Classrooms</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
 </resources>

@@ -33,6 +33,10 @@ public class TeacherRepository {
         return ((BaseApp) application).getDatabase().teacherDao().getByLogin(email, password);
     }
 
+    public LiveData<Teacher> getByEmail (final String email, Application application) {
+        return ((BaseApp)application).getDatabase().teacherDao().getByEmail(email);
+    }
+
     public LiveData<Teacher> getById(final long id, Context context) {
         return AppDatabase.getInstance(context).teacherDao().getById(id);
     }

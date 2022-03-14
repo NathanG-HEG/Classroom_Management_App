@@ -22,11 +22,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
 
         teacherRepository = ((BaseApp) getApplication()).getTeacherRepository();
 
+        //login click listener
         Button login = findViewById(R.id.login_button);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,14 +36,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //sign up click listener
+        Button signUp = findViewById(R.id.signUp_button);
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signUp(MainActivity.this);
+            }
+        });
+
     }
 
     private void login(AppCompatActivity parent) {
         String email = ((EditText) findViewById(R.id.editTextTextEmailAddress)).getText().toString();
         String password = ((EditText) findViewById(R.id.editTextTextPassword)).getText().toString();
-
-        //LiveData<Teacher> teacherLiveData = teacherRepository.getByLogin(email, password, getApplication());
-        //Teacher teacher = teacherLiveData.getValue();
 
         teacherRepository.getByLogin(email, password, getApplication()).observe(MainActivity.this, teacher -> {
 
@@ -58,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+    }
 
+    private void signUp(AppCompatActivity parent) {
+        Intent i = new Intent(parent, SignUp.class);
+        startActivity(i);
     }
 }

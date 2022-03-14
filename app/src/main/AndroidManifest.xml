@@ -12,7 +12,8 @@
         android:theme="@style/Theme.Classroom_Management_App">
         <activity
             android:name=".ui.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +22,12 @@
         </activity>
         <activity
             android:name=".ui.ClassroomListActivity"
-            android:parentActivityName=".ui.MainActivity"/>
+            android:parentActivityName=".ui.MainActivity"
+            android:label="@string/title_activity_classroom_list"/>
+        <activity
+            android:name=".ui.SignUp"
+            android:parentActivityName=".ui.MainActivity"
+            android:label="@string/title_activity_signUp"/>
     </application>
 
 </manifest>

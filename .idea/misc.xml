@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/Classroom_Management_App/app/src/main/res/layout/activity_main.xml" value="0.5" />
+        <entry key="..\:/Android/Classroom_Management_App/app/src/main/res/layout/activity_sign_up.xml" value="0.67" />
         <entry key="..\:/Android/Classroom_Management_App/app/src/main/res/layout/classroom_list_activity.xml" value="0.33" />
         <entry key="..\:/Users/natha/Desktop/Android_Dev/Classroom_Management_App/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/natha/Desktop/Android_Dev/Classroom_Management_App/app/src/main/res/layout/classroom_list_activity.xml" value="0.4" />
