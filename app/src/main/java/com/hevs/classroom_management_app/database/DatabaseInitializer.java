@@ -10,6 +10,7 @@ import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.entity.Teacher;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class DatabaseInitializer {
 
@@ -30,8 +31,8 @@ public class DatabaseInitializer {
         db.classroomDao().insert(classroom);
     }
 
-    private static void addReservation(final AppDatabase db, final long classroomId, final Date startTime,
-                                       final Date endTime, final long teacherId, int occupantsNumber) {
+    private static void addReservation(final AppDatabase db, final long classroomId, final LocalDateTime startTime,
+                                       final LocalDateTime endTime, final long teacherId, int occupantsNumber) {
         Reservation reservation = new Reservation(classroomId, startTime, endTime, teacherId, occupantsNumber);
         db.reservationDao().insert(reservation);
     }
@@ -46,7 +47,7 @@ public class DatabaseInitializer {
         addTeacher(db, "nathan@mail.ch", "Nathan", "Gaillard", "Password4Nathan");
         addTeacher(db, "benjamin@mail.ch", "Benjamin", "Biollaz", "ben");
         addClassroom(db, "SUM", 30);
-        addReservation(db, 1, new Date(2022, 3,10), new Date(2022,3,10), 1, 25);
+        addReservation(db, 1, LocalDateTime.of(2022,3,10,10,30), LocalDateTime.of(2022,3,10,11,30), 1, 25);
     }
 
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {

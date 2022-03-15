@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData;
 
 import android.app.Application;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 public class MainActivity extends AppCompatActivity {
 
     private TeacherRepository teacherRepository;
+    public static final String ID_TEACHER = "idTeacher";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
             if (teacher != null) {
                 Intent i = new Intent(parent, ClassroomListActivity.class);
-                i.putExtra("TeacherId", teacher.getId());
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putLong(ID_TEACHER, teacher.getId());
                 startActivity(i);
             } else {
                 findViewById(R.id.editTextTextEmailAddress).requestFocus();

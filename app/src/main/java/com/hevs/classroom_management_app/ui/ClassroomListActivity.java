@@ -12,7 +12,6 @@ import com.hevs.classroom_management_app.R;
 public class ClassroomListActivity extends AppCompatActivity {
 
 /*
-
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);

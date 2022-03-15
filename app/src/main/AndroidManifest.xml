@@ -28,6 +28,9 @@
             android:name=".ui.SignUp"
             android:parentActivityName=".ui.MainActivity"
             android:label="@string/title_activity_signUp"/>
+        <activity android:name=".ui.BookClassroom"
+            android:parentActivityName=".ui.ClassroomListActivity"
+            android:label="Booking"/>
     </application>
 
 </manifest>

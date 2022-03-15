@@ -7,6 +7,7 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity(tableName = "Reservation", primaryKeys = {"classroomId", "startTime", "endTime"},
         foreignKeys = {
@@ -17,16 +18,16 @@ public class Reservation {
     @ColumnInfo(name = "classroomId")
     private long classroomId;
     @NonNull @ColumnInfo(name = "startTime")
-    private Date startTime;
+    private LocalDateTime startTime;
     @NonNull @ColumnInfo(name = "endTime")
-    private Date endTime;
+    private LocalDateTime endTime;
     @ColumnInfo(name = "teacherId")
     private long teacherId;
 
     @ColumnInfo
     private int occupantsNumber;
 
-    public Reservation(long classroomId, Date startTime, Date endTime, long teacherId, int occupantsNumber) {
+    public Reservation(long classroomId, LocalDateTime startTime, LocalDateTime endTime, long teacherId, int occupantsNumber) {
         this.classroomId = classroomId;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -59,19 +60,19 @@ public class Reservation {
         this.classroomId = classroomId;
     }
 
-    public Date getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
