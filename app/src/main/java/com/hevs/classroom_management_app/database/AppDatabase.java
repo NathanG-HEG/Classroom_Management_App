@@ -21,10 +21,11 @@ import com.hevs.classroom_management_app.database.entity.Classroom;
 import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.entity.Teacher;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Classroom.class, Teacher.class, Reservation.class}, version = 1)
-@TypeConverters({DateConverter.class})
+@TypeConverters({LocalDateTimeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static final String TAG = "AppDatabase";
 
