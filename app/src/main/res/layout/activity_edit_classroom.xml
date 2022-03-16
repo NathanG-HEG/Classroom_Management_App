@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/deleteClassroomButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:clickable="true"
+        android:contentDescription="@string/DeleteClassroomLabel"
+        app:backgroundTint="#F44336"
+        app:layout_constraintEnd_toStartOf="@+id/saveEditClassroomButton"
+        app:layout_constraintTop_toTopOf="@+id/saveEditClassroomButton"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
+
+    <EditText
+        android:id="@+id/maxParticipantsEt"
+        android:layout_width="230dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="Max participants"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.773"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/classroomNameEditEt" />
+
+    <EditText
+        android:id="@+id/classroomNameEditEt"
+        android:layout_width="230dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="204dp"
+        android:ems="10"
+        android:hint="Classroom name"
+        android:inputType="textPersonName|text"
+        android:text="ClassroomName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.773"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ClassroomLabelTv"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:text="Name: "
+        android:gravity="center|start"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/classroomNameEditEt"
+        app:layout_constraintTop_toTopOf="@+id/classroomNameEditEt" />
+
+    <TextView
+        android:id="@+id/maxParticipantsLabelTv"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:text="Capacity: "
+        android:gravity="center|start"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/maxParticipantsEt"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/maxParticipantsEt" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/saveEditClassroomButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="@+id/maxParticipantsEt"
+        app:layout_constraintTop_toBottomOf="@+id/maxParticipantsEt"
+        app:srcCompat="@android:drawable/ic_menu_save" />
+</androidx.constraintlayout.widget.ConstraintLayout>

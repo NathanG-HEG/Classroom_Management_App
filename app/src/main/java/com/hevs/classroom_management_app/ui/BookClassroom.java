@@ -13,7 +13,6 @@ import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.repository.ReservationRepository;
 
-import java.sql.Date;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 

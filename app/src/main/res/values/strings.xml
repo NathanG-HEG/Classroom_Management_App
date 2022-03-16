@@ -10,4 +10,8 @@
     <string name="title_activity_classroom_list">Classrooms</string>
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
+    <string name="DeleteClassroomLabel">Delete classroom</string>
+    <string name="confirm">Confirm</string>
+    <string name="deleteClassroomConfirm">Delete classroom ?</string>
+    <string name="cancel">Cancel</string>
 </resources>
