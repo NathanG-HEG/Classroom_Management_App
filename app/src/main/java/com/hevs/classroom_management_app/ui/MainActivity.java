@@ -20,13 +20,13 @@ import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TeacherRepository teacherRepository;
     public static final String ID_TEACHER = "idTeacher";
+    private TeacherRepository teacherRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         teacherRepository = ((BaseApp) getApplication()).getTeacherRepository();
 
@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void login(AppCompatActivity parent) {
-        String email = ((EditText) findViewById(R.id.editTextTextEmailAddress)).getText().toString();
+        EditText emailEt = (EditText) findViewById(R.id.editTextTextEmailAddress);
+        String email = emailEt.getText().toString();
         String password = ((EditText) findViewById(R.id.editTextTextPassword)).getText().toString();
 
         teacherRepository.getByLogin(email, password, getApplication()).observe(MainActivity.this, teacher -> {
@@ -64,10 +65,8 @@ public class MainActivity extends AppCompatActivity {
                 editor.commit();
                 startActivity(i);
             } else {
-                findViewById(R.id.editTextTextEmailAddress).requestFocus();
-                TextView errorMessage = findViewById(R.id.loginErrorMessage);
-                errorMessage.requestFocus();
-                errorMessage.setText("Incorrect email or password");
+                emailEt.setError("Incorrect email or password.");
+                emailEt.requestFocus();
             }
 
         });
