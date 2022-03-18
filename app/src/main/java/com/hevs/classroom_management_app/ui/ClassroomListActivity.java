@@ -76,19 +76,6 @@ public class ClassroomListActivity extends AppCompatActivity {
         });
 
 
-        /*
-        AccountListViewModel.Factory factory = new AccountListViewModel.Factory(
-                getApplication(), user);
-        viewModel = ViewModelProviders.of(this, factory).get(AccountListViewModel.class);
-        viewModel.getOwnAccounts().observe(this, accountEntities -> {
-            if (accountEntities != null) {
-                classrooms = accountEntities;
-                adapter.setData(classrooms);
-            }
-        });
-
-         */
-
         classroomRepository.getAll(getApplication()).observe(ClassroomListActivity.this, classroomsList -> {
             if (classroomsList != null) {
                 classrooms = classroomsList;

@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         teacherRepository.getByLogin(email, password, getApplication()).observe(MainActivity.this, teacher -> {
 
             if (teacher != null) {
-                Intent i = new Intent(parent, EditClassroom.class);
+                Intent i = new Intent(parent, ClassroomListActivity.class);
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putLong(ID_TEACHER, teacher.getId());
