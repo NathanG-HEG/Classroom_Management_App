@@ -79,8 +79,24 @@ public class EditClassroom extends AppCompatActivity {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle(R.string.deleteClassroomConfirm);
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confirm),(dialog, which) -> {
-            //TODO: Delete classroom from Room DB
-            System.out.println("DELETED!");
+            // Updates the classroom and adds it to the DB
+            long classroomId = getIntent().getExtras().getLong(ClassroomDetails.ID_CLASSROOM,1L);
+            repo = ClassroomRepository.getInstance();
+            Classroom classroom = new Classroom("", 0);
+            classroom.setId(classroomId);
+            repo.delete(classroom, new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.deleted_successfully), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.unexpected_error), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }, getApplication());
         });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), (dialog, which) -> {
             alertDialog.dismiss();

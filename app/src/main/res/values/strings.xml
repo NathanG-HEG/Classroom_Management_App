@@ -16,4 +16,5 @@
     <string name="cancel">Cancel</string>
     <string name="saved_successfully">Successfully saved!</string>
     <string name="unexpected_error">An unexcpected error occured. Try later.</string>
+    <string name="deleted_successfully">Deleted successfully</string>
 </resources>
