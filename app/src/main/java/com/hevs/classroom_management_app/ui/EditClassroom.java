@@ -21,11 +21,19 @@ public class EditClassroom extends AppCompatActivity {
     private ClassroomRepository repo;
     private ClassroomViewModel classroomViewModel;
     private final long DEFAULT_CLASSROOM_ID = 1L;
+    private long classroomId;
+    private EditText classroomNameEt;
+    private EditText classroomCapacityEt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_classroom);
+
+        classroomId = getIntent().getExtras().getLong(ClassroomDetails.ID_CLASSROOM, DEFAULT_CLASSROOM_ID);
+        repo = ClassroomRepository.getInstance();
+
+        viewInitialize();
 
         FloatingActionButton deleteBtn = ((FloatingActionButton) findViewById(R.id.deleteClassroomButton));
         deleteBtn.setOnClickListener(view -> deleteBtnAction());
@@ -34,14 +42,20 @@ public class EditClassroom extends AppCompatActivity {
         saveBtn.setOnClickListener(view -> saveBtnAction());
     }
 
+    private void viewInitialize(){
+        classroomNameEt = ((EditText) findViewById(R.id.classroomNameCreateEt));
+        classroomCapacityEt = ((EditText) findViewById(R.id.maxParticipantsCreateEt));
+
+        repo.getById(classroomId, getApplication()).observe(this, classroom -> {
+            classroomNameEt.setText(classroom.getName());
+            classroomCapacityEt.setText(Integer.toString(classroom.getCapacity()));
+        });
+    }
+
     private void saveBtnAction(){
         //Initialize the viewModel
-        long classroomId = getIntent().getExtras().getLong(ClassroomDetails.ID_CLASSROOM,DEFAULT_CLASSROOM_ID);
         ClassroomViewModel.Factory factory = new ClassroomViewModel.Factory(getApplication(), classroomId);
         classroomViewModel = ViewModelProviders.of(this, factory).get(ClassroomViewModel.class);
-
-        EditText classroomNameEt = ((EditText) findViewById(R.id.classroomNameCreateEt));
-        EditText classroomCapacityEt = ((EditText) findViewById(R.id.maxParticipantsCreateEt));
 
         // Gets input data
         String newCapacity_s = classroomCapacityEt.getText().toString();

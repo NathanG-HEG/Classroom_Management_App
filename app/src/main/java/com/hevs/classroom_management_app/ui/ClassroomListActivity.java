@@ -27,7 +27,7 @@ import java.util.List;
 public class ClassroomListActivity extends AppCompatActivity {
 
 
-    public final static String ID_CLASSROOM = "classroomId";
+    public final static String ID_CLASSROOM = "idClassroom";
     private List<Classroom> classrooms;
     private RecyclerAdapter<Classroom> adapter;
     private ClassroomRepository classroomRepository;
@@ -59,12 +59,12 @@ public class ClassroomListActivity extends AppCompatActivity {
                 Log.d(TAG, "clicked position:" + position);
                 Log.d(TAG, "clicked on: " + classrooms.get(position).getName());
 
-                Intent intent = new Intent(ClassroomListActivity.this, CreateClassroomActivity.class);
+                Intent intent = new Intent(ClassroomListActivity.this, EditClassroom.class);
                 intent.setFlags(
                         Intent.FLAG_ACTIVITY_NO_ANIMATION |
                                 Intent.FLAG_ACTIVITY_NO_HISTORY
                 );
-                intent.putExtra("accountId", classrooms.get(position).getId());
+                intent.putExtra(ID_CLASSROOM, classrooms.get(position).getId());
                 startActivity(intent);
             }
 
