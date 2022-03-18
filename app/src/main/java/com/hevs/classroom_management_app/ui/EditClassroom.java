@@ -7,16 +7,20 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.database.entity.Classroom;
 import com.hevs.classroom_management_app.database.repository.ClassroomRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
+import com.hevs.classroom_management_app.viewModel.ClassroomViewModel;
 
 public class EditClassroom extends AppCompatActivity {
 
     private ClassroomRepository repo;
+    private ClassroomViewModel classroomViewModel;
+    private final long DEFAULT_CLASSROOM_ID = 1L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,11 @@ public class EditClassroom extends AppCompatActivity {
     }
 
     private void saveBtnAction(){
+        //Initialize the viewModel
+        long classroomId = getIntent().getExtras().getLong(ClassroomDetails.ID_CLASSROOM,DEFAULT_CLASSROOM_ID);
+        ClassroomViewModel.Factory factory = new ClassroomViewModel.Factory(getApplication(), classroomId);
+        classroomViewModel = ViewModelProviders.of(this, factory).get(ClassroomViewModel.class);
+
         EditText classroomNameEt = ((EditText) findViewById(R.id.classroomNameCreateEt));
         EditText classroomCapacityEt = ((EditText) findViewById(R.id.maxParticipantsCreateEt));
 
@@ -55,23 +64,21 @@ public class EditClassroom extends AppCompatActivity {
             return;
         }
         // Updates the classroom and adds it to the DB
-        long classroomId = getIntent().getExtras().getLong(ClassroomDetails.ID_CLASSROOM,1L);
-        repo = ClassroomRepository.getInstance();
-        Classroom newClassroom = new Classroom(newClassroomName, newCapacity);
-        newClassroom.setId(classroomId);
-        repo.update(newClassroom, new OnAsyncEventListener() {
+        Classroom newClassroom = new Classroom();
+        newClassroom.setName(newClassroomName);
+        newClassroom.setCapacity(newCapacity);
+        classroomViewModel.updateClassroom(newClassroom, new OnAsyncEventListener() {
             @Override
             public void onSuccess() {
                 Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.saved_successfully), Toast.LENGTH_SHORT);
                 toast.show();
             }
-
             @Override
             public void onFailure(Exception e) {
-                Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.unexpected_error), Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.unexpected_error), Toast.LENGTH_LONG);
                 toast.show();
             }
-        }, getApplication());
+        });
 
     }
 
@@ -79,24 +86,8 @@ public class EditClassroom extends AppCompatActivity {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle(R.string.deleteClassroomConfirm);
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confirm),(dialog, which) -> {
+            //TODO:
             // Updates the classroom and adds it to the DB
-            long classroomId = getIntent().getExtras().getLong(ClassroomDetails.ID_CLASSROOM,1L);
-            repo = ClassroomRepository.getInstance();
-            Classroom classroom = new Classroom("", 0);
-            classroom.setId(classroomId);
-            repo.delete(classroom, new OnAsyncEventListener() {
-                @Override
-                public void onSuccess() {
-                    Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.deleted_successfully), Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-                    Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.unexpected_error), Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            }, getApplication());
         });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), (dialog, which) -> {
             alertDialog.dismiss();
