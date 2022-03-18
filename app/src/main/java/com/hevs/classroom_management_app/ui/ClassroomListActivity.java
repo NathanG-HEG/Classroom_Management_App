@@ -11,6 +11,8 @@ import com.hevs.classroom_management_app.R;
 
 public class ClassroomListActivity extends AppCompatActivity {
 
+    public final static String ID_CLASSROOM = "classroomId";
+
 /*
     @Override
     protected void onCreate(Bundle savedInstanceState){

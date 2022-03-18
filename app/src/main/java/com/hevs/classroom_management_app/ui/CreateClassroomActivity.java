@@ -14,23 +14,23 @@ import com.hevs.classroom_management_app.database.entity.Classroom;
 import com.hevs.classroom_management_app.database.repository.ClassroomRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
-public class EditClassroom extends AppCompatActivity {
+public class CreateClassroomActivity extends AppCompatActivity {
 
     private ClassroomRepository repo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_classroom);
-
-        FloatingActionButton deleteBtn = ((FloatingActionButton) findViewById(R.id.deleteClassroomButton));
-        deleteBtn.setOnClickListener(view -> deleteBtnAction());
+        setContentView(R.layout.activity_create_classroom);
 
         FloatingActionButton saveBtn = ((FloatingActionButton) findViewById(R.id.saveCreateClassroomButton));
-        saveBtn.setOnClickListener(view -> saveBtnAction());
+        saveBtn.setOnClickListener(view -> createBtn());
+
+        FloatingActionButton cancelBtn = ((FloatingActionButton) findViewById(R.id.cancelCreateClassButton));
+        cancelBtn.setOnClickListener(view -> cancelBtn());
     }
 
-    private void saveBtnAction(){
+    private void createBtn(){
         EditText classroomNameEt = ((EditText) findViewById(R.id.classroomNameCreateEt));
         EditText classroomCapacityEt = ((EditText) findViewById(R.id.maxParticipantsCreateEt));
 
@@ -41,9 +41,15 @@ public class EditClassroom extends AppCompatActivity {
             classroomCapacityEt.setError("Field is mandatory");
             return;
         }
-        int newCapacity = Integer.parseInt(newCapacity_s);
+        int newCapacity;
         String newClassroomName = classroomNameEt.getText().toString();
 
+        try {
+            newCapacity = Integer.parseInt(newCapacity_s);
+        }catch (NumberFormatException nfe){
+            classroomCapacityEt.setError("Capacity is invalid.");
+            return;
+        }
         // Checks data validity
         if (newCapacity < 1) {
             classroomCapacityEt.setError("Capacity must be at least 1");
@@ -54,33 +60,33 @@ public class EditClassroom extends AppCompatActivity {
             classroomNameEt.setError("Name must be between 3 and 40 characters long");
             return;
         }
-        // Updates the classroom and adds it to the DB
-        long classroomId = getIntent().getExtras().getLong(ClassroomDetails.ID_CLASSROOM,1L);
+        // Creates the classroom and adds it to the DB
         repo = ClassroomRepository.getInstance();
         Classroom newClassroom = new Classroom(newClassroomName, newCapacity);
-        newClassroom.setId(classroomId);
-        repo.update(newClassroom, new OnAsyncEventListener() {
+        repo.insert(newClassroom, new OnAsyncEventListener() {
             @Override
             public void onSuccess() {
-                Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.saved_successfully), Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(CreateClassroomActivity.this, getString(R.string.saved_successfully), Toast.LENGTH_SHORT);
                 toast.show();
+                NavUtils.navigateUpFromSameTask(CreateClassroomActivity.this);
             }
 
             @Override
             public void onFailure(Exception e) {
-                Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.unexpected_error), Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(CreateClassroomActivity.this, getString(R.string.unexpected_error), Toast.LENGTH_SHORT);
                 toast.show();
+                NavUtils.navigateUpFromSameTask(CreateClassroomActivity.this);
             }
         }, getApplication());
 
+
     }
 
-    private void deleteBtnAction(){
+    private void cancelBtn(){
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle(R.string.deleteClassroomConfirm);
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confirm),(dialog, which) -> {
-            //TODO: Delete classroom from Room DB
-            System.out.println("DELETED!");
+            NavUtils.navigateUpFromSameTask(this);
         });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), (dialog, which) -> {
             alertDialog.dismiss();

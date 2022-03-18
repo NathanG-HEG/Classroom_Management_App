@@ -5,18 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/deleteClassroomButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:clickable="true"
-        android:contentDescription="@string/DeleteClassroomLabel"
-        app:backgroundTint="#F44336"
-        app:layout_constraintEnd_toStartOf="@+id/saveCreateClassroomButton"
-        app:layout_constraintTop_toTopOf="@+id/saveCreateClassroomButton"
-        app:srcCompat="@android:drawable/ic_menu_delete" />
-
     <EditText
         android:id="@+id/maxParticipantsCreateEt"
         android:layout_width="230dp"
@@ -76,4 +64,15 @@
         app:layout_constraintEnd_toEndOf="@+id/maxParticipantsCreateEt"
         app:layout_constraintTop_toBottomOf="@+id/maxParticipantsCreateEt"
         app:srcCompat="@android:drawable/ic_menu_save" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/cancelCreateClassButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:clickable="true"
+        app:backgroundTint="#B8B8B8"
+        app:layout_constraintEnd_toStartOf="@+id/saveCreateClassroomButton"
+        app:layout_constraintTop_toTopOf="@+id/saveCreateClassroomButton"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 </androidx.constraintlayout.widget.ConstraintLayout>

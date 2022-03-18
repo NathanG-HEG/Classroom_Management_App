@@ -44,8 +44,8 @@ public class DatabaseInitializer {
         /*
         Insert data sample below
          */
-        addTeacher(db, "nathan@mail.ch", "Nathan", "Gaillard", "Password4Nathan");
-        addTeacher(db, "benjamin@mail.ch", "Benjamin", "Biollaz", "ben");
+        addTeacher(db, "nathan@mail.ch", "Nathan", "Gaillard", "123");
+        addTeacher(db, "benjamin@mail.ch", "Benjamin", "Biollaz", "123");
         addClassroom(db, "SUM", 30);
         addReservation(db, 1, LocalDateTime.of(2022,3,10,10,30), LocalDateTime.of(2022,3,10,11,30), 1, 25);
     }
