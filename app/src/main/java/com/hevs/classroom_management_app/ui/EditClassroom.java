@@ -16,6 +16,8 @@ import com.hevs.classroom_management_app.database.repository.ClassroomRepository
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 import com.hevs.classroom_management_app.viewModel.ClassroomViewModel;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class EditClassroom extends AppCompatActivity {
 
     private ClassroomRepository repo;
@@ -42,7 +44,7 @@ public class EditClassroom extends AppCompatActivity {
         saveBtn.setOnClickListener(view -> saveBtnAction());
     }
 
-    private void viewInitialize(){
+    private void viewInitialize() {
         classroomNameEt = ((EditText) findViewById(R.id.classroomNameCreateEt));
         classroomCapacityEt = ((EditText) findViewById(R.id.maxParticipantsCreateEt));
 
@@ -52,8 +54,8 @@ public class EditClassroom extends AppCompatActivity {
         });
     }
 
-    private void saveBtnAction(){
-        //Initialize the viewModel
+    private void saveBtnAction() {
+        // Initializes the viewModel
         ClassroomViewModel.Factory factory = new ClassroomViewModel.Factory(getApplication(), classroomId);
         classroomViewModel = ViewModelProviders.of(this, factory).get(ClassroomViewModel.class);
 
@@ -73,20 +75,33 @@ public class EditClassroom extends AppCompatActivity {
             return;
         }
         int size = newClassroomName.length();
-        if(size<3 || size > 40){
+        if (size < 3 || size > 15) {
             classroomNameEt.setError("Name must be between 3 and 40 characters long");
+            return;
+        }
+
+        //ToDo:
+        // Checks uniqueness of name
+        AtomicBoolean isNameUnique = new AtomicBoolean(true);
+        repo.getByName(newClassroomName, getApplication()).observe(this, classroom -> {
+            isNameUnique.set(classroom == null);
+        });
+        if (!isNameUnique.get()) {
+            classroomNameEt.setError("Name is already taken. Try another name");
             return;
         }
         // Updates the classroom and adds it to the DB
         Classroom newClassroom = new Classroom();
         newClassroom.setName(newClassroomName);
         newClassroom.setCapacity(newCapacity);
+        newClassroom.setId(classroomId);
         classroomViewModel.updateClassroom(newClassroom, new OnAsyncEventListener() {
             @Override
             public void onSuccess() {
                 Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.saved_successfully), Toast.LENGTH_SHORT);
                 toast.show();
             }
+
             @Override
             public void onFailure(Exception e) {
                 Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.unexpected_error), Toast.LENGTH_LONG);
@@ -96,12 +111,26 @@ public class EditClassroom extends AppCompatActivity {
 
     }
 
-    private void deleteBtnAction(){
+    private void deleteBtnAction() {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle(R.string.deleteClassroomConfirm);
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confirm),(dialog, which) -> {
-            //TODO:
-            // Updates the classroom and adds it to the DB
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confirm), (dialog, which) -> {
+            Classroom classroomToDelete = new Classroom();
+            classroomToDelete.setId(classroomId);
+            repo.delete(classroomToDelete, new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.deleted_successfully), Toast.LENGTH_LONG);
+                    toast.show();
+                    NavUtils.navigateUpFromSameTask(EditClassroom.this);
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.unexpected_error), Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }, getApplication());
         });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), (dialog, which) -> {
             alertDialog.dismiss();
