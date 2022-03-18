@@ -20,6 +20,8 @@ public class Classroom {
         this.capacity = capacity;
     }
 
+    public Classroom(){}
+
     @Override
     public boolean equals(Object obj){
         if (obj == null) return false;
