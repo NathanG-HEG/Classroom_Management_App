@@ -8,29 +8,34 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import static android.content.ContentValues.TAG;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.textfield.TextInputLayout;
 import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.database.async.teacher.CreateTeacher;
 import com.hevs.classroom_management_app.database.entity.Teacher;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
+import com.hevs.classroom_management_app.viewModel.TeacherViewModel;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SignUp extends AppCompatActivity {
 
     private TeacherRepository teacherRepository;
+
     //flag for compliance of all information
     private AtomicBoolean areInformationCompliant = new AtomicBoolean(true);
+
+    //fields
+    private EditText firstNameEt;
+    private EditText lastNameEt;
     private EditText emailEt;
+    private EditText passwordEt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,7 @@ public class SignUp extends AppCompatActivity {
         teacherRepository = ((BaseApp) getApplication()).getTeacherRepository();
 
         Button signUp = findViewById(R.id.signUp_button);
+
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,43 +61,29 @@ public class SignUp extends AppCompatActivity {
 
                 //account creation
                 if (areInformationCompliant.get()) {
-                    Teacher teacher = new Teacher("", "", "", "");
-                    new CreateTeacher(getApplication(), new OnAsyncEventListener() {
+                    Teacher teacher = new Teacher(lastNameEt.getText().toString(), firstNameEt.getText().toString(),
+                            emailEt.getText().toString(), passwordEt.getText().toString());
+                    teacherRepository = ((BaseApp) getApplication()).getTeacherRepository();
+                    teacherRepository.insert(teacher, new OnAsyncEventListener() {
                         @Override
                         public void onSuccess() {
-                            Log.d(TAG, "createTeacher: success");
-                            setResponse(true);
+                            Toast.makeText(getApplication().getApplicationContext(), "Welcome " + teacher.getFirstname(), Toast.LENGTH_LONG).show();
+                            Intent i = new Intent(SignUp.this, CreateClassroomActivity.class);
+                            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(SignUp.this);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putLong(MainActivity.ID_TEACHER, teacher.getId());
+                            editor.commit();
+                            startActivity(i);
                         }
 
                         @Override
                         public void onFailure(Exception e) {
-                            Log.d(TAG, "createTeacher: failure", e);
-                            setResponse(false);
+                            Toast.makeText(getApplication().getApplicationContext(), "Internal error occurred, account was not created.", Toast.LENGTH_LONG).show();
                         }
-                    });
+                    }, getApplication());
                 }
             }
         });
-    }
-
-    private void setResponse(Boolean response) {
-        if (response) {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SignUp.this);
-            final SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            Teacher teacherEntity;
-            teacherRepository.getByEmail(emailEt.getText().toString(), getApplication()).observe(SignUp.this, teacher -> {
-                editor.putString(MainActivity.ID_TEACHER, teacher.getId()+"");
-                editor.apply();
-            });
-
-            Toast.makeText(SignUp.this, "Account successfully created.", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(SignUp.this, ClassroomListActivity.class);
-            startActivity(intent);
-        } else {
-            emailEt.setError("Error occurred, account was not created.");
-            emailEt.requestFocus();
-        }
     }
 
     private boolean isEmailValid(CharSequence email) {
@@ -99,7 +91,7 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void checkFirstName() {
-        EditText firstNameEt = findViewById(R.id.first_name_sign_up);
+        firstNameEt = findViewById(R.id.first_name_sign_up);
         if (firstNameEt.getText().toString().equals("")) {
             firstNameEt.setError("First name is required.");
             firstNameEt.requestFocus();
@@ -109,7 +101,7 @@ public class SignUp extends AppCompatActivity {
 
     private void checkLastName() {
         //check last name
-        EditText lastNameEt = findViewById(R.id.last_name_sign_up);
+        lastNameEt = findViewById(R.id.last_name_sign_up);
         if (lastNameEt.getText().toString().equals("")) {
             lastNameEt.setError("Last name is required.");
             lastNameEt.requestFocus();
@@ -139,7 +131,7 @@ public class SignUp extends AppCompatActivity {
 
     private void checkPassword() {
         //check password length
-        EditText passwordEt = (EditText) findViewById(R.id.password_signUp);
+        passwordEt = (EditText) findViewById(R.id.password_signUp);
         String password = passwordEt.getText().toString();
         if (password.length() < 8) {
             passwordEt.setError("Password must be at least 8 characters long.");
