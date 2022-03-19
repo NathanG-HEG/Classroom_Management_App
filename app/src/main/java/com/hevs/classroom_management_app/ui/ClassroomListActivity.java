@@ -112,11 +112,6 @@ public class ClassroomListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent i = getIntent();
-        String address = i.getStringExtra("Address");
-        String postcode = i.getStringExtra("Postcode");
-        String place = i.getStringExtra("Place");
-        String nbr_of_rooms = i.getStringExtra("NumberOfRooms");
-        String price = i.getStringExtra("Price");
 
         switch (item.getItemId()) {
 
