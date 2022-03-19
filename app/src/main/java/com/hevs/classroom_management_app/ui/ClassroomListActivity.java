@@ -4,9 +4,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,14 +45,11 @@ public class ClassroomListActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.accountsRecyclerView);
         classroomRepository = ((BaseApp) getApplication()).getClassroomRepository();
 
-        // use a linear layout manager
+        disableBackButton();
+
+        // using a grid layout manager
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(layoutManager);
-
-        /*
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                GridLayoutManager.VERTICAL);
-        recyclerView.addItemDecoration(dividerItemDecoration);*/
 
         classrooms = new ArrayList<>();
         adapter = new RecyclerAdapter<>(new RecyclerViewItemClickListener() {
@@ -84,6 +85,49 @@ public class ClassroomListActivity extends AppCompatActivity {
             }
         });
         recyclerView.setAdapter(adapter);
+
+        FloatingActionButton createButton = findViewById(R.id.createClassroomFromListButton);
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ClassroomListActivity.this, CreateClassroomActivity.class);
+                startActivity(i);
+            }
+        });
+    }
+
+    private void disableBackButton() {
+        if (getSupportActionBar() != null) {
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent i = getIntent();
+        String address = i.getStringExtra("Address");
+        String postcode = i.getStringExtra("Postcode");
+        String place = i.getStringExtra("Place");
+        String nbr_of_rooms = i.getStringExtra("NumberOfRooms");
+        String price = i.getStringExtra("Price");
+
+        switch (item.getItemId()) {
+
+            case R.id.action_about:
+
+                break;
+
+            case R.id.action_logout:
+        }
+
+        return true;
     }
 
 }

@@ -17,4 +17,6 @@
     <string name="saved_successfully">Successfully saved!</string>
     <string name="unexpected_error">An unexcpected error occured. Try later.</string>
     <string name="deleted_successfully">Deleted successfully</string>
+    <string name="logout">Log out</string>
+    <string name="about">About</string>
 </resources>

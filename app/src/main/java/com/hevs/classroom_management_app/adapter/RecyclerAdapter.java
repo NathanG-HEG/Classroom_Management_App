@@ -29,17 +29,11 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Vie
     @Override
     public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.parent = parent;
-
-        /*
-        View view2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view, parent, false);
-        GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) view2.getLayoutParams();
-        lp.height = parent.getMeasuredHeight() / 4;
-        view2.setLayoutParams(lp);
-        */
-
-        // create a new view
-        TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_view, parent, false);
+        
+        TextView v = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view, parent, false);
+        GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) v.getLayoutParams();
+        lp.height = parent.getMeasuredHeight() / 5;
+        v.setLayoutParams(lp);
         final ViewHolder viewHolder = new ViewHolder(v);
         v.setOnClickListener(view -> mListener.onItemClick(view, viewHolder.getAdapterPosition()));
         v.setOnLongClickListener(view -> {
