@@ -1,5 +1,6 @@
 package com.hevs.classroom_management_app.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -122,7 +123,8 @@ public class EditClassroom extends AppCompatActivity {
                 public void onSuccess() {
                     Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.deleted_successfully), Toast.LENGTH_LONG);
                     toast.show();
-                    NavUtils.navigateUpFromSameTask(EditClassroom.this);
+                    Intent i = new Intent(EditClassroom.this, ClassroomListActivity.class);
+                    startActivity(i);
                 }
 
                 @Override

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Classroom_Management_App</string>
+    <string name="app_name">Classroom Management</string>
     <string name="login_error">Incorrect email or password</string>
     <string name="password">Password</string>
     <string name="email">E-mail</string>
