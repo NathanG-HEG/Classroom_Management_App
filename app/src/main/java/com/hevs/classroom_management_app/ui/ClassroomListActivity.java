@@ -3,6 +3,7 @@ package com.hevs.classroom_management_app.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -111,8 +112,6 @@ public class ClassroomListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent i = getIntent();
-
         switch (item.getItemId()) {
 
             case R.id.action_about:
@@ -120,9 +119,19 @@ public class ClassroomListActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_logout:
+                logout();
         }
 
         return true;
+    }
+
+    private void logout() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove(MainActivity.ID_TEACHER);
+        editor.commit();
+        Intent i = new Intent(ClassroomListActivity.this, MainActivity.class);
+        startActivity(i);
     }
 
 }

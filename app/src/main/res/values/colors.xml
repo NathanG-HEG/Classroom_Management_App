@@ -8,4 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="error_red">#E40808</color>
+    <color name="dark_blue">#1c43ba</color>
+    <color name="dark_blue_variant">#143187</color>
+    <color name="blue_secondary">#80c0e0</color>
 </resources>
