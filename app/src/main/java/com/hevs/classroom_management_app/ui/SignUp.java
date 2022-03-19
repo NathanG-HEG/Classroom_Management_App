@@ -4,25 +4,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
-import com.hevs.classroom_management_app.database.async.teacher.CreateTeacher;
 import com.hevs.classroom_management_app.database.entity.Teacher;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
-import com.hevs.classroom_management_app.viewModel.TeacherViewModel;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class SignUp extends AppCompatActivity {
 
@@ -68,11 +64,8 @@ public class SignUp extends AppCompatActivity {
                         @Override
                         public void onSuccess() {
                             Toast.makeText(getApplication().getApplicationContext(), "Welcome " + teacher.getFirstname(), Toast.LENGTH_LONG).show();
-                            Intent i = new Intent(SignUp.this, CreateClassroomActivity.class);
-                            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(SignUp.this);
-                            SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.putLong(MainActivity.ID_TEACHER, teacher.getId());
-                            editor.commit();
+                            //redirect new teacher to login
+                            Intent i = new Intent(SignUp.this, MainActivity.class);
                             startActivity(i);
                         }
 
@@ -147,6 +140,4 @@ public class SignUp extends AppCompatActivity {
             }
         }
     }
-
-
 }

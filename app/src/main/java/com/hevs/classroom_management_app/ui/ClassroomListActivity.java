@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -40,17 +41,14 @@ public class ClassroomListActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.accountsRecyclerView);
         classroomRepository = ((BaseApp) getApplication()).getClassroomRepository();
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        //mRecyclerView.setHasFixedSize(true);
-
         // use a linear layout manager
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(layoutManager);
 
+        /*
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 GridLayoutManager.VERTICAL);
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.addItemDecoration(dividerItemDecoration);*/
 
         classrooms = new ArrayList<>();
         adapter = new RecyclerAdapter<>(new RecyclerViewItemClickListener() {
@@ -72,10 +70,13 @@ public class ClassroomListActivity extends AppCompatActivity {
             public void onItemLongClick(View v, int position) {
                 Log.d(TAG, "longClicked position:" + position);
                 Log.d(TAG, "longClicked on: " + classrooms.get(position).getName());
+                Toast.makeText(getApplication().getApplicationContext(), classrooms.get(position).getName() +
+                        "\nCapacity: " + classrooms.get(position).getCapacity(), Toast.LENGTH_LONG).show();
+
             }
         });
 
-
+        //fill the adapter with classrooms
         classroomRepository.getAll(getApplication()).observe(ClassroomListActivity.this, classroomsList -> {
             if (classroomsList != null) {
                 classrooms = classroomsList;

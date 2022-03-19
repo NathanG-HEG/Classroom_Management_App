@@ -1,10 +1,12 @@
 package com.hevs.classroom_management_app.adapter;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hevs.classroom_management_app.R;
@@ -27,6 +29,14 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Vie
     @Override
     public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.parent = parent;
+
+        /*
+        View view2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view, parent, false);
+        GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) view2.getLayoutParams();
+        lp.height = parent.getMeasuredHeight() / 4;
+        view2.setLayoutParams(lp);
+        */
+
         // create a new view
         TextView v = (TextView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_view, parent, false);
