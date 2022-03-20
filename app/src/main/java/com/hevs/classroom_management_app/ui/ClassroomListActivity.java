@@ -9,14 +9,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.lifecycle.ViewModelProviders;
+
 import static android.content.ContentValues.TAG;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -25,8 +28,10 @@ import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.adapter.RecyclerAdapter;
 import com.hevs.classroom_management_app.database.entity.Classroom;
 import com.hevs.classroom_management_app.database.repository.ClassroomRepository;
+import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.RecyclerViewItemClickListener;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +44,7 @@ public class ClassroomListActivity extends AppCompatActivity {
     private ClassroomRepository classroomRepository;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.classroom_list_activity);
 
@@ -47,6 +52,7 @@ public class ClassroomListActivity extends AppCompatActivity {
         classroomRepository = ((BaseApp) getApplication()).getClassroomRepository();
 
         disableBackButton();
+        setGreetingsMessage();
 
         // using a grid layout manager
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
@@ -97,6 +103,44 @@ public class ClassroomListActivity extends AppCompatActivity {
         });
     }
 
+    private void setGreetingsMessage() {
+        TextView greetingsTv = ((TextView) findViewById(R.id.greetingsTv));
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        long teacherId = sharedPref.getLong(MainActivity.ID_TEACHER, 0L);
+        TeacherRepository repo = TeacherRepository.getInstance();
+        repo.getById(teacherId, getApplication()).observe(ClassroomListActivity.this, teacher -> {
+            if (teacher == null) {
+                return;
+            }
+            // messageId => 0: default, 1: good morning, 2: good evening
+            int messageId = 0;
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime endOfMorning = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 11, 0);
+            LocalDateTime startOfEvening = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), 18, 30);
+            if (now.isBefore(endOfMorning)) {
+                messageId = 1;
+            }
+            if (now.isAfter(startOfEvening)) {
+                messageId = 2;
+            }
+            StringBuilder greetings = new StringBuilder();
+            switch (messageId) {
+                case 1:
+                    greetings.append(getResources().getString(R.string.morning_greetings));
+                    break;
+                case 2:
+                    greetings.append(getResources().getString(R.string.evening_greetings));
+                    break;
+                default:
+                    greetings.append(getResources().getString(R.string.default_greetings));
+                    break;
+            }
+            greetings.append(teacher.getFirstname());
+            greetingsTv.setText(greetings.toString());
+        });
+    }
+
     private void disableBackButton() {
         if (getSupportActionBar() != null) {
             ActionBar actionBar = getSupportActionBar();
@@ -126,12 +170,22 @@ public class ClassroomListActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.remove(MainActivity.ID_TEACHER);
-        editor.commit();
-        Intent i = new Intent(ClassroomListActivity.this, MainActivity.class);
-        startActivity(i);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle(R.string.logoutConfirmDialog);
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.logout), (dialog, which) -> {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.remove(MainActivity.ID_TEACHER);
+            editor.commit();
+            Intent i = new Intent(ClassroomListActivity.this, MainActivity.class);
+            startActivity(i);
+        });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+        });
+        alertDialog.show();
+
+
     }
 
 }

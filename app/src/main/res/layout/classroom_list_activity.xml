@@ -9,7 +9,7 @@
         android:id="@+id/accountsRecyclerView"
         android:layout_width="350dp"
         android:layout_height="515dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="12dp"
         android:scrollbars="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
@@ -20,10 +20,22 @@
         android:id="@+id/createClassroomFromListButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="28dp"
         android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
+
+    <TextView
+        android:id="@+id/greetingsTv"
+        android:layout_width="294dp"
+        android:layout_height="55dp"
+        android:gravity="center|start"
+        android:text="Greetings"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toBottomOf="@+id/createClassroomFromListButton"
+        app:layout_constraintEnd_toStartOf="@+id/createClassroomFromListButton"
+        app:layout_constraintStart_toStartOf="@+id/accountsRecyclerView"
+        app:layout_constraintTop_toTopOf="@+id/createClassroomFromListButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

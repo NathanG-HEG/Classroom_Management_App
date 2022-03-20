@@ -15,8 +15,12 @@
     <string name="deleteClassroomConfirm">Delete classroom ?</string>
     <string name="cancel">Cancel</string>
     <string name="saved_successfully">Successfully saved!</string>
-    <string name="unexpected_error">An unexcpected error occured. Try later.</string>
+    <string name="unexpected_error">An unexpected error occurred. Try later.</string>
     <string name="deleted_successfully">Deleted successfully</string>
     <string name="logout">Log out</string>
     <string name="about">About</string>
+    <string name="logoutConfirmDialog">Are you sure you want to log out?</string>
+    <string name="morning_greetings">"Good morning, "</string>
+    <string name="evening_greetings">"Good evening, "</string>
+    <string name="default_greetings">"Good to see you, "</string>
 </resources>
