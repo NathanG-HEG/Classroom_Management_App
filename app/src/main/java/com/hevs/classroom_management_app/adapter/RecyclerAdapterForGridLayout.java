@@ -1,7 +1,6 @@
 package com.hevs.classroom_management_app.adapter;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -17,17 +16,17 @@ import com.hevs.classroom_management_app.util.RecyclerViewItemClickListener;
 
 import java.util.List;
 
-public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class RecyclerAdapterForGridLayout<T> extends RecyclerView.Adapter<RecyclerAdapterForGridLayout.ViewHolder> {
     private List<T> mData;
     private RecyclerViewItemClickListener mListener;
     private ViewGroup parent;
 
-    public RecyclerAdapter(RecyclerViewItemClickListener listener) {
+    public RecyclerAdapterForGridLayout(RecyclerViewItemClickListener listener) {
         mListener = listener;
     }
 
     @Override
-    public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerAdapterForGridLayout.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.parent = parent;
         
         TextView v = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view, parent, false);
@@ -44,7 +43,7 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Vie
     }
 
     @Override
-    public void onBindViewHolder(RecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerAdapterForGridLayout.ViewHolder holder, int position) {
         T item = mData.get(position);
         if (item.getClass().equals(Classroom.class))
             holder.mTextView.setText(((Classroom) item).getName());

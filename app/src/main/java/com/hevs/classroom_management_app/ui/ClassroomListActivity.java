@@ -8,24 +8,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.lifecycle.ViewModelProviders;
 
 import static android.content.ContentValues.TAG;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
-import com.hevs.classroom_management_app.adapter.RecyclerAdapter;
+import com.hevs.classroom_management_app.adapter.RecyclerAdapterForGridLayout;
 import com.hevs.classroom_management_app.database.entity.Classroom;
 import com.hevs.classroom_management_app.database.repository.ClassroomRepository;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
@@ -40,7 +37,7 @@ public class ClassroomListActivity extends AppCompatActivity {
 
     public final static String ID_CLASSROOM = "idClassroom";
     private List<Classroom> classrooms;
-    private RecyclerAdapter<Classroom> adapter;
+    private RecyclerAdapterForGridLayout<Classroom> adapter;
     private ClassroomRepository classroomRepository;
 
     @Override
@@ -59,7 +56,7 @@ public class ClassroomListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         classrooms = new ArrayList<>();
-        adapter = new RecyclerAdapter<>(new RecyclerViewItemClickListener() {
+        adapter = new RecyclerAdapterForGridLayout<>(new RecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 Log.d(TAG, "clicked position:" + position);
