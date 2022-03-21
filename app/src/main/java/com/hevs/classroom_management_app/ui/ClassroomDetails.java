@@ -8,6 +8,8 @@ import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hevs.classroom_management_app.BaseApp;
@@ -35,16 +37,18 @@ public class ClassroomDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_classroom);
 
-        //TODO: what is that?
-        RecyclerView recyclerView = findViewById(R.id.accountsRecyclerView);
+        RecyclerView recyclerView = findViewById(R.id.reservations_w_teacher);
         reservationRepository = ((BaseApp) getApplication()).getReservationRepository();
         teacherRepository = ((BaseApp) getApplication()).getTeacherRepository();
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
         long classroomId = getIntent().getExtras().getLong(ClassroomListActivity.ID_CLASSROOM);
         reservationsList = new LinkedList<>();
         reservationRepository.getReservationsByClassId(classroomId, getApplication()).observe(this, reservations -> {
             // Assign the reservation and teacher in each reservationWithTeacher POJO
-            for(Reservation r : reservations){
+            for (Reservation r : reservations) {
                 ReservationWithTeacher rwt = new ReservationWithTeacher();
                 rwt.reservation = r;
                 teacherRepository.getById(r.getTeacherId(), getApplication()).observe(this, teacher -> {
@@ -61,7 +65,7 @@ public class ClassroomDetails extends AppCompatActivity {
                 Log.d(TAG, "clicked on: " + reservationsList.get(position));
                 final AlertDialog alertDialog = new AlertDialog.Builder(ClassroomDetails.this).create();
                 alertDialog.setTitle(R.string.reservation_text);
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog, which)->{
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog, which) -> {
                     alertDialog.dismiss();
                 });
                 String text = "Hello world!";
