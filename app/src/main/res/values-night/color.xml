@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="variant">#47494a</color>
-    <color name="main">#656869</color>
+    <color name="variant">#282829</color>
+    <color name="main">#2a2a2b</color>
     <color name="secondary">#143187</color>
-
+    <!--color name="colorSecondary"></color>
+    <color name="colorSecondaryVariant"></color>
+    <color name="colorOnSecondary"></color-->
 </resources>
