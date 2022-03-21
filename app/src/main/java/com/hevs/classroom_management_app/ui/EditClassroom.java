@@ -1,6 +1,7 @@
 package com.hevs.classroom_management_app.ui;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -95,7 +96,10 @@ public class EditClassroom extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 //Will throw an unique index exception
-                System.err.println(e.getMessage());
+                if(e.getClass() == SQLiteConstraintException.class){
+                    classroomNameEt.setError("Name is already taken. Try another one");
+                    return;
+                }
                 Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.unexpected_error), Toast.LENGTH_LONG);
                 toast.show();
             }
