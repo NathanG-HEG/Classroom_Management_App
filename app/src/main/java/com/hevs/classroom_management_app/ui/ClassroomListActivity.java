@@ -8,17 +8,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.lifecycle.ViewModelProviders;
 
 import static android.content.ContentValues.TAG;
 
@@ -157,9 +154,9 @@ public class ClassroomListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
-            case R.id.action_about:
-
+            case R.id.action_settings:
+                Intent i = new Intent(ClassroomListActivity.this, Settings.class);
+                startActivity(i);
                 break;
 
             case R.id.action_logout:

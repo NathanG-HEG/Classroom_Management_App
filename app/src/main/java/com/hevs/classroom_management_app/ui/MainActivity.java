@@ -1,9 +1,6 @@
 package com.hevs.classroom_management_app.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-
-import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,11 +8,9 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
-import com.hevs.classroom_management_app.database.entity.Teacher;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +21,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*
+        if the user already log in once on this phone, he doesn't have to go
+        through login again
+         */
+        checkIfUserIsLoggedIn();
+
         setContentView(R.layout.activity_main);
 
         teacherRepository = ((BaseApp) getApplication()).getTeacherRepository();
@@ -48,6 +50,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void checkIfUserIsLoggedIn() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        long teacherId = sharedPref.getLong(MainActivity.ID_TEACHER, 0L);
+        if (teacherId != 0L) {
+            Intent i = new Intent(MainActivity.this, ClassroomListActivity.class);
+            startActivity(i);
+        }
     }
 
     private void login(AppCompatActivity parent) {

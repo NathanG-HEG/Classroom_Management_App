@@ -3,10 +3,11 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 
-@Entity(tableName = "Teacher")
+@Entity(tableName = "Teacher", indices = {@Index(value = {"email"}, unique = true)})
 public class Teacher {
 
     @PrimaryKey (autoGenerate = true)
