@@ -1,6 +1,8 @@
 package com.hevs.classroom_management_app.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,12 +26,11 @@ public class MainActivity extends AppCompatActivity {
 
         /*
         if the user already log in once on this phone, he doesn't have to go
-        through login again
+        through login again. Load his preferences as well
          */
         checkIfUserIsLoggedIn();
 
         setContentView(R.layout.activity_main);
-
         teacherRepository = ((BaseApp) getApplication()).getTeacherRepository();
 
         //login click listener
@@ -56,8 +57,19 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         long teacherId = sharedPref.getLong(MainActivity.ID_TEACHER, 0L);
         if (teacherId != 0L) {
+            setTheme(sharedPref); //light or dark mode
+            //skips login screen
             Intent i = new Intent(MainActivity.this, ClassroomListActivity.class);
             startActivity(i);
+        }
+    }
+
+    private void setTheme(SharedPreferences sharedPref) {
+        boolean isNightMode = sharedPref.getBoolean(Settings.THEME_PREFERENCE, false);
+        if (isNightMode){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 

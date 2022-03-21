@@ -1,6 +1,8 @@
 package com.hevs.classroom_management_app.ui;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +13,7 @@ import com.hevs.classroom_management_app.R;
 
 public class Settings extends AppCompatActivity {
 
-    private boolean isNightMode = false;
+    public static final String THEME_PREFERENCE = "theme_preference";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,13 +24,17 @@ public class Settings extends AppCompatActivity {
         nightMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(Settings.this);
+                boolean isNightMode = sharedPref.getBoolean(THEME_PREFERENCE, true);
+                SharedPreferences.Editor editor = sharedPref.edit();
                 if (isNightMode){
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    isNightMode = false;
+                    editor.putBoolean(THEME_PREFERENCE, false);
                 } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    isNightMode = true;
+                    editor.putBoolean(THEME_PREFERENCE, true);
                 }
+                editor.commit();
             }
         });
     }
