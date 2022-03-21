@@ -16,21 +16,24 @@ import com.hevs.classroom_management_app.util.RecyclerViewItemClickListener;
 
 import java.util.List;
 
-public class RecyclerAdapter <T> extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class RecyclerAdapterForGridLayout<T> extends RecyclerView.Adapter<RecyclerAdapterForGridLayout.ViewHolder> {
     private List<T> mData;
     private RecyclerViewItemClickListener mListener;
     private ViewGroup parent;
 
-    public RecyclerAdapter(RecyclerViewItemClickListener listener) {
+    public RecyclerAdapterForGridLayout(RecyclerViewItemClickListener listener) {
         mListener = listener;
     }
 
     @Override
-    public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerAdapterForGridLayout.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.parent = parent;
-
-        TextView v = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_2, parent, false);
-        final RecyclerAdapter.ViewHolder viewHolder = new RecyclerAdapter.ViewHolder(v);
+        
+        TextView v = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view, parent, false);
+        GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) v.getLayoutParams();
+        lp.height = parent.getMeasuredHeight() / 5;
+        v.setLayoutParams(lp);
+        final ViewHolder viewHolder = new ViewHolder(v);
         v.setOnClickListener(view -> mListener.onItemClick(view, viewHolder.getAdapterPosition()));
         v.setOnLongClickListener(view -> {
             mListener.onItemLongClick(view, viewHolder.getAdapterPosition());
@@ -40,7 +43,7 @@ public class RecyclerAdapter <T> extends RecyclerView.Adapter<RecyclerAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(RecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerAdapterForGridLayout.ViewHolder holder, int position) {
         T item = mData.get(position);
         if (item.getClass().equals(Classroom.class))
             holder.mTextView.setText(((Classroom) item).getName());

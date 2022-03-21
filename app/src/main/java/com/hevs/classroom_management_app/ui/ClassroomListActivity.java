@@ -22,7 +22,7 @@ import static android.content.ContentValues.TAG;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
-import com.hevs.classroom_management_app.adapter.RecyclerAdapter;
+import com.hevs.classroom_management_app.adapter.RecyclerAdapterForGridLayout;
 import com.hevs.classroom_management_app.database.entity.Classroom;
 import com.hevs.classroom_management_app.database.repository.ClassroomRepository;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
@@ -37,7 +37,7 @@ public class ClassroomListActivity extends AppCompatActivity {
 
     public final static String ID_CLASSROOM = "idClassroom";
     private List<Classroom> classrooms;
-    private RecyclerAdapter<Classroom> adapter;
+    private RecyclerAdapterForGridLayout<Classroom> adapter;
     private ClassroomRepository classroomRepository;
 
     @Override
@@ -51,18 +51,18 @@ public class ClassroomListActivity extends AppCompatActivity {
         disableBackButton();
         setGreetingsMessage();
 
-        // using a grid layout manager
+        // Using a grid layout manager
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(layoutManager);
 
         classrooms = new ArrayList<>();
-        adapter = new RecyclerAdapter<>(new RecyclerViewItemClickListener() {
+        adapter = new RecyclerAdapterForGridLayout<>(new RecyclerViewItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
                 Log.d(TAG, "clicked position:" + position);
                 Log.d(TAG, "clicked on: " + classrooms.get(position).getName());
 
-                Intent intent = new Intent(ClassroomListActivity.this, EditClassroom.class);
+                Intent intent = new Intent(ClassroomListActivity.this, ClassroomDetails.class);
                 intent.setFlags(
                         Intent.FLAG_ACTIVITY_NO_ANIMATION |
                                 Intent.FLAG_ACTIVITY_NO_HISTORY
@@ -77,7 +77,6 @@ public class ClassroomListActivity extends AppCompatActivity {
                 Log.d(TAG, "longClicked on: " + classrooms.get(position).getName());
                 Toast.makeText(getApplication().getApplicationContext(), classrooms.get(position).getName() +
                         "\nCapacity: " + classrooms.get(position).getCapacity(), Toast.LENGTH_LONG).show();
-
             }
         });
 
