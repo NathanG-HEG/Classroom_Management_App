@@ -40,6 +40,10 @@
         <activity android:name=".ui.CreateClassroomActivity"
             android:parentActivityName=".ui.ClassroomListActivity"
             android:label="Create"/>
+        <activity android:name=".ui.Settings"
+            android:parentActivityName=".ui.ClassroomListActivity"
+            android:label="Settings"/>
     </application>
+
 
 </manifest>

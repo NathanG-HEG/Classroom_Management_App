@@ -154,9 +154,9 @@ public class ClassroomListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
-            case R.id.action_about:
-
+            case R.id.action_settings:
+                Intent i = new Intent(ClassroomListActivity.this, Settings.class);
+                startActivity(i);
                 break;
 
             case R.id.action_logout:

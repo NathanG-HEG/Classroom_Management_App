@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
+import com.hevs.classroom_management_app.database.dao.TeacherDao;
 import com.hevs.classroom_management_app.database.entity.Teacher;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
@@ -71,7 +72,9 @@ public class SignUp extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Exception e) {
-                            Toast.makeText(getApplication().getApplicationContext(), "Internal error occurred, account was not created.", Toast.LENGTH_LONG).show();
+                            //check that email is not already used
+                            emailEt.setError("Email already used.");
+                            emailEt.requestFocus();
                         }
                     }, getApplication());
                 }
@@ -110,34 +113,25 @@ public class SignUp extends AppCompatActivity {
             emailEt.setError("Invalid email format.");
             emailEt.requestFocus();
             areInformationCompliant.set(false);
-        } else {
-            //check that email is not already used
-            teacherRepository.getByEmail(email, getApplication()).observe(SignUp.this, teacher -> {
-                if (teacher != null) {
-                    emailEt.setError("Email already used.");
-                    emailEt.requestFocus();
-                    areInformationCompliant.set(false);
-                }
-            });
         }
     }
 
     private void checkPassword() {
-        //check password length
+        //check password correspondence
         passwordEt = (EditText) findViewById(R.id.password_signUp);
         String password = passwordEt.getText().toString();
+        String passwordConfirmation = ((EditText) findViewById(R.id.password_confirm_signUp)).getText().toString();
+        if (!password.equals(passwordConfirmation)) {
+            passwordEt.setError("Passwords do not match.");
+            passwordEt.requestFocus();
+            areInformationCompliant.set(false);
+        }
+
+        //check password length
         if (password.length() < 8) {
             passwordEt.setError("Password must be at least 8 characters long.");
             passwordEt.requestFocus();
             areInformationCompliant.set(false);
-        } else {
-            //check password correspondence
-            String passwordConfirmation = ((EditText) findViewById(R.id.password_confirm_signUp)).getText().toString();
-            if (!password.equals(passwordConfirmation)) {
-                passwordEt.setError("Passwords do not match.");
-                passwordEt.requestFocus();
-                areInformationCompliant.set(false);
-            }
         }
     }
 }
