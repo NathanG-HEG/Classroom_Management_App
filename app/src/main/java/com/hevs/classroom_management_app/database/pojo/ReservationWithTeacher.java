@@ -9,16 +9,10 @@ import com.hevs.classroom_management_app.database.entity.Teacher;
 
 import java.util.List;
 
-public class ClassroomWithReservations {
-
+public class ReservationWithTeacher {
     @Embedded
-    public Classroom classroom;
-
-    @Relation(parentColumn = "id", entityColumn = "classroomId", entity = Reservation.class)
-    public List<Reservation> reservations;
+    public Reservation reservation;
 
     @Relation(parentColumn = "id", entityColumn = "teacherId", entity = Teacher.class)
     public Teacher teacher;
-
-
 }

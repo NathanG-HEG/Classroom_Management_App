@@ -51,7 +51,7 @@ public class ClassroomListActivity extends AppCompatActivity {
         disableBackButton();
         setGreetingsMessage();
 
-        // using a grid layout manager
+        // Using a grid layout manager
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -62,7 +62,7 @@ public class ClassroomListActivity extends AppCompatActivity {
                 Log.d(TAG, "clicked position:" + position);
                 Log.d(TAG, "clicked on: " + classrooms.get(position).getName());
 
-                Intent intent = new Intent(ClassroomListActivity.this, EditClassroom.class);
+                Intent intent = new Intent(ClassroomListActivity.this, ClassroomDetails.class);
                 intent.setFlags(
                         Intent.FLAG_ACTIVITY_NO_ANIMATION |
                                 Intent.FLAG_ACTIVITY_NO_HISTORY
@@ -77,7 +77,6 @@ public class ClassroomListActivity extends AppCompatActivity {
                 Log.d(TAG, "longClicked on: " + classrooms.get(position).getName());
                 Toast.makeText(getApplication().getApplicationContext(), classrooms.get(position).getName() +
                         "\nCapacity: " + classrooms.get(position).getCapacity(), Toast.LENGTH_LONG).show();
-
             }
         });
 
