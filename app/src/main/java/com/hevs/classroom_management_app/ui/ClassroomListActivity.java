@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -172,6 +173,7 @@ public class ClassroomListActivity extends AppCompatActivity {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.remove(MainActivity.ID_TEACHER);
+            editor.remove(Settings.THEME_PREFERENCE);
             editor.commit();
             Intent i = new Intent(ClassroomListActivity.this, MainActivity.class);
             startActivity(i);
