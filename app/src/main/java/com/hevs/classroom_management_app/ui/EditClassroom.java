@@ -80,17 +80,6 @@ public class EditClassroom extends AppCompatActivity {
             classroomNameEt.setError("Name must be between 3 and 40 characters long");
             return;
         }
-
-        //ToDo:
-        // Checks uniqueness of name
-        AtomicBoolean isNameUnique = new AtomicBoolean(true);
-        repo.getByName(newClassroomName, getApplication()).observe(this, classroom -> {
-            isNameUnique.set(classroom == null);
-        });
-        if (!isNameUnique.get()) {
-            classroomNameEt.setError("Name is already taken. Try another name");
-            return;
-        }
         // Updates the classroom and adds it to the DB
         Classroom newClassroom = new Classroom();
         newClassroom.setName(newClassroomName);
@@ -105,11 +94,12 @@ public class EditClassroom extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception e) {
+                //Will throw an unique index exception
+                System.err.println(e.getMessage());
                 Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.unexpected_error), Toast.LENGTH_LONG);
                 toast.show();
             }
         });
-
     }
 
     private void deleteBtnAction() {

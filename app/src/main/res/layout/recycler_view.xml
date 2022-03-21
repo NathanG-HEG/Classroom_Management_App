@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tvRecyclerView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#3700BCD4"
     android:gravity="center"
     android:text="TextView"
     android:textAlignment="center"
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-    android:textSize="25sp" />
+    android:textSize="25sp"
+    app:barrierMargin="@dimen/material_emphasis_high_type" />

@@ -1,14 +1,18 @@
 package com.hevs.classroom_management_app.database.entity;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
+import androidx.room.Insert;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Classroom")
+@Entity(tableName = "Classroom",
+         indices = {@Index(value = {"name"}, unique = true)})
 public class Classroom {
 
-    @PrimaryKey (autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     private long id;
     @ColumnInfo
     private String name;
@@ -20,10 +24,11 @@ public class Classroom {
         this.capacity = capacity;
     }
 
-    public Classroom(){}
+    public Classroom() {
+    }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if (obj == null) return false;
         if (obj == this) return true;
         if (!(obj instanceof Classroom)) return false;
