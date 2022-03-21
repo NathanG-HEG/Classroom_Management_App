@@ -46,7 +46,8 @@ public class RecyclerAdapter <T> extends RecyclerView.Adapter<RecyclerAdapter.Vi
             holder.mTextView.setText(((Classroom) item).getName());
         if (item.getClass().equals(Reservation.class)) {
             Reservation reservation = (Reservation) item;
-            holder.mTextView.setText(TeacherRepository.getInstance().getById(reservation.getTeacherId(), parent.getContext()) +
+            holder.mTextView.setText(TeacherRepository.getInstance().getById(reservation.getTeacherId()
+                    , parent.getContext()) +
                     " " + reservation.getStartTime() + "-" + reservation.getEndTime());
         }
     }
