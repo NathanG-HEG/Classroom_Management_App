@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!--color name="dark_grey">#707273</color-->
+    <color name="variant">#47494a</color>
+    <color name="main">#656869</color>
+    <color name="secondary">#143187</color>
+
 </resources>
