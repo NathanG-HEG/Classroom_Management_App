@@ -2,6 +2,7 @@ package com.hevs.classroom_management_app.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -72,9 +73,14 @@ public class SignUp extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Exception e) {
-                            //check that email is not already used
-                            emailEt.setError("Email already used.");
-                            emailEt.requestFocus();
+                            //insertion fails if the email is already in use
+                            if(e.getClass() == SQLiteConstraintException.class){
+                                emailEt.setError("Email already used.");
+                                emailEt.requestFocus();
+                                return;
+                            }
+                            Toast toast = Toast.makeText(SignUp.this, getString(R.string.unexpected_error), Toast.LENGTH_LONG);
+                            toast.show();
                         }
                     }, getApplication());
                 }
