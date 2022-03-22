@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,7 @@ import com.hevs.classroom_management_app.database.repository.ReservationReposito
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 import com.hevs.classroom_management_app.util.RecyclerViewItemClickListener;
+import com.hevs.classroom_management_app.viewModel.ReservationListViewModel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -44,6 +46,7 @@ public class ClassroomDetails extends AppCompatActivity {
     private RecyclerAdapter<ReservationWithTeacher> adapter;
     private long teacherId;
     private long classroomId;
+    private ReservationListViewModel reservationListViewModel;
 
     //TODO:
     // Fix display bug
@@ -68,8 +71,8 @@ public class ClassroomDetails extends AppCompatActivity {
             classroomNameTv.setText(classroom.getName());
         });
 
-
-        reservationsList = new LinkedList<>();
+        /* nathan original set data
+    reservationsList = new LinkedList<>();
         reservationRepository.getReservationsByClassId(classroomId, getApplication()).observe(this, reservations -> {
             // Assign the reservation and teacher in each reservationWithTeacher POJO
             for (Reservation r : reservations) {
@@ -79,6 +82,16 @@ public class ClassroomDetails extends AppCompatActivity {
                     rwt.teacher = teacher;
                 });
                 reservationsList.add(rwt);
+            }
+        });
+         */
+        ReservationListViewModel.Factory factory = new ReservationListViewModel.Factory(
+                getApplication(), classroomId);
+        reservationListViewModel = ViewModelProviders.of(this, factory).get(ReservationListViewModel.class);
+        reservationListViewModel.getReservationWithTeachers().observe(this, teacherReservations -> {
+            if (teacherReservations != null) {
+                reservationsList = teacherReservations;
+                adapter.setData(reservationsList);
             }
         });
 
@@ -115,6 +128,24 @@ public class ClassroomDetails extends AppCompatActivity {
                                 toast.show();
                                 return;
                             }
+                            reservationListViewModel.deleteReservation(reservationsList.get(position), new OnAsyncEventListener() {
+                                @Override
+                                public void onSuccess() {
+                                    adapter.notifyDataSetChanged();
+                                    Toast toast = Toast.makeText(ClassroomDetails.this,
+                                            getString(R.string.deleted_successfully), Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {
+                                    Toast toast = Toast.makeText(ClassroomDetails.this,
+                                            getString(R.string.unexpected_error), Toast.LENGTH_LONG);
+                                    toast.show();
+                                }
+                            });
+
+                            /* nathan original delete
                             reservationRepository.delete(reservationsList.get(position).reservation, new OnAsyncEventListener() {
                                 @SuppressLint("NotifyDataSetChanged")
                                 @Override
@@ -131,15 +162,15 @@ public class ClassroomDetails extends AppCompatActivity {
                                             getString(R.string.unexpected_error), Toast.LENGTH_LONG);
                                     toast.show();
                                 }
-                            }, getApplication());
+                            }, getApplication());*/
                         });
+
                 String text = "Hello world!";
                 alertDialog.setMessage(text);
                 alertDialog.show();
             }
         });
 
-        adapter.setData(reservationsList);
         recyclerView.setAdapter(adapter);
         editBtnInitialize();
         bookBtnInitialize();

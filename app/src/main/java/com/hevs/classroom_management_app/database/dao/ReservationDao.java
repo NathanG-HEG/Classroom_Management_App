@@ -7,10 +7,12 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.hevs.classroom_management_app.database.entity.Classroom;
 import com.hevs.classroom_management_app.database.entity.Reservation;
+import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
 
 import java.util.List;
 
@@ -18,6 +20,10 @@ import java.util.List;
 public interface ReservationDao {
     @Query("SELECT * FROM reservation WHERE classroomID = :id")
     LiveData<List<Reservation>> getReservationsByClassId(long id);
+
+    @Transaction
+    @Query("SELECT * FROM reservation WHERE classroomId = :classroom_ID")
+    LiveData<List<ReservationWithTeacher>> getReservationsByClassID(long classroom_ID);
 
     @Insert
     void insert(Reservation reservation) throws SQLiteConstraintException;
