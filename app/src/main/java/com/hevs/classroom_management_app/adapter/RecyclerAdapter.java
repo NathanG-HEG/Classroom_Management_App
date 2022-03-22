@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.database.entity.Classroom;
 import com.hevs.classroom_management_app.database.entity.Reservation;
+import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.RecyclerViewItemClickListener;
 
@@ -44,11 +45,11 @@ public class RecyclerAdapter <T> extends RecyclerView.Adapter<RecyclerAdapter.Vi
         T item = mData.get(position);
         if (item.getClass().equals(Classroom.class))
             holder.mTextView.setText(((Classroom) item).getName());
-        if (item.getClass().equals(Reservation.class)) {
-            Reservation reservation = (Reservation) item;
-            holder.mTextView.setText(TeacherRepository.getInstance().getById(reservation.getTeacherId()
+        if (item.getClass().equals(ReservationWithTeacher.class)) {
+            ReservationWithTeacher reservation = (ReservationWithTeacher) item;
+            holder.mTextView.setText(TeacherRepository.getInstance().getById(reservation.teacher.getId()
                     , parent.getContext()) +
-                    " " + reservation.getStartTime() + "-" + reservation.getEndTime());
+                    " " + reservation.reservation.getStartTime() + "-" + reservation.reservation.getEndTime());
         }
     }
 
@@ -82,9 +83,9 @@ public class RecyclerAdapter <T> extends RecyclerView.Adapter<RecyclerAdapter.Vi
                     if (mData instanceof Classroom) {
                         return ((Classroom) mData.get(oldItemPosition)).equals(((Classroom) data.get(newItemPosition)));
                     }
-                    if (mData instanceof Reservation) {
-                        return ((Reservation) mData.get(oldItemPosition)).equals(
-                                ((Reservation) data.get(newItemPosition)));
+                    if (mData instanceof ReservationWithTeacher) {
+                        return ((ReservationWithTeacher) mData.get(oldItemPosition)).equals(
+                                ((ReservationWithTeacher) data.get(newItemPosition)));
                     }
                     return false;
                 }
@@ -96,9 +97,9 @@ public class RecyclerAdapter <T> extends RecyclerView.Adapter<RecyclerAdapter.Vi
                         Classroom oldAccount = (Classroom) mData.get(newItemPosition);
                         return newAccount.equals(oldAccount);
                     }
-                    if (mData instanceof Reservation) {
-                        Reservation newClient = (Reservation) data.get(newItemPosition);
-                        Reservation oldClient = (Reservation) mData.get(newItemPosition);
+                    if (mData instanceof ReservationWithTeacher) {
+                        ReservationWithTeacher newClient = (ReservationWithTeacher) data.get(newItemPosition);
+                        ReservationWithTeacher oldClient = (ReservationWithTeacher) mData.get(newItemPosition);
                         return newClient.equals(oldClient);
                     }
                     return false;
