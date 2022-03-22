@@ -1,5 +1,6 @@
 package com.hevs.classroom_management_app.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,22 +21,37 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        FloatingActionButton nightMode = (FloatingActionButton)  findViewById(R.id.night_mode_button);
+        //toggle night theme button
+        FloatingActionButton nightMode = (FloatingActionButton) findViewById(R.id.night_mode_button);
         nightMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(Settings.this);
-                boolean isNightMode = sharedPref.getBoolean(THEME_PREFERENCE, true);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                if (isNightMode){
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    editor.putBoolean(THEME_PREFERENCE, false);
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    editor.putBoolean(THEME_PREFERENCE, true);
-                }
-                editor.commit();
+                toggleTheme();
             }
         });
+
+        //about button
+        FloatingActionButton about = (FloatingActionButton) findViewById(R.id.about_button);
+        about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Settings.this, About.class);
+                startActivity(i);
+            }
+        });
+    }
+
+    private void toggleTheme() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(Settings.this);
+        boolean isNightMode = sharedPref.getBoolean(THEME_PREFERENCE, true);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        if (isNightMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            editor.putBoolean(THEME_PREFERENCE, false);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            editor.putBoolean(THEME_PREFERENCE, true);
+        }
+        editor.commit();
     }
 }

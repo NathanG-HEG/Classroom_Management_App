@@ -43,6 +43,9 @@
         <activity android:name=".ui.Settings"
             android:parentActivityName=".ui.ClassroomListActivity"
             android:label="Settings"/>
+        <activity android:name=".ui.About"
+            android:parentActivityName=".ui.Settings"
+            android:label="About"/>
     </application>
 
 
