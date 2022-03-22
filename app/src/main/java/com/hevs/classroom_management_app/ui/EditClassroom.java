@@ -107,7 +107,7 @@ public class EditClassroom extends AppCompatActivity {
     }
 
     private void deleteBtnAction() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.MyAlertDialogTheme).create();
         alertDialog.setTitle(R.string.deleteClassroomConfirm);
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confirm), (dialog, which) -> {
             Classroom classroomToDelete = new Classroom();

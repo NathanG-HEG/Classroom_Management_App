@@ -88,8 +88,9 @@ public class CreateClassroomActivity extends AppCompatActivity {
     }
 
     private void cancelBtn() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.MyAlertDialogTheme).create();
         alertDialog.setTitle(R.string.deleteClassroomConfirm);
+
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confirm), (dialog, which) -> {
             NavUtils.navigateUpFromSameTask(this);
         });

@@ -77,7 +77,7 @@ public class ClassroomListActivity extends AppCompatActivity {
                 Log.d(TAG, "longClicked position:" + position);
                 Log.d(TAG, "longClicked on: " + classrooms.get(position).getName());
                 Toast.makeText(getApplication().getApplicationContext(), classrooms.get(position).getName() +
-                        "\nCapacity: " + classrooms.get(position).getCapacity(), Toast.LENGTH_LONG).show();
+                        "\nCapacity: " + classrooms.get(position).getCapacity(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -162,12 +162,11 @@ public class ClassroomListActivity extends AppCompatActivity {
             case R.id.action_logout:
                 logout();
         }
-
         return true;
     }
 
     private void logout() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.MyAlertDialogTheme).create();
         alertDialog.setTitle(R.string.logoutConfirmDialog);
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.logout), (dialog, which) -> {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
