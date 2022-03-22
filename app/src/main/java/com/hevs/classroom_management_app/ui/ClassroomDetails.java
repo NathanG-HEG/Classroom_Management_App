@@ -2,6 +2,7 @@ package com.hevs.classroom_management_app.ui;
 
 import static android.content.ContentValues.TAG;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -114,8 +115,10 @@ public class ClassroomDetails extends AppCompatActivity {
                                 return;
                             }
                             reservationRepository.delete(reservationsList.get(position).reservation, new OnAsyncEventListener() {
+                                @SuppressLint("NotifyDataSetChanged")
                                 @Override
                                 public void onSuccess() {
+                                    adapter.notifyDataSetChanged();
                                     Toast toast = Toast.makeText(ClassroomDetails.this,
                                             getString(R.string.deleted_successfully), Toast.LENGTH_SHORT);
                                     toast.show();
