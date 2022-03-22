@@ -28,7 +28,7 @@ public class RecyclerAdapterForGridLayout<T> extends RecyclerView.Adapter<Recycl
     @Override
     public RecyclerAdapterForGridLayout.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         this.parent = parent;
-        
+
         TextView v = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view, parent, false);
         GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) v.getLayoutParams();
         lp.height = parent.getMeasuredHeight() / 5;
