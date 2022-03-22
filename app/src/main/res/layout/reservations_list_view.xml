@@ -38,4 +38,15 @@
         app:layout_constraintTop_toTopOf="@+id/classroomNameDetailsTv"
         app:srcCompat="@android:drawable/ic_menu_edit"
         tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/book_now_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Book now!"
+        app:layout_constraintBottom_toTopOf="@+id/reservations_w_teacher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +46,7 @@ public class ClassroomDetails extends AppCompatActivity {
     private long classroomId;
 
     //TODO:
-    // Set reservation time and teacher to recycled tv + Fix display bug
+    // Fix display bug
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,6 +142,7 @@ public class ClassroomDetails extends AppCompatActivity {
         adapter.setData(reservationsList);
         recyclerView.setAdapter(adapter);
         editBtnInitialize();
+        bookBtnInitialize();
     }
 
     private void editBtnInitialize(){
@@ -149,6 +151,18 @@ public class ClassroomDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(ClassroomDetails.this, EditClassroom.class);
+                i.putExtra(ClassroomDetails.ID_CLASSROOM, classroomId);
+                startActivity(i);
+            }
+        });
+    }
+
+    private void bookBtnInitialize(){
+        Button bookBtn = ((Button) findViewById(R.id.book_now_btn));
+        bookBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ClassroomDetails.this, BookClassroom.class);
                 i.putExtra(ClassroomDetails.ID_CLASSROOM, classroomId);
                 startActivity(i);
             }

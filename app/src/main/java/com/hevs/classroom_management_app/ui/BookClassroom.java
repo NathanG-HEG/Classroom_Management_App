@@ -6,19 +6,26 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.lifecycle.Observer;
 
 import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.database.entity.Reservation;
+import com.hevs.classroom_management_app.database.repository.ClassroomRepository;
 import com.hevs.classroom_management_app.database.repository.ReservationRepository;
+import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class BookClassroom extends AppCompatActivity {
 
     private ReservationRepository reservationRepo;
+    private ClassroomRepository classroomRepository;
     private final String BAD_DATE_ERROR = "Enter a valid date";
     private final String BAD_TIME_ERROR = "Enter a valid time";
 
@@ -28,6 +35,7 @@ public class BookClassroom extends AppCompatActivity {
         setContentView(R.layout.activity_book_a_classroom);
 
         reservationRepo = ReservationRepository.getInstance();
+        classroomRepository = ClassroomRepository.getInstance();
 
         Button bookButton = (Button) findViewById(R.id.bookNowButton);
         bookButton.setOnClickListener(new View.OnClickListener() {
@@ -52,12 +60,22 @@ public class BookClassroom extends AppCompatActivity {
 
         // Get teacherId and classroomId
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        //classroomId = getIntent().getExtras().getLong(ClassroomDetails.ID_CLASSROOM);
+        classroomId = getIntent().getExtras().getLong(ClassroomDetails.ID_CLASSROOM);
         teacherId = sharedPreferences.getLong(MainActivity.ID_TEACHER, -1);
 
         // Get occupantsNumber
         occupantsNumber = Integer.parseInt(participants.getText().toString());
-        // TODO: Checks if the occupants number is greater than the classroom capacity, less than 1 or null
+        // Checks if the occupants number is greater than the classroom capacity, less than 1 or null
+        classroomRepository.getById(classroomId, getApplication()).observe(BookClassroom.this, classroom -> {
+            if(occupantsNumber>classroom.getCapacity()){
+                participants.setError("Max participants is "+classroom.getCapacity());
+                return;
+            }
+                });
+        if(occupantsNumber < 1) {
+            participants.setError("Min participants is 1");
+            return;
+        }
 
         String date = dateEt.getText().toString();
         String startTime_s = startTimeEt.getText().toString();
@@ -81,8 +99,23 @@ public class BookClassroom extends AppCompatActivity {
             return;
         }
 
-        //TODO: Insert reservation in Room DB
-        System.out.println("Done!");
+        // Inserts in DB
+        Reservation newReservation = new Reservation(classroomId, startTime, endTime, teacherId, occupantsNumber);
+        reservationRepo.insert(newReservation, new OnAsyncEventListener() {
+            @Override
+            public void onSuccess() {
+                Toast toast = Toast.makeText(BookClassroom.this, getString(R.string.saved_successfully), Toast.LENGTH_SHORT);
+                toast.show();
+                NavUtils.navigateUpFromSameTask(BookClassroom.this);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Toast toast = Toast.makeText(BookClassroom.this, getString(R.string.unexpected_error), Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }, getApplication());
+
     }
 
     private LocalDateTime extractLocalDateTimeFromString(final String date, final String time) throws DateTimeException {
