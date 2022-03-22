@@ -26,7 +26,7 @@ public class SignUp extends AppCompatActivity {
     private TeacherRepository teacherRepository;
 
     //flag for compliance of all information
-    private AtomicBoolean areInformationCompliant = new AtomicBoolean(true);
+    private boolean areInformationCompliant = true;
 
     //fields
     private EditText firstNameEt;
@@ -48,7 +48,7 @@ public class SignUp extends AppCompatActivity {
             public void onClick(View view) {
 
                 //set the flag for each try
-                areInformationCompliant.set(true);
+                areInformationCompliant = true;
 
                 //check entered information
                 checkFirstName();
@@ -57,7 +57,7 @@ public class SignUp extends AppCompatActivity {
                 checkPassword();
 
                 //account creation
-                if (areInformationCompliant.get()) {
+                if (areInformationCompliant) {
                     Teacher teacher = new Teacher(lastNameEt.getText().toString(), firstNameEt.getText().toString(),
                             emailEt.getText().toString(), passwordEt.getText().toString());
                     teacherRepository = ((BaseApp) getApplication()).getTeacherRepository();
@@ -91,7 +91,7 @@ public class SignUp extends AppCompatActivity {
         if (firstNameEt.getText().toString().equals("")) {
             firstNameEt.setError("First name is required.");
             firstNameEt.requestFocus();
-            areInformationCompliant.set(false);
+            areInformationCompliant = false;
         }
     }
 
@@ -101,7 +101,7 @@ public class SignUp extends AppCompatActivity {
         if (lastNameEt.getText().toString().equals("")) {
             lastNameEt.setError("Last name is required.");
             lastNameEt.requestFocus();
-            areInformationCompliant.set(false);
+            areInformationCompliant = false;
         }
     }
 
@@ -112,7 +112,7 @@ public class SignUp extends AppCompatActivity {
         if (!isEmailValid(email)) {
             emailEt.setError("Invalid email format.");
             emailEt.requestFocus();
-            areInformationCompliant.set(false);
+            areInformationCompliant = false;
         }
     }
 
@@ -124,14 +124,14 @@ public class SignUp extends AppCompatActivity {
         if (!password.equals(passwordConfirmation)) {
             passwordEt.setError("Passwords do not match.");
             passwordEt.requestFocus();
-            areInformationCompliant.set(false);
+            areInformationCompliant = false;
         }
 
         //check password length
         if (password.length() < 8) {
             passwordEt.setError("Password must be at least 8 characters long.");
             passwordEt.requestFocus();
-            areInformationCompliant.set(false);
+            areInformationCompliant = false;
         }
     }
 }
