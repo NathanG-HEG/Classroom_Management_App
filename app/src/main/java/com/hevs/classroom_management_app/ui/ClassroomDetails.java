@@ -100,7 +100,7 @@ public class ClassroomDetails extends AppCompatActivity {
             public void onItemClick(View v, int position) {
                 Log.d(TAG, "clicked position:" + position);
                 Log.d(TAG, "clicked on: " + reservationsList.get(position));
-                final AlertDialog alertDialog = new AlertDialog.Builder(ClassroomDetails.this).create();
+                final AlertDialog alertDialog = new AlertDialog.Builder(ClassroomDetails.this, R.style.MyAlertDialogTheme).create();
                 alertDialog.setTitle(R.string.reservation_text);
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog, which) -> {
                     alertDialog.dismiss();
@@ -114,7 +114,7 @@ public class ClassroomDetails extends AppCompatActivity {
             public void onItemLongClick(View v, int position) {
                 Log.d(TAG, "longClicked position:" + position);
                 Log.d(TAG, "longClicked on: " + reservationsList.get(position));
-                final AlertDialog alertDialog = new AlertDialog.Builder(ClassroomDetails.this).create();
+                final AlertDialog alertDialog = new AlertDialog.Builder(ClassroomDetails.this, R.style.MyAlertDialogTheme).create();
                 alertDialog.setTitle(R.string.reservation_text);
                 alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), (dialog, which) -> {
                     alertDialog.dismiss();
