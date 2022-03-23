@@ -33,4 +33,8 @@
     <string name="app_version">Version 1.0.0 - Academic use only</string>
     <string name="android_version_required">Android 4.0 (Jelly Bean) at least is required for optimal use.</string>
     <string name="creators">Developed by Benjamin and Nathan at HES-SO Valais-Wallis.</string>
+    <string name="date_hint">Date: dd/mm/yyyy</string>
+    <string name="date_hint_us">Date: mm/dd/yyyy</string>
+    <string name="time_hint">Time: hh:mm</string>
+    <string name="occupants_hint">Occupants: </string>
 </resources>

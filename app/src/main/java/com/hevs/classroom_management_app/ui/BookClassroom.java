@@ -30,6 +30,8 @@ public class BookClassroom extends AppCompatActivity {
     private final String BAD_DATE_ERROR = "Enter a valid date";
     private final String BAD_TIME_ERROR = "Enter a valid time";
     private long teacherId, classroomId;
+    private EditText dateEt, startTimeEt, endTimeEt, participants;
+    private SharedPreferences sharedPreferences;
 
 
     @Override
@@ -40,10 +42,22 @@ public class BookClassroom extends AppCompatActivity {
         reservationRepo = ReservationRepository.getInstance();
         classroomRepository = ClassroomRepository.getInstance();
 
+        dateEt = ((EditText) findViewById(R.id.dateInput));
+        startTimeEt = ((EditText) findViewById(R.id.startTimeInput));
+        endTimeEt = ((EditText) findViewById(R.id.endTimeInput));
+        participants = ((EditText) findViewById(R.id.occupantsInput));
+
         // Get teacherId and classroomId
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         classroomId = getIntent().getExtras().getLong(ClassroomDetails.ID_CLASSROOM);
         teacherId = sharedPreferences.getLong(MainActivity.ID_TEACHER, -1);
+
+        // Sets correct date format
+        if(sharedPreferences.getBoolean(Settings.US_DATE_FORMAT, false)){
+            dateEt.setHint(R.string.date_hint_us);
+        }else{
+            dateEt.setHint(R.string.date_hint);
+        }
 
         TextView classroomNameTv = findViewById(R.id.classroomNameTv);
         classroomRepository.getById(classroomId, getApplication()).observe(BookClassroom.this, classroom -> {
@@ -65,11 +79,6 @@ public class BookClassroom extends AppCompatActivity {
         LocalDateTime startTime, endTime;
         int occupantsNumber;
 
-        EditText dateEt = ((EditText) findViewById(R.id.dateInput));
-        EditText startTimeEt = ((EditText) findViewById(R.id.startTimeInput));
-        EditText endTimeEt = ((EditText) findViewById(R.id.endTimeInput));
-        EditText participants = ((EditText) findViewById(R.id.occupantsInput));
-
         // Get occupantsNumber
         occupantsNumber = Integer.parseInt(participants.getText().toString());
         // Checks if the occupants number is greater than the classroom capacity, less than 1 or null
@@ -87,9 +96,11 @@ public class BookClassroom extends AppCompatActivity {
         String date = dateEt.getText().toString();
         String startTime_s = startTimeEt.getText().toString();
         String endTime_s = endTimeEt.getText().toString();
+
         try {
-            startTime = extractLocalDateTimeFromString(date, startTime_s);
-            endTime = extractLocalDateTimeFromString(date, endTime_s);
+            boolean usFormat = sharedPreferences.getBoolean(Settings.US_DATE_FORMAT, false);
+            startTime = extractLocalDateTimeFromString(date, startTime_s, usFormat);
+            endTime = extractLocalDateTimeFromString(date, endTime_s, usFormat);
             if (!startTime.isBefore(endTime)) throw new DateTimeException(BAD_TIME_ERROR);
         } catch (DateTimeException dte) {
             switch (dte.getMessage()) {
@@ -125,14 +136,14 @@ public class BookClassroom extends AppCompatActivity {
 
     }
 
-    private LocalDateTime extractLocalDateTimeFromString(final String date, final String time) throws DateTimeException {
+    private LocalDateTime extractLocalDateTimeFromString(final String date, final String time, boolean usFormat) throws DateTimeException {
         int year, month, day, hour, minute;
         // Parses the date into year, month and day and checks the validity
         String dateArray[] = date.split("/");
         if(dateArray.length!=3) throw new DateTimeException(BAD_DATE_ERROR);
         year = Integer.parseInt(dateArray[2]);
-        month = Integer.parseInt(dateArray[1]);
-        day = Integer.parseInt(dateArray[0]);
+        month = Integer.parseInt(dateArray[usFormat ? 0 : 1]);
+        day = Integer.parseInt(dateArray[usFormat ? 1 : 0]);
         try {
             LocalDateTime.of(year, month, day, 0, 0);
         } catch (DateTimeException dte) {
