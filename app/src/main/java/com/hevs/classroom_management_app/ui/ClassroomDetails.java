@@ -144,25 +144,6 @@ public class ClassroomDetails extends AppCompatActivity {
                                     toast.show();
                                 }
                             });
-
-                            /* nathan original delete
-                            reservationRepository.delete(reservationsList.get(position).reservation, new OnAsyncEventListener() {
-                                @SuppressLint("NotifyDataSetChanged")
-                                @Override
-                                public void onSuccess() {
-                                    adapter.notifyDataSetChanged();
-                                    Toast toast = Toast.makeText(ClassroomDetails.this,
-                                            getString(R.string.deleted_successfully), Toast.LENGTH_SHORT);
-                                    toast.show();
-                                }
-
-                                @Override
-                                public void onFailure(Exception e) {
-                                    Toast toast = Toast.makeText(ClassroomDetails.this,
-                                            getString(R.string.unexpected_error), Toast.LENGTH_LONG);
-                                    toast.show();
-                                }
-                            }, getApplication());*/
                         });
 
                 String text = "Hello world!";
