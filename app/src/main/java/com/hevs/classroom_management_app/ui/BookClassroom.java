@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,8 @@ public class BookClassroom extends AppCompatActivity {
     private ClassroomRepository classroomRepository;
     private final String BAD_DATE_ERROR = "Enter a valid date";
     private final String BAD_TIME_ERROR = "Enter a valid time";
+    private long teacherId, classroomId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,16 @@ public class BookClassroom extends AppCompatActivity {
 
         reservationRepo = ReservationRepository.getInstance();
         classroomRepository = ClassroomRepository.getInstance();
+
+        // Get teacherId and classroomId
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        classroomId = getIntent().getExtras().getLong(ClassroomDetails.ID_CLASSROOM);
+        teacherId = sharedPreferences.getLong(MainActivity.ID_TEACHER, -1);
+
+        TextView classroomNameTv = findViewById(R.id.classroomNameTv);
+        classroomRepository.getById(classroomId, getApplication()).observe(BookClassroom.this, classroom -> {
+            classroomNameTv.setText(classroom.getName());
+        });
 
         Button bookButton = (Button) findViewById(R.id.bookNowButton);
         bookButton.setOnClickListener(new View.OnClickListener() {
@@ -49,7 +62,6 @@ public class BookClassroom extends AppCompatActivity {
     }
 
     private void bookAClassroom() {
-        long teacherId, classroomId;
         LocalDateTime startTime, endTime;
         int occupantsNumber;
 
@@ -57,11 +69,6 @@ public class BookClassroom extends AppCompatActivity {
         EditText startTimeEt = ((EditText) findViewById(R.id.startTimeInput));
         EditText endTimeEt = ((EditText) findViewById(R.id.endTimeInput));
         EditText participants = ((EditText) findViewById(R.id.occupantsInput));
-
-        // Get teacherId and classroomId
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        classroomId = getIntent().getExtras().getLong(ClassroomDetails.ID_CLASSROOM);
-        teacherId = sharedPreferences.getLong(MainActivity.ID_TEACHER, -1);
 
         // Get occupantsNumber
         occupantsNumber = Integer.parseInt(participants.getText().toString());

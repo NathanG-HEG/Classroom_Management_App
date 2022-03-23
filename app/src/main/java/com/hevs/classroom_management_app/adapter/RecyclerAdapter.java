@@ -4,24 +4,14 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.database.entity.Classroom;
-import com.hevs.classroom_management_app.database.entity.Reservation;
-import com.hevs.classroom_management_app.database.entity.Teacher;
 import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
-import com.hevs.classroom_management_app.database.repository.TeacherRepository;
-import com.hevs.classroom_management_app.ui.ClassroomDetails;
 import com.hevs.classroom_management_app.util.RecyclerViewItemClickListener;
 
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.FormatStyle;
 import java.util.List;
 
 public class RecyclerAdapter <T> extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
@@ -72,21 +62,26 @@ public class RecyclerAdapter <T> extends RecyclerView.Adapter<RecyclerAdapter.Vi
         sb.append(rwt.teacher.getFirstname().charAt(0)).
                 append(". ").
                 append(rwt.teacher.getLastname()).
-                append(" ").
-                append(rwt.reservation.getStartTime().getDayOfMonth()).
+                append("\t\t").
+                append(prettyTime(rwt.reservation.getStartTime().getDayOfMonth())).
                 append("/").
-                append(rwt.reservation.getStartTime().getMonthValue()).
+                append(prettyTime(rwt.reservation.getStartTime().getMonthValue())).
                 append("/").
                 append(rwt.reservation.getStartTime().getYear()).
                 append(" ").
-                append(rwt.reservation.getStartTime().getHour()).
-                append(':').
-                append(rwt.reservation.getStartTime().getMinute()).
-                append('-').
-                append(rwt.reservation.getEndTime().getHour()).
-                append(':').
-                append(rwt.reservation.getEndTime().getMinute());
+                append(prettyTime(rwt.reservation.getStartTime().getHour())).
+                append(":").
+                append(prettyTime(rwt.reservation.getStartTime().getMinute())).
+                append("-").
+                append(prettyTime(rwt.reservation.getEndTime().getHour())).
+                append(":").
+                append(prettyTime(rwt.reservation.getEndTime().getMinute()));
         return sb.toString();
+
+    }
+
+    private String prettyTime (int time) {
+        return time < 10 ? "0"+ time : Integer.toString(time);
     }
 
     public void setData(final List<T> data) {
