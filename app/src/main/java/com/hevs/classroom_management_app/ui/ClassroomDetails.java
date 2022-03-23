@@ -47,20 +47,20 @@ public class ClassroomDetails extends AppCompatActivity {
     private long teacherId;
     private long classroomId;
     private ReservationListViewModel reservationListViewModel;
+    private RecyclerView recyclerView;
+    SharedPreferences sharedPref;
 
-    //TODO:
-    // Fix display bug
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reservations_list_view);
 
-        RecyclerView recyclerView = findViewById(R.id.reservations_w_teacher);
+        recyclerView = findViewById(R.id.reservations_w_teacher);
         reservationRepository = ((BaseApp) getApplication()).getReservationRepository();
         teacherRepository = ((BaseApp) getApplication()).getTeacherRepository();
         classroomRepository = ((BaseApp) getApplication()).getClassroomRepository();
         classroomId = getIntent().getExtras().getLong(ClassroomListActivity.ID_CLASSROOM);
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         teacherId = sharedPref.getLong(MainActivity.ID_TEACHER, 0L);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -71,20 +71,6 @@ public class ClassroomDetails extends AppCompatActivity {
             classroomNameTv.setText(classroom.getName());
         });
 
-        /* nathan original set data
-    reservationsList = new LinkedList<>();
-        reservationRepository.getReservationsByClassId(classroomId, getApplication()).observe(this, reservations -> {
-            // Assign the reservation and teacher in each reservationWithTeacher POJO
-            for (Reservation r : reservations) {
-                ReservationWithTeacher rwt = new ReservationWithTeacher();
-                rwt.reservation = r;
-                teacherRepository.getById(r.getTeacherId(), getApplication()).observe(this, teacher -> {
-                    rwt.teacher = teacher;
-                });
-                reservationsList.add(rwt);
-            }
-        });
-         */
         ReservationListViewModel.Factory factory = new ReservationListViewModel.Factory(
                 getApplication(), classroomId);
         reservationListViewModel = ViewModelProviders.of(this, factory).get(ReservationListViewModel.class);

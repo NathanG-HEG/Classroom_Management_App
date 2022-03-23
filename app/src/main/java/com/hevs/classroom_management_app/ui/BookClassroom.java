@@ -71,8 +71,6 @@ public class BookClassroom extends AppCompatActivity {
                 bookAClassroom();
             }
         });
-
-
     }
 
     private void bookAClassroom() {

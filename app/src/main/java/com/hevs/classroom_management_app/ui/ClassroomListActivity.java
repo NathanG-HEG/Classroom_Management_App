@@ -40,13 +40,14 @@ public class ClassroomListActivity extends AppCompatActivity {
     private List<Classroom> classrooms;
     private RecyclerAdapterForGridLayout<Classroom> adapter;
     private ClassroomRepository classroomRepository;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.classroom_list_activity);
 
-        RecyclerView recyclerView = findViewById(R.id.accountsRecyclerView);
+        recyclerView = findViewById(R.id.accountsRecyclerView);
         classroomRepository = ((BaseApp) getApplication()).getClassroomRepository();
 
         disableBackButton();
