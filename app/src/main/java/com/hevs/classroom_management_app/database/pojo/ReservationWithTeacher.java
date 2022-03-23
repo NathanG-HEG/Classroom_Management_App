@@ -13,6 +13,6 @@ public class ReservationWithTeacher {
     @Embedded
     public Reservation reservation;
 
-    @Relation(parentColumn = "id", entityColumn = "teacherId", entity = Teacher.class)
+    @Relation(parentColumn = "teacherId", entityColumn = "id", entity = Teacher.class)
     public Teacher teacher;
 }

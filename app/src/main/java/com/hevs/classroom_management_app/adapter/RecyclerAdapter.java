@@ -14,7 +14,7 @@ import com.hevs.classroom_management_app.util.RecyclerViewItemClickListener;
 
 import java.util.List;
 
-public class RecyclerAdapter <T> extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private List<T> mData;
     private RecyclerViewItemClickListener mListener;
     private ViewGroup parent;
@@ -57,7 +57,7 @@ public class RecyclerAdapter <T> extends RecyclerView.Adapter<RecyclerAdapter.Vi
         }
     }
 
-    private String getReservationText(ReservationWithTeacher rwt){
+    private String getReservationText(ReservationWithTeacher rwt) {
         StringBuilder sb = new StringBuilder();
         sb.append(rwt.teacher.getFirstname().charAt(0)).
                 append(". ").
