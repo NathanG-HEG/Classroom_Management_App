@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
-import androidx.lifecycle.Observer;
 
 import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.database.entity.Reservation;
@@ -21,7 +20,6 @@ import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class BookClassroom extends AppCompatActivity {
 
