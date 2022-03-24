@@ -47,11 +47,6 @@ public class RecyclerAdapterForGridLayout<T> extends RecyclerView.Adapter<Recycl
         T item = mData.get(position);
         if (item.getClass().equals(Classroom.class))
             holder.mTextView.setText(((Classroom) item).getName());
-        if (item.getClass().equals(Reservation.class)) {
-            Reservation reservation = (Reservation) item;
-            holder.mTextView.setText(TeacherRepository.getInstance().getById(reservation.getTeacherId(), parent.getContext()) +
-                    " " + reservation.getStartTime() + "-" + reservation.getEndTime());
-        }
     }
 
     @Override
@@ -84,10 +79,6 @@ public class RecyclerAdapterForGridLayout<T> extends RecyclerView.Adapter<Recycl
                     if (mData instanceof Classroom) {
                         return ((Classroom) mData.get(oldItemPosition)).equals(((Classroom) data.get(newItemPosition)));
                     }
-                    if (mData instanceof Reservation) {
-                        return ((Reservation) mData.get(oldItemPosition)).equals(
-                                ((Reservation) data.get(newItemPosition)));
-                    }
                     return false;
                 }
 
@@ -97,11 +88,6 @@ public class RecyclerAdapterForGridLayout<T> extends RecyclerView.Adapter<Recycl
                         Classroom newAccount = (Classroom) data.get(newItemPosition);
                         Classroom oldAccount = (Classroom) mData.get(newItemPosition);
                         return newAccount.equals(oldAccount);
-                    }
-                    if (mData instanceof Reservation) {
-                        Reservation newClient = (Reservation) data.get(newItemPosition);
-                        Reservation oldClient = (Reservation) mData.get(newItemPosition);
-                        return newClient.equals(oldClient);
                     }
                     return false;
                 }

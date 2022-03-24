@@ -45,8 +45,6 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Vie
     @Override
     public void onBindViewHolder(RecyclerAdapter.ViewHolder holder, int position) {
         T item = mData.get(position);
-        if (item.getClass().equals(Classroom.class))
-            holder.mTextView.setText(((Classroom) item).getName());
         if (item.getClass().equals(ReservationWithTeacher.class)) {
             ReservationWithTeacher reservation = (ReservationWithTeacher) item;
             holder.mTextView.setText(getReservationText(reservation, sharedPreferences.getBoolean(Settings.US_DATE_FORMAT, false)));
@@ -119,9 +117,6 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Vie
 
                 @Override
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    if (mData instanceof Classroom) {
-                        return ((Classroom) mData.get(oldItemPosition)).equals(((Classroom) data.get(newItemPosition)));
-                    }
                     if (mData instanceof ReservationWithTeacher) {
                         return ((ReservationWithTeacher) mData.get(oldItemPosition)).equals(
                                 ((ReservationWithTeacher) data.get(newItemPosition)));
@@ -131,11 +126,6 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Vie
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    if (mData instanceof Classroom) {
-                        Classroom newAccount = (Classroom) data.get(newItemPosition);
-                        Classroom oldAccount = (Classroom) mData.get(newItemPosition);
-                        return newAccount.equals(oldAccount);
-                    }
                     if (mData instanceof ReservationWithTeacher) {
                         ReservationWithTeacher newClient = (ReservationWithTeacher) data.get(newItemPosition);
                         ReservationWithTeacher oldClient = (ReservationWithTeacher) mData.get(newItemPosition);
