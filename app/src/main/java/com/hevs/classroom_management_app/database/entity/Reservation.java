@@ -26,13 +26,16 @@ public class Reservation {
 
     @ColumnInfo
     private int occupantsNumber;
+    @ColumnInfo
+    private String reservationText;
 
-    public Reservation(long classroomId, LocalDateTime startTime, LocalDateTime endTime, long teacherId, int occupantsNumber) {
+    public Reservation(long classroomId, LocalDateTime startTime, LocalDateTime endTime, long teacherId, int occupantsNumber, String reservationText) {
         this.classroomId = classroomId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.teacherId = teacherId;
         this.occupantsNumber = occupantsNumber;
+        this.reservationText = reservationText;
     }
 
     @Override
@@ -82,5 +85,13 @@ public class Reservation {
 
     public void setOccupantsNumber(int occupantsNumber) {
         this.occupantsNumber = occupantsNumber;
+    }
+
+    public String getReservationText() {
+        return reservationText;
+    }
+
+    public void setReservationText(String reservationText) {
+        this.reservationText = reservationText;
     }
 }

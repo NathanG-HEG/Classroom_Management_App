@@ -32,8 +32,8 @@ public class DatabaseInitializer {
     }
 
     private static void addReservation(final AppDatabase db, final long classroomId, final LocalDateTime startTime,
-                                       final LocalDateTime endTime, final long teacherId, int occupantsNumber) {
-        Reservation reservation = new Reservation(classroomId, startTime, endTime, teacherId, occupantsNumber);
+                                       final LocalDateTime endTime, final long teacherId, int occupantsNumber, String reservationText) {
+        Reservation reservation = new Reservation(classroomId, startTime, endTime, teacherId, occupantsNumber, reservationText);
         db.reservationDao().insert(reservation);
     }
 
@@ -47,16 +47,11 @@ public class DatabaseInitializer {
         addTeacher(db, "nathan@mail.ch", "Nathan", "Gaillard", "123");
         addTeacher(db, "benjamin@mail.ch", "Benjamin", "Biollaz", "123");
         addClassroom(db, "SUM", 30);
-        addReservation(db, 1, LocalDateTime.of(2022,3,10,10,30), LocalDateTime.of(2022,3,10,10,45), 1, 25);
-        addReservation(db, 1, LocalDateTime.of(2022,3,10,11,30), LocalDateTime.of(2022,3,10,11,45), 1, 25);
-        addReservation(db, 1, LocalDateTime.of(2022,3,10,12,30), LocalDateTime.of(2022,3,10,12,45), 1, 25);
-        addReservation(db, 1, LocalDateTime.of(2022,3,10,13,30), LocalDateTime.of(2022,3,10,13,45), 2, 25);
-        addReservation(db, 1, LocalDateTime.of(2022,3,10,14,30), LocalDateTime.of(2022,3,10,14,45), 2, 25);
-        addReservation(db, 1, LocalDateTime.of(2022,3,10,15,30), LocalDateTime.of(2022,3,10,15,45), 2, 25);
-
-
-
-
+        for(int i = 0; i<24; i++) {
+            addReservation(db, 1, LocalDateTime.of(2022, 3, 10, i, 30),
+                    LocalDateTime.of(2022, 3, 10, i, 45),
+                    i%2+1, 25, "Sample"+i);
+        }
     }
 
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {

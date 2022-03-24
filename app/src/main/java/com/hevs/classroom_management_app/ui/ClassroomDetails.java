@@ -91,7 +91,7 @@ public class ClassroomDetails extends AppCompatActivity {
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog, which) -> {
                     alertDialog.dismiss();
                 });
-                String text = "Hello world!";
+                String text = reservationsList.get(position).reservation.getReservationText();
                 alertDialog.setMessage(text);
                 alertDialog.show();
             }
@@ -132,7 +132,7 @@ public class ClassroomDetails extends AppCompatActivity {
                             });
                         });
 
-                String text = "Hello world!";
+                String text = reservationsList.get(position).reservation.getReservationText();
                 alertDialog.setMessage(text);
                 alertDialog.show();
             }

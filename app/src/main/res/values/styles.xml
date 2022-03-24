@@ -7,9 +7,13 @@
         <item name="android:colorBackground">@color/black</item>
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="buttonBarNeutralButtonStyle">@style/PositiveButtonStyle</item>
         <item name="android:windowBackground">@color/white</item>
     </style>
     <style name="NegativeButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="NeutralButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">@color/black</item>
     </style>
 

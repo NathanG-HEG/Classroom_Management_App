@@ -28,7 +28,7 @@ public class BookClassroom extends AppCompatActivity {
     private final String BAD_DATE_ERROR = "Enter a valid date";
     private final String BAD_TIME_ERROR = "Enter a valid time";
     private long teacherId, classroomId;
-    private EditText dateEt, startTimeEt, endTimeEt, participants;
+    private EditText dateEt, startTimeEt, endTimeEt, participants, reservationText;
     private SharedPreferences sharedPreferences;
 
 
@@ -44,6 +44,7 @@ public class BookClassroom extends AppCompatActivity {
         startTimeEt = ((EditText) findViewById(R.id.startTimeInput));
         endTimeEt = ((EditText) findViewById(R.id.endTimeInput));
         participants = ((EditText) findViewById(R.id.occupantsInput));
+        reservationText = ((EditText) findViewById(R.id.reservation_text_et));
 
         // Get teacherId and classroomId
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -113,8 +114,11 @@ public class BookClassroom extends AppCompatActivity {
             return;
         }
 
+        //Get Reservation text
+        String reservationText = this.reservationText.getText().toString();
+
         // Inserts in DB
-        Reservation newReservation = new Reservation(classroomId, startTime, endTime, teacherId, occupantsNumber);
+        Reservation newReservation = new Reservation(classroomId, startTime, endTime, teacherId, occupantsNumber, reservationText);
         reservationRepo.insert(newReservation, new OnAsyncEventListener() {
             @Override
             public void onSuccess() {
