@@ -5,10 +5,11 @@
     android:id="@+id/tvRecyclerView2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#3700BCD4"
+    android:background="@drawable/list_rectangle_background"
     android:gravity="center"
     android:text="TextView"
     android:textAlignment="textStart"
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     android:textSize="20sp"
     app:barrierMargin="@dimen/material_emphasis_high_type" />
+<!--  android:background="#3700BCD4"-->
