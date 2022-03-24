@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hevs.classroom_management_app.R;
-import com.hevs.classroom_management_app.database.entity.Classroom;
 import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
 import com.hevs.classroom_management_app.ui.Settings;
 import com.hevs.classroom_management_app.util.RecyclerViewItemClickListener;
