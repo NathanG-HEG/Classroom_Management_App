@@ -3,7 +3,5 @@
     <color name="variant">#282829</color>
     <color name="main">#2a2a2b</color>
     <color name="secondary">#143187</color>
-    <!--color name="colorSecondary"></color>
-    <color name="colorSecondaryVariant"></color>
-    <color name="colorOnSecondary"></color-->
+    <color name="grid_border">#37FFFFFF</color>
 </resources>

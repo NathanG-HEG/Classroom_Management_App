@@ -11,4 +11,6 @@
     <color name="variant">#143187</color>
     <color name="secondary">#80c0e0</color>
     <color name="delete_red">#F44336</color>
+    <color name="grid_border">#37FFFFFF</color>
+    <color name="green_transparent">#3700BCD4</color>
 </resources>
