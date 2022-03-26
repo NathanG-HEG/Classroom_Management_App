@@ -37,4 +37,6 @@
     <string name="date_hint_us">Date: mm/dd/yyyy</string>
     <string name="time_hint">Time: hh:mm</string>
     <string name="occupants_hint">Occupants: </string>
+    <string name="delete_account_confirm">Are you sure you want to delete your account?</string>
+    <string name="delete_account_message">This action can not be reversed and all reservation corresponding to your account will be deleted.</string>
 </resources>

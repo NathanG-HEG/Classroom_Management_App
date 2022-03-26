@@ -2,23 +2,30 @@ package com.hevs.classroom_management_app.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaTimestamp;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Switch;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hevs.classroom_management_app.R;
+import com.hevs.classroom_management_app.database.entity.Teacher;
+import com.hevs.classroom_management_app.database.repository.TeacherRepository;
+import com.hevs.classroom_management_app.util.OnAsyncEventListener;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Settings extends AppCompatActivity {
 
     public static final String THEME_PREFERENCE = "theme_preference";
     public static final String US_DATE_FORMAT = "usDateFormat";
     private SharedPreferences sharedPref;
+    private TeacherRepository repo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +33,7 @@ public class Settings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(Settings.this);
+        repo = TeacherRepository.getInstance();
 
         //toggle night theme button
         FloatingActionButton nightMode = (FloatingActionButton) findViewById(R.id.night_mode_button);
@@ -46,6 +54,24 @@ public class Settings extends AppCompatActivity {
             }
         });
 
+        //Delete btn
+        FloatingActionButton deleteAccount = (FloatingActionButton) findViewById(R.id.delte_account_btn);
+        deleteAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AlertDialog alertDialog = new AlertDialog.Builder(Settings.this, R.style.MyAlertDialogTheme).create();
+                alertDialog.setTitle(getString(R.string.delete_account_confirm));
+                alertDialog.setMessage(getString(R.string.delete_account_message));
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), (dialog, which) -> {
+                    alertDialog.dismiss();
+                });
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confirm), (dialog, which) -> {
+                    deleteAccount();
+                });
+                alertDialog.show();
+            }
+        });
+
         // Use US DateTime format
         Switch usDateTime = findViewById(R.id.us_date_format_switch);
         usDateTime.setChecked(sharedPref.getBoolean(US_DATE_FORMAT, false));
@@ -58,7 +84,6 @@ public class Settings extends AppCompatActivity {
     }
 
     private void toggleTheme() {
-
         boolean isNightMode = sharedPref.getBoolean(THEME_PREFERENCE, true);
         SharedPreferences.Editor editor = sharedPref.edit();
         if (isNightMode) {
@@ -75,5 +100,35 @@ public class Settings extends AppCompatActivity {
         boolean usDateFormat = sharedPref.getBoolean(US_DATE_FORMAT, false);
         sharedPref.edit().putBoolean(US_DATE_FORMAT, !usDateFormat).commit();
         System.out.println(sharedPref.getBoolean(US_DATE_FORMAT, false));
+    }
+
+    private void deleteAccount(){
+        SharedPreferences.Editor editor = sharedPref.edit();
+        long teacherId = sharedPref.getLong(MainActivity.ID_TEACHER, 0L);
+        repo.getById(teacherId, this).observe(this, teacher -> {
+            repo.delete(teacher, new OnAsyncEventListener() {
+                @Override
+                public void onSuccess() {
+                    editor.remove(MainActivity.ID_TEACHER);
+                    editor.remove(Settings.THEME_PREFERENCE);
+                    editor.commit();
+                    Intent i = new Intent(Settings.this, MainActivity.class);
+                    startActivity(i);
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Toast toast = Toast.makeText(Settings.this, getString(R.string.unexpected_error), Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }, getApplication());
+        });
+
+//        TeacherViewModel teacherViewModel;
+//        TeacherViewModel.Factory factory = new TeacherViewModel.Factory(
+//                getApplication(), teacherId);
+//        teacherViewModel = ViewModelProviders.of(this, factory).get(TeacherViewModel.class);
+//        teacherViewModel.deleteClient();
+
     }
 }

@@ -5,6 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/dete_my_acc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="52dp"
+        android:text="Delete my account"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/delte_account_btn"
+        app:layout_constraintTop_toBottomOf="@+id/use_us_date_format_tv" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/night_mode_button"
         android:layout_width="wrap_content"
@@ -73,6 +84,17 @@
         android:text="Use U.S. date and time format"
         app:layout_constraintStart_toEndOf="@+id/us_date_format_switch"
         app:layout_constraintTop_toBottomOf="@+id/about_text" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/delte_account_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/delete_red"
+        android:clickable="true"
+        app:layout_constraintStart_toStartOf="@+id/us_date_format_switch"
+        app:layout_constraintTop_toBottomOf="@+id/us_date_format_switch"
+        app:srcCompat="@drawable/delete_user" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
