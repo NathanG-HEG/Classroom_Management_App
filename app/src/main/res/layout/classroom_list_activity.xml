@@ -7,14 +7,17 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/accountsRecyclerView"
-        android:layout_width="350dp"
-        android:layout_height="515dp"
+        android:layout_width="360dp"
+        android:layout_height="607dp"
         android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
         android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createClassroomFromListButton" />
+        app:layout_constraintTop_toBottomOf="@+id/createClassroomFromListButton"
+        app:layout_constraintVertical_bias="0.541" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/createClassroomFromListButton"
