@@ -21,6 +21,9 @@ public class Teacher {
     @ColumnInfo
     private String password;
 
+    public Teacher() {
+    }
+
     public Teacher(String lastname, String firstname, String email, String password) {
         this.lastname = lastname;
         this.firstname = firstname;

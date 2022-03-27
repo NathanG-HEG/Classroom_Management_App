@@ -11,12 +11,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hevs.classroom_management_app.R;
+import com.hevs.classroom_management_app.database.entity.Classroom;
 import com.hevs.classroom_management_app.database.entity.Teacher;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
+import com.hevs.classroom_management_app.viewModel.TeacherViewModel;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -26,6 +29,8 @@ public class Settings extends AppCompatActivity {
     public static final String US_DATE_FORMAT = "usDateFormat";
     private SharedPreferences sharedPref;
     private TeacherRepository repo;
+    private TeacherViewModel teacherViewModel;
+    private Teacher teacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,30 +117,48 @@ public class Settings extends AppCompatActivity {
     private void deleteAccount(){
         SharedPreferences.Editor editor = sharedPref.edit();
         long teacherId = sharedPref.getLong(MainActivity.ID_TEACHER, 0L);
-        repo.getById(teacherId, this).observe(this, teacher -> {
-            repo.delete(teacher, new OnAsyncEventListener() {
-                @Override
-                public void onSuccess() {
-                    editor.remove(MainActivity.ID_TEACHER);
-                    editor.remove(Settings.THEME_PREFERENCE);
-                    editor.commit();
-                    Intent i = new Intent(Settings.this, MainActivity.class);
-                    startActivity(i);
-                }
 
-                @Override
-                public void onFailure(Exception e) {
-                    Toast toast = Toast.makeText(Settings.this, getString(R.string.unexpected_error), Toast.LENGTH_LONG);
-                    toast.show();
-                }
-            }, getApplication());
-        });
+        Teacher teacherToDelete = new Teacher();
+        teacherToDelete.setId(teacherId);
+        repo.delete(teacherToDelete, new OnAsyncEventListener() {
+            @Override
+            public void onSuccess() {
+                editor.remove(MainActivity.ID_TEACHER);
+                editor.apply();
+                Intent i = new Intent(Settings.this, MainActivity.class);
+                startActivity(i);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                System.out.println(e.getMessage());
+                Toast.makeText(getApplication(), getString(R.string.unexpected_error), Toast.LENGTH_LONG).show();
+            }
+        }, getApplication());
+
 
 //        TeacherViewModel teacherViewModel;
 //        TeacherViewModel.Factory factory = new TeacherViewModel.Factory(
 //                getApplication(), teacherId);
 //        teacherViewModel = ViewModelProviders.of(this, factory).get(TeacherViewModel.class);
-//        teacherViewModel.deleteClient();
+//        teacherViewModel.getTeacher().observe(this, teacher1 -> {
+//            teacher = teacher1;
+//        });
+//        teacherViewModel.deleteClient(teacher, new OnAsyncEventListener() {
+//            @Override
+//            public void onSuccess() {
+//                editor.remove(MainActivity.ID_TEACHER);
+//                editor.apply();
+//                Intent i = new Intent(Settings.this, MainActivity.class);
+//                startActivity(i);
+//            }
+//
+//            @Override
+//            public void onFailure(Exception e) {
+//                System.out.println(e.getMessage());
+//                Toast.makeText(getApplication(), getString(R.string.unexpected_error), Toast.LENGTH_LONG).show();
+//            }
+//        });
 
     }
 }

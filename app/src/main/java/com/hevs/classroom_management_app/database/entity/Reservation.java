@@ -11,7 +11,9 @@ import java.time.LocalDateTime;
 
 @Entity(tableName = "Reservation", primaryKeys = {"classroomId", "startTime", "endTime"},
         foreignKeys = {
-                @ForeignKey(entity = Teacher.class, parentColumns = "id", childColumns = "teacherId"), @ForeignKey(entity = Classroom.class, parentColumns = "id", childColumns = "classroomId")
+                @ForeignKey(entity = Teacher.class, parentColumns = "id", childColumns = "teacherId"),
+                @ForeignKey(entity = Classroom.class, parentColumns = "id", childColumns = "classroomId",
+                        onDelete = ForeignKey.CASCADE)
         })
 public class Reservation {
 
