@@ -14,12 +14,16 @@ import com.hevs.classroom_management_app.database.entity.Classroom;
 import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Dao
 public interface ReservationDao {
     @Query("SELECT * FROM reservation WHERE classroomID = :id")
     LiveData<List<Reservation>> getReservationsByClassId(long id);
+
+    @Query("SELECT * FROM reservation WHERE classroomID = :id AND startTime=:startTime")
+    LiveData<Reservation> getReservationsByClassAndStartTime(long id, LocalDateTime startTime);
 
     @Transaction
     @Query("SELECT * FROM reservation WHERE classroomId = :classroom_ID")
