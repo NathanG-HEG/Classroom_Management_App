@@ -17,7 +17,7 @@
         app:layout_constraintTop_toBottomOf="@+id/password_edit2" />
 
     <EditText
-        android:id="@+id/password_edit1"
+        android:id="@+id/old_password_edit"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="92dp"
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/old_password_edit"
+        android:id="@+id/password_edit1"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -40,7 +40,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_edit1" />
+        app:layout_constraintTop_toBottomOf="@+id/old_password_edit" />
 
     <EditText
         android:id="@+id/password_edit2"
@@ -53,5 +53,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/old_password_edit" />
+        app:layout_constraintTop_toBottomOf="@+id/password_edit1" />
 </androidx.constraintlayout.widget.ConstraintLayout>
