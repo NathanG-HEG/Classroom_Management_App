@@ -197,7 +197,6 @@ public class EditReservation extends AppCompatActivity {
         //delete reservation
         ReservationViewModel.Factory factory = new ReservationViewModel.Factory(((BaseApp) getApplication()), classroomId, startTime);
         ReservationViewModel reservationViewModel = ViewModelProviders.of(this, factory).get(ReservationViewModel.class);
-        Reservation reservation = new Reservation(classroomId, startTime, null, teacherId, 0, null);
         reservationViewModel.deleteReservation(copyOfReservation, new OnAsyncEventListener() {
             @Override
             public void onSuccess() {
@@ -215,14 +214,12 @@ public class EditReservation extends AppCompatActivity {
     }
 
     private Reservation copyReservation() {
-        Reservation copyOfReservation =new Reservation(classroomId, startTime, null, teacherId, 0, null);
+        Reservation copyOfReservation = new Reservation(classroomId, startTime, null, teacherId, 0, null);
         ReservationViewModel.Factory factory1 = new ReservationViewModel.Factory(((BaseApp) getApplication()), classroomId, startTime);
         ReservationViewModel reservationViewModel1 = ViewModelProviders.of(this, factory1).get(ReservationViewModel.class);
         reservationViewModel1.getReservation().observe(this, reservation -> {
             if (reservation != null) {
                 copyOfReservation.setTeacherId(reservation.getTeacherId());
-                copyOfReservation.setClassroomId(classroomId); //avoid error if the user changes primary key data before deleting
-                copyOfReservation.setStartTime(startTime); //avoid error if the user changes primary key data before deleting
                 copyOfReservation.setEndTime(reservation.getEndTime());
                 copyOfReservation.setReservationText(reservation.getReservationText());
             }
