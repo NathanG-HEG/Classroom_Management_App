@@ -33,12 +33,14 @@ import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 import com.hevs.classroom_management_app.util.RecyclerViewItemClickListener;
 import com.hevs.classroom_management_app.viewModel.ReservationListViewModel;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ClassroomDetails extends AppCompatActivity {
 
     public static final String ID_CLASSROOM = "idClassroom";
+    public static final String START_TIME = "startTime";
     private ReservationRepository reservationRepository;
     private TeacherRepository teacherRepository;
     private ClassroomRepository classroomRepository;
@@ -105,32 +107,13 @@ public class ClassroomDetails extends AppCompatActivity {
                 alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), (dialog, which) -> {
                     alertDialog.dismiss();
                 });
-                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.delete_reservation_confirm),
-                        (dialog, which) -> {
-                            if (reservationsList.get(position).teacher.getId() != teacherId) {
-                                System.out.println(getString(R.string.deny_permission));
-                                Toast toast = Toast.makeText(ClassroomDetails.this,
-                                        getString(R.string.deny_permission), Toast.LENGTH_LONG);
-                                toast.show();
-                                return;
-                            }
-                            reservationListViewModel.deleteReservation(reservationsList.get(position), new OnAsyncEventListener() {
-                                @Override
-                                public void onSuccess() {
-                                    adapter.notifyDataSetChanged();
-                                    Toast toast = Toast.makeText(ClassroomDetails.this,
-                                            getString(R.string.deleted_successfully), Toast.LENGTH_SHORT);
-                                    toast.show();
-                                }
-
-                                @Override
-                                public void onFailure(Exception e) {
-                                    Toast toast = Toast.makeText(ClassroomDetails.this,
-                                            getString(R.string.unexpected_error), Toast.LENGTH_LONG);
-                                    toast.show();
-                                }
-                            });
-                        });
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.edit_reservation), (dialog, which) -> {
+                    Intent i = new Intent(ClassroomDetails.this, EditReservation.class);
+                    i.putExtra(ClassroomListActivity.ID_CLASSROOM, classroomId);
+                    LocalDateTime startTime = reservationsList.get(position).reservation.getStartTime();
+                    i.putExtra(START_TIME, startTime.toString());
+                    startActivity(i);
+                });
 
                 String text = reservationsList.get(position).reservation.getReservationText();
                 alertDialog.setMessage(text);

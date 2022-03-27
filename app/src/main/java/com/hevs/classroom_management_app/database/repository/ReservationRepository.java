@@ -14,6 +14,7 @@ import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ReservationRepository {
@@ -33,6 +34,10 @@ public class ReservationRepository {
 
     public LiveData<List<Reservation>> getReservationsByClassId(final long id, Application application) {
         return  ((BaseApp)application).getDatabase().reservationDao().getReservationsByClassId(id);
+    }
+
+    public LiveData<Reservation> getReservationsByClassAndStartTime(long id, LocalDateTime startTime, Application application) {
+        return ((BaseApp)application).getDatabase().reservationDao().getReservationsByClassAndStartTime(id, startTime);
     }
 
     public LiveData<List<ReservationWithTeacher>> getReservationsByClassID(final long id, Application application) {
