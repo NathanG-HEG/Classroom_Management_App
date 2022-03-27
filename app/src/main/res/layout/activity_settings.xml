@@ -6,6 +6,17 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/change_pass_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="52dp"
+        android:text="Change password"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/change_pwd_btn"
+        app:layout_constraintTop_toBottomOf="@+id/dete_my_acc_tv" />
+
+    <TextView
         android:id="@+id/dete_my_acc_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -95,6 +106,16 @@
         app:layout_constraintStart_toStartOf="@+id/us_date_format_switch"
         app:layout_constraintTop_toBottomOf="@+id/us_date_format_switch"
         app:srcCompat="@drawable/delete_user" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/change_pwd_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:clickable="true"
+        app:layout_constraintStart_toStartOf="@+id/delte_account_btn"
+        app:layout_constraintTop_toBottomOf="@+id/delte_account_btn"
+        app:srcCompat="@android:drawable/ic_lock_lock" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

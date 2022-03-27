@@ -72,6 +72,13 @@ public class Settings extends AppCompatActivity {
             }
         });
 
+        //Change password btn
+        FloatingActionButton changePwd = (FloatingActionButton) findViewById(R.id.change_pwd_btn);
+        changePwd.setOnClickListener( view -> {
+            Intent i = new Intent(Settings.this, ChangePwd.class);
+            startActivity(i);
+        });
+
         // Use US DateTime format
         Switch usDateTime = findViewById(R.id.us_date_format_switch);
         usDateTime.setChecked(sharedPref.getBoolean(US_DATE_FORMAT, false));
