@@ -35,6 +35,10 @@ public interface ReservationDao {
     @Update
     void update(Reservation reservation);
 
+    @Query("UPDATE reservation SET startTime = :newStartTime, endtime=:endTime, occupantsNumber=:occupantsNb, reservationText=:reservationText WHERE startTime=:originalStartTime AND classroomId=:classroomId")
+    void update(long classroomId, LocalDateTime originalStartTime, LocalDateTime newStartTime,
+                LocalDateTime endTime, int occupantsNb, String reservationText);
+
     @Delete
     void delete(Reservation reservation);
 

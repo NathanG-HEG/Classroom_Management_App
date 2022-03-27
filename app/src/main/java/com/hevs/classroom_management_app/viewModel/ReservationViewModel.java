@@ -66,6 +66,7 @@ public class ReservationViewModel extends AndroidViewModel {
         repo.update(reservation, callback, application);
     }
 
+
     public void deleteReservation(Reservation reservation, OnAsyncEventListener callback) {
         repo.delete(reservation, callback, application);
     }
