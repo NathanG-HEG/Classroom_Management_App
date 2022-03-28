@@ -6,6 +6,17 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/delete_account_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="52dp"
+        android:text="Delete my account"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/us_date_format_switch"
+        app:layout_constraintTop_toBottomOf="@+id/use_us_date_format_tv" />
+
+    <TextView
         android:id="@+id/change_pass_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
