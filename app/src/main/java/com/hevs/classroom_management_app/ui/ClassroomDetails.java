@@ -2,7 +2,6 @@ package com.hevs.classroom_management_app.ui;
 
 import static android.content.ContentValues.TAG;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,12 +10,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,17 +21,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.adapter.RecyclerAdapter;
-import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
 import com.hevs.classroom_management_app.database.repository.ClassroomRepository;
 import com.hevs.classroom_management_app.database.repository.ReservationRepository;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
-import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 import com.hevs.classroom_management_app.util.RecyclerViewItemClickListener;
 import com.hevs.classroom_management_app.viewModel.ReservationListViewModel;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.List;
 
 public class ClassroomDetails extends AppCompatActivity {

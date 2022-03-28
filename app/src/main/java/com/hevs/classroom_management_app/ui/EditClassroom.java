@@ -8,7 +8,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -18,7 +17,6 @@ import com.hevs.classroom_management_app.database.repository.ClassroomRepository
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 import com.hevs.classroom_management_app.viewModel.ClassroomViewModel;
 
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EditClassroom extends AppCompatActivity {
 

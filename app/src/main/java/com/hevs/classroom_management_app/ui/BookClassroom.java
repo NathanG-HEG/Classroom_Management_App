@@ -59,17 +59,10 @@ public class BookClassroom extends AppCompatActivity {
         }
 
         TextView classroomNameTv = findViewById(R.id.classroomNameTv);
-        classroomRepository.getById(classroomId, getApplication()).observe(BookClassroom.this, classroom -> {
-            classroomNameTv.setText(classroom.getName());
-        });
+        classroomRepository.getById(classroomId, getApplication()).observe(BookClassroom.this, classroom -> classroomNameTv.setText(classroom.getName()));
 
         Button bookButton = (Button) findViewById(R.id.bookNowButton);
-        bookButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bookAClassroom();
-            }
-        });
+        bookButton.setOnClickListener(view -> bookAClassroom());
     }
 
     private void bookAClassroom() {

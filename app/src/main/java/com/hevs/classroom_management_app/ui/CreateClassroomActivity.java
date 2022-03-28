@@ -18,7 +18,6 @@ import com.hevs.classroom_management_app.viewModel.ClassroomViewModel;
 
 public class CreateClassroomActivity extends AppCompatActivity {
 
-    private ClassroomRepository repo;
     private ClassroomViewModel classroomViewModel;
 
     @Override
