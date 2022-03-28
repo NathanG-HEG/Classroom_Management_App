@@ -126,9 +126,7 @@ public class EditClassroom extends AppCompatActivity {
                 }
             }, getApplication());
         });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), (dialog, which) -> {
-            alertDialog.dismiss();
-        });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
         alertDialog.show();
     }
 }

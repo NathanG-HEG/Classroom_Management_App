@@ -7,12 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Database;
-import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-import androidx.lifecycle.MutableLiveData;
 
 import com.hevs.classroom_management_app.database.dao.ClassroomDao;
 import com.hevs.classroom_management_app.database.dao.ReservationDao;
@@ -21,7 +19,6 @@ import com.hevs.classroom_management_app.database.entity.Classroom;
 import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.entity.Teacher;
 
-import java.time.LocalDateTime;
 import java.util.concurrent.Executors;
 
 @Database(entities = {Classroom.class, Teacher.class, Reservation.class}, version = 1)

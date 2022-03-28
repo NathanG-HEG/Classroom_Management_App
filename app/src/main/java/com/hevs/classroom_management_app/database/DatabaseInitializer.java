@@ -47,7 +47,7 @@ public class DatabaseInitializer {
         addTeacher(db, "nathan@mail.ch", "Nathan", "Gaillard", "123");
         addTeacher(db, "benjamin@mail.ch", "Benjamin", "Biollaz", "123");
         addClassroom(db, "SUM", 30);
-        for(int i = 0; i<24; i++) {
+        for(int i = 0; i<12; i++) {
             addReservation(db, 1, LocalDateTime.of(2022, 3, 10, i, 30),
                     LocalDateTime.of(2022, 3, 10, i, 45),
                     i%2+1, 25, "Sample"+i);

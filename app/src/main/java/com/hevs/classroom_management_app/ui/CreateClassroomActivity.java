@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.database.entity.Classroom;
-import com.hevs.classroom_management_app.database.repository.ClassroomRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 import com.hevs.classroom_management_app.viewModel.ClassroomViewModel;
 
@@ -90,12 +89,8 @@ public class CreateClassroomActivity extends AppCompatActivity {
         final AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.MyAlertDialogTheme).create();
         alertDialog.setTitle(R.string.deleteClassroomConfirm);
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confirm), (dialog, which) -> {
-            NavUtils.navigateUpFromSameTask(this);
-        });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), (dialog, which) -> {
-            alertDialog.dismiss();
-        });
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confirm), (dialog, which) -> NavUtils.navigateUpFromSameTask(this));
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
         alertDialog.show();
     }
 }

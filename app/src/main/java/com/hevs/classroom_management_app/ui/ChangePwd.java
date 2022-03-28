@@ -13,15 +13,13 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.database.entity.Teacher;
-import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 import com.hevs.classroom_management_app.viewModel.TeacherViewModel;
 
 public class ChangePwd extends AppCompatActivity {
 
     private SharedPreferences sharedPref;
-    private TeacherRepository repo;
-    private Teacher teacher;
+        private Teacher teacher;
     private TeacherViewModel teacherViewModel;
     private EditText oldPwdField, newPwdField1, newPwdField2;
 
@@ -31,7 +29,6 @@ public class ChangePwd extends AppCompatActivity {
         setContentView(R.layout.change_pwd);
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        repo = TeacherRepository.getInstance();
 
         oldPwdField = findViewById(R.id.old_password_edit);
         newPwdField1 = findViewById(R.id.password_edit1);
@@ -40,14 +37,10 @@ public class ChangePwd extends AppCompatActivity {
 
         TeacherViewModel.Factory factory = new TeacherViewModel.Factory(getApplication(), sharedPref.getLong(MainActivity.ID_TEACHER, 0L));
         teacherViewModel = ViewModelProviders.of(this, factory).get(TeacherViewModel.class);
-        teacherViewModel.getTeacher().observe(this, teacher1 -> {
-            teacher = teacher1;
-        });
+        teacherViewModel.getTeacher().observe(this, teacher1 -> teacher = teacher1);
 
         Button changePwd = (Button) findViewById(R.id.change_pwd_btn2);
-        changePwd.setOnClickListener(view -> {
-            changePwd();
-        });
+        changePwd.setOnClickListener(view -> changePwd());
     }
 
     private void changePwd(){

@@ -42,10 +42,6 @@ public class ReservationListViewModel extends AndroidViewModel {
         observableReservationWithTeacher.addSource(teacherReservations, observableReservationWithTeacher::setValue);
     }
 
-
-    /**
-     * A creator is used to inject the account id into the ViewModel
-     */
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
 
         @NonNull
@@ -68,10 +64,6 @@ public class ReservationListViewModel extends AndroidViewModel {
         }
     }
 
-
-    /**
-     * Expose the LiveData ClientAccounts query so the UI can observe it.
-     */
     public LiveData<List<ReservationWithTeacher>> getReservationWithTeachers() {
         return observableReservationWithTeacher;
     }
@@ -81,9 +73,4 @@ public class ReservationListViewModel extends AndroidViewModel {
     }
 
 
-    /*
-    public void executeTransaction(final AccountEntity sender, final AccountEntity recipient,
-                                   OnAsyncEventListener callback) {
-        repository.transaction(sender, recipient, callback, application);
-    }*/
 }
