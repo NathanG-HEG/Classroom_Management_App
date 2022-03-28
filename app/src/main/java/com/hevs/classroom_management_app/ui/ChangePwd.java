@@ -16,6 +16,10 @@ import com.hevs.classroom_management_app.database.entity.Teacher;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 import com.hevs.classroom_management_app.viewModel.TeacherViewModel;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class ChangePwd extends AppCompatActivity {
 
     private SharedPreferences sharedPref;
@@ -44,7 +48,8 @@ public class ChangePwd extends AppCompatActivity {
     }
 
     private void changePwd(){
-        if(!oldPwdField.getText().toString().equals(teacher.getPassword())){
+        String hashedAndSaltPwd = hash(oldPwdField.getText().toString(), teacher.getSalt());
+        if(!hashedAndSaltPwd.equals(teacher.getDigest())){
             oldPwdField.setError(getString(R.string.incorrect_password));
             return;
         }
@@ -61,7 +66,9 @@ public class ChangePwd extends AppCompatActivity {
             return;
         }
 
-        teacher.setPassword(newPwd1);
+        String newPwdDigest = hash(newPwd1, teacher.getSalt());
+
+        teacher.setDigest(newPwdDigest);
 
         teacherViewModel.updateClient(teacher, new OnAsyncEventListener() {
             @Override
@@ -77,6 +84,18 @@ public class ChangePwd extends AppCompatActivity {
                 toast.show();
             }
         });
+    }
+
+    private String hash(String text, String salt){
+        byte[] s = salt.getBytes(StandardCharsets.UTF_8);
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-512");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        md.update(s);
+        return new String(md.digest(text.getBytes(StandardCharsets.UTF_8)));
     }
 
 

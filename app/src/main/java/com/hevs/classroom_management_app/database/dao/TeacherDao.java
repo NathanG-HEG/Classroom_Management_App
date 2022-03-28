@@ -12,8 +12,8 @@ import com.hevs.classroom_management_app.database.entity.Teacher;
 
 @Dao
 public interface TeacherDao {
-    @Query("SELECT * FROM teacher WHERE email = :email AND password = :password")
-    LiveData<Teacher> getByLogin(String email, String password);
+    @Query("SELECT * FROM teacher WHERE email = :email AND digest = :digest")
+    LiveData<Teacher> getByLogin(String email, String digest);
 
     @Query("SELECT * FROM teacher WHERE id = :id")
     LiveData<Teacher> getById(long id);

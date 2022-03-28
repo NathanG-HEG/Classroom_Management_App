@@ -6,6 +6,11 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
 
 @Entity(tableName = "Teacher", indices = {@Index(value = {"email"}, unique = true)})
 public class Teacher {
@@ -19,7 +24,9 @@ public class Teacher {
     @ColumnInfo
     private String email;
     @ColumnInfo
-    private String password;
+    private String digest;
+    @ColumnInfo
+    private String salt;
 
     public Teacher() {
     }
@@ -28,7 +35,24 @@ public class Teacher {
         this.lastname = lastname;
         this.firstname = firstname;
         this.email = email;
-        this.password = password;
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        this.salt = new String(salt);
+        this.digest = hash(password, this.salt);
+
+    }
+
+    private String hash(String text, String salt){
+        byte[] s = salt.getBytes(StandardCharsets.UTF_8);
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-512");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        md.update(s);
+        return new String(md.digest(text.getBytes(StandardCharsets.UTF_8)));
     }
 
     @Override
@@ -72,11 +96,19 @@ public class Teacher {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getDigest() {
+        return digest;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setDigest(String digest) {
+        this.digest = digest;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }

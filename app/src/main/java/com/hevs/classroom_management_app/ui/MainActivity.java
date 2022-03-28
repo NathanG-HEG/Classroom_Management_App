@@ -15,6 +15,10 @@ import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String ID_TEACHER = "idTeacher";
@@ -66,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setTheme(SharedPreferences sharedPref) {
         boolean isNightMode = sharedPref.getBoolean(Settings.THEME_PREFERENCE, false);
-        if (isNightMode){
+        if (isNightMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -76,23 +80,61 @@ public class MainActivity extends AppCompatActivity {
     private void login(AppCompatActivity parent) {
         EditText emailEt = findViewById(R.id.editTextTextEmailAddress);
         String email = emailEt.getText().toString();
-        String password = ((EditText) findViewById(R.id.editTextTextPassword)).getText().toString();
-
-        teacherRepository.getByLogin(email, password, getApplication()).observe(MainActivity.this, teacher -> {
-
+        teacherRepository.getByEmail(email, getApplication()).observe(this, teacher -> {
             if (teacher != null) {
-                Intent i = new Intent(parent, ClassroomListActivity.class);
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putLong(ID_TEACHER, teacher.getId());
-                editor.commit();
-                startActivity(i);
+                // Gets the typed password
+                String password = ((EditText) findViewById(R.id.editTextTextPassword)).getText().toString();
+                //Gets the corresponding salt
+                String salt = teacher.getSalt();
+                // gets the Message digest
+                String hashedAndSaltPwd = hash(password, salt);
+
+                if (hashedAndSaltPwd.equals(teacher.getDigest())) {
+                    Intent i = new Intent(parent, ClassroomListActivity.class);
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putLong(ID_TEACHER, teacher.getId());
+                    editor.commit();
+                    startActivity(i);
+                } else {
+                    //Incorrect password
+                    emailEt.setError("Incorrect email or password.");
+                    emailEt.requestFocus();
+                }
             } else {
+                // Incorrect email
                 emailEt.setError("Incorrect email or password.");
                 emailEt.requestFocus();
             }
-
         });
+    }
+
+//        teacherRepository.getByLogin(email, digest, getApplication()).observe(MainActivity.this, teacher -> {
+//            if (teacher != null) {
+//                Intent i = new Intent(parent, ClassroomListActivity.class);
+//                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+//                SharedPreferences.Editor editor = sharedPref.edit();
+//                editor.putLong(ID_TEACHER, teacher.getId());
+//                editor.commit();
+//                startActivity(i);
+//            } else {
+//                emailEt.setError("Incorrect email or password.");
+//                emailEt.requestFocus();
+//            }
+//
+//        });
+//    }
+
+    private String hash(String text, String salt){
+        byte[] s = salt.getBytes(StandardCharsets.UTF_8);
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-512");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        md.update(s);
+        return new String(md.digest(text.getBytes(StandardCharsets.UTF_8)));
     }
 
     private void signUp(AppCompatActivity parent) {
