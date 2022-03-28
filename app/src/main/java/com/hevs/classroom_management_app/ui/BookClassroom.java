@@ -52,9 +52,9 @@ public class BookClassroom extends AppCompatActivity {
         teacherId = sharedPreferences.getLong(MainActivity.ID_TEACHER, -1);
 
         // Sets correct date format
-        if(sharedPreferences.getBoolean(Settings.US_DATE_FORMAT, false)){
+        if (sharedPreferences.getBoolean(Settings.US_DATE_FORMAT, false)) {
             dateEt.setHint(R.string.date_hint_us);
-        }else{
+        } else {
             dateEt.setHint(R.string.date_hint);
         }
 
@@ -77,18 +77,23 @@ public class BookClassroom extends AppCompatActivity {
         int occupantsNumber;
 
         // Get occupantsNumber
-        occupantsNumber = Integer.parseInt(participants.getText().toString());
-        // Checks if the occupants number is greater than the classroom capacity, less than 1 or null
-        classroomRepository.getById(classroomId, getApplication()).observe(BookClassroom.this, classroom -> {
-            if(occupantsNumber>classroom.getCapacity()){
-                participants.setError("Max participants is "+classroom.getCapacity());
-                return;
-            }
-                });
-        if(occupantsNumber < 1) {
+        try {
+            occupantsNumber = Integer.parseInt(participants.getText().toString());
+        } catch (NumberFormatException nfe) {
             participants.setError("Min participants is 1");
             return;
         }
+        // Checks if the occupants number is greater than the classroom capacity, less than 1 or null
+        if (occupantsNumber < 1) {
+            participants.setError("Min participants is 1");
+            return;
+        }
+
+        classroomRepository.getById(classroomId, getApplication()).observe(BookClassroom.this, classroom -> {
+            if (occupantsNumber > classroom.getCapacity()) {
+                participants.setError("Max participants is " + classroom.getCapacity());
+            }
+        });
 
         String date = dateEt.getText().toString();
         String startTime_s = startTimeEt.getText().toString();
@@ -140,7 +145,7 @@ public class BookClassroom extends AppCompatActivity {
         int year, month, day, hour, minute;
         // Parses the date into year, month and day and checks the validity
         String dateArray[] = date.split("/");
-        if(dateArray.length!=3) throw new DateTimeException(BAD_DATE_ERROR);
+        if (dateArray.length != 3) throw new DateTimeException(BAD_DATE_ERROR);
         year = Integer.parseInt(dateArray[2]);
         month = Integer.parseInt(dateArray[usFormat ? 0 : 1]);
         day = Integer.parseInt(dateArray[usFormat ? 1 : 0]);
