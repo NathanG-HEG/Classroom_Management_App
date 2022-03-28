@@ -11,17 +11,17 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hevs.classroom_management_app.R;
-import com.hevs.classroom_management_app.database.entity.Classroom;
+
+import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.entity.Teacher;
+import com.hevs.classroom_management_app.database.repository.ReservationRepository;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 import com.hevs.classroom_management_app.viewModel.TeacherViewModel;
 
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Settings extends AppCompatActivity {
 
@@ -79,7 +79,7 @@ public class Settings extends AppCompatActivity {
 
         //Change password btn
         FloatingActionButton changePwd = (FloatingActionButton) findViewById(R.id.change_pwd_btn);
-        changePwd.setOnClickListener( view -> {
+        changePwd.setOnClickListener(view -> {
             Intent i = new Intent(Settings.this, ChangePwd.class);
             startActivity(i);
         });
@@ -108,16 +108,39 @@ public class Settings extends AppCompatActivity {
         editor.commit();
     }
 
-    private void switchDateFormat(){
+    private void switchDateFormat() {
         boolean usDateFormat = sharedPref.getBoolean(US_DATE_FORMAT, false);
         sharedPref.edit().putBoolean(US_DATE_FORMAT, !usDateFormat).commit();
         System.out.println(sharedPref.getBoolean(US_DATE_FORMAT, false));
     }
 
-    private void deleteAccount(){
-        SharedPreferences.Editor editor = sharedPref.edit();
+    private void deleteAccount() {
         long teacherId = sharedPref.getLong(MainActivity.ID_TEACHER, 0L);
+        //delete reservations related to this teacher
+        ReservationRepository reservationRepository = ReservationRepository.getInstance();
+        reservationRepository.getReservationsByTeacherId(teacherId, getApplication()).observe(Settings.this, reservations -> {
+            for (Reservation r : reservations) {
+                reservationRepository.delete(r, new OnAsyncEventListener() {
+                    @Override
+                    public void onSuccess() {
+                        //assert that all reservations have been deleted before deleting the teacher
+                        if (r.equals(reservations.get(reservations.size() - 1))) {
+                            deleteTeacher(teacherId);
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(Exception e) {
+                        Toast.makeText(Settings.this, "Internal error", Toast.LENGTH_LONG).show();
+                    }
+                }, getApplication());
+            }
+        });
+
+    }
+
+    private void deleteTeacher(long teacherId) {
+        SharedPreferences.Editor editor = sharedPref.edit();
         Teacher teacherToDelete = new Teacher();
         teacherToDelete.setId(teacherId);
         repo.delete(teacherToDelete, new OnAsyncEventListener() {
@@ -135,30 +158,5 @@ public class Settings extends AppCompatActivity {
                 Toast.makeText(getApplication(), getString(R.string.unexpected_error), Toast.LENGTH_LONG).show();
             }
         }, getApplication());
-
-
-//        TeacherViewModel teacherViewModel;
-//        TeacherViewModel.Factory factory = new TeacherViewModel.Factory(
-//                getApplication(), teacherId);
-//        teacherViewModel = ViewModelProviders.of(this, factory).get(TeacherViewModel.class);
-//        teacherViewModel.getTeacher().observe(this, teacher1 -> {
-//            teacher = teacher1;
-//        });
-//        teacherViewModel.deleteClient(teacher, new OnAsyncEventListener() {
-//            @Override
-//            public void onSuccess() {
-//                editor.remove(MainActivity.ID_TEACHER);
-//                editor.apply();
-//                Intent i = new Intent(Settings.this, MainActivity.class);
-//                startActivity(i);
-//            }
-//
-//            @Override
-//            public void onFailure(Exception e) {
-//                System.out.println(e.getMessage());
-//                Toast.makeText(getApplication(), getString(R.string.unexpected_error), Toast.LENGTH_LONG).show();
-//            }
-//        });
-
     }
 }

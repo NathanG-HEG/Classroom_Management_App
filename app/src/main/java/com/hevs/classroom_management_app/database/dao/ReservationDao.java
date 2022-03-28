@@ -29,6 +29,9 @@ public interface ReservationDao {
     @Query("SELECT * FROM reservation WHERE classroomId = :classroom_ID")
     LiveData<List<ReservationWithTeacher>> getReservationsByClassID(long classroom_ID);
 
+    @Query("SELECT * FROM reservation WHERE teacherId=:teacherId")
+    LiveData<List<Reservation>> getByTeacherId(long teacherId);
+
     @Insert
     void insert(Reservation reservation) throws SQLiteConstraintException;
 
@@ -40,7 +43,7 @@ public interface ReservationDao {
                 LocalDateTime endTime, int occupantsNb, String reservationText);
 
     @Delete
-    void delete(Reservation reservation);
+    void deleteByTeacherId(Reservation reservation);
 
     @Query("DELETE FROM reservation")
     void deleteAll();
