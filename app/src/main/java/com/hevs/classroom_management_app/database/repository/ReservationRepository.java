@@ -1,12 +1,10 @@
 package com.hevs.classroom_management_app.database.repository;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
 import com.hevs.classroom_management_app.BaseApp;
-import com.hevs.classroom_management_app.database.AppDatabase;
 import com.hevs.classroom_management_app.database.async.reservation.CreateReservation;
 import com.hevs.classroom_management_app.database.async.reservation.DeleteReservation;
 import com.hevs.classroom_management_app.database.async.reservation.UpdateReservation;
@@ -44,6 +42,10 @@ public class ReservationRepository {
         return ((BaseApp)application).getDatabase().reservationDao().getReservationsByClassID(id);
     }
 
+    public LiveData<List<Reservation>> getReservationsByTeacherId(final long id, Application application) {
+        return ((BaseApp)application).getDatabase().reservationDao().getByTeacherId(id);
+    }
+
     public void insert(final Reservation reservation, OnAsyncEventListener callback, Application application) {
         new CreateReservation(application, callback).execute(reservation);
     }
@@ -55,4 +57,5 @@ public class ReservationRepository {
     public void delete(final Reservation reservation, OnAsyncEventListener callback, Application application) {
         new DeleteReservation(application, callback).execute(reservation);
     }
+
 }

@@ -21,7 +21,7 @@ public class DeleteReservation extends AsyncTask<Reservation, Void, Void> {
     protected Void doInBackground(Reservation... reservations) {
         try {
             for (Reservation r : reservations) {
-                database.reservationDao().delete(r);
+                database.reservationDao().deleteByTeacherId(r);
             }
         } catch (Exception e) {
             exception = e;
