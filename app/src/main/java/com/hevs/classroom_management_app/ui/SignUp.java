@@ -1,10 +1,8 @@
 package com.hevs.classroom_management_app.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,13 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
-import com.hevs.classroom_management_app.database.dao.TeacherDao;
 import com.hevs.classroom_management_app.database.entity.Teacher;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
-
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class SignUp extends AppCompatActivity {
 
@@ -113,7 +107,7 @@ public class SignUp extends AppCompatActivity {
 
     private void checkEmail() {
         //check email format
-        emailEt = (EditText) findViewById(R.id.email_signUp);
+        emailEt = findViewById(R.id.email_signUp);
         String email = emailEt.getText().toString();
         if (!isEmailValid(email)) {
             emailEt.setError("Invalid email format.");
@@ -124,7 +118,7 @@ public class SignUp extends AppCompatActivity {
 
     private void checkPassword() {
         //check password correspondence
-        passwordEt = (EditText) findViewById(R.id.password_signUp);
+        passwordEt = findViewById(R.id.password_signUp);
         String password = passwordEt.getText().toString();
         String passwordConfirmation = ((EditText) findViewById(R.id.password_confirm_signUp)).getText().toString();
         if (!password.equals(passwordConfirmation)) {

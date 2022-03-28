@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -39,16 +38,14 @@ public class ClassroomListActivity extends AppCompatActivity {
     public final static String ID_CLASSROOM = "idClassroom";
     private List<Classroom> classrooms;
     private RecyclerAdapterForGridLayout<Classroom> adapter;
-    private ClassroomRepository classroomRepository;
-    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.classroom_list_activity);
 
-        recyclerView = findViewById(R.id.accountsRecyclerView);
-        classroomRepository = ((BaseApp) getApplication()).getClassroomRepository();
+        RecyclerView recyclerView = findViewById(R.id.accountsRecyclerView);
+        ClassroomRepository classroomRepository = ((BaseApp) getApplication()).getClassroomRepository();
 
         disableBackButton();
         setGreetingsMessage();
@@ -92,17 +89,14 @@ public class ClassroomListActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         FloatingActionButton createButton = findViewById(R.id.createClassroomFromListButton);
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(ClassroomListActivity.this, CreateClassroomActivity.class);
-                startActivity(i);
-            }
+        createButton.setOnClickListener(view -> {
+            Intent i = new Intent(ClassroomListActivity.this, CreateClassroomActivity.class);
+            startActivity(i);
         });
     }
 
     private void setGreetingsMessage() {
-        TextView greetingsTv = ((TextView) findViewById(R.id.greetingsTv));
+        TextView greetingsTv = findViewById(R.id.greetingsTv);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         long teacherId = sharedPref.getLong(MainActivity.ID_TEACHER, 0L);

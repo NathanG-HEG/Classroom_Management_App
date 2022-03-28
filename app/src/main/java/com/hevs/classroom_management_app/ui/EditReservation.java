@@ -42,11 +42,11 @@ public class EditReservation extends AppCompatActivity {
 
         classroomRepository = ((BaseApp) getApplication()).getClassroomRepository();
 
-        dateEt = ((EditText) findViewById(R.id.dateInput_edit));
-        startTimeEt = ((EditText) findViewById(R.id.startTimeInput_edit));
-        endTimeEt = ((EditText) findViewById(R.id.endTimeInput_edit));
-        participants = ((EditText) findViewById(R.id.occupantsInput_edit));
-        reservationText = ((EditText) findViewById(R.id.reservation_text_et_edit));
+        dateEt = findViewById(R.id.dateInput_edit);
+        startTimeEt = findViewById(R.id.startTimeInput_edit);
+        endTimeEt = findViewById(R.id.endTimeInput_edit);
+        participants = findViewById(R.id.occupantsInput_edit);
+        reservationText = findViewById(R.id.reservation_text_et_edit);
 
         // Get teacherId and classroomId
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -62,10 +62,10 @@ public class EditReservation extends AppCompatActivity {
             dateEt.setHint(R.string.date_hint);
         }
 
-        Button bookButton = (Button) findViewById(R.id.bookNowButton_edit);
+        Button bookButton = findViewById(R.id.bookNowButton_edit);
         bookButton.setOnClickListener(view -> updateReservation());
 
-        FloatingActionButton deleteButton = (FloatingActionButton) findViewById(R.id.delete_reservation_edit);
+        FloatingActionButton deleteButton = findViewById(R.id.delete_reservation_edit);
         deleteButton.setOnClickListener(view -> deleteReservation());
     }
 
@@ -81,7 +81,7 @@ public class EditReservation extends AppCompatActivity {
         String startTimeString = getIntent().getStringExtra(ClassroomDetails.START_TIME);
         oldStartTime = LocalDateTime.parse(startTimeString);
 
-        ReservationViewModel.Factory factory = new ReservationViewModel.Factory(((BaseApp) getApplication()), classroomId, oldStartTime);
+        ReservationViewModel.Factory factory = new ReservationViewModel.Factory(getApplication(), classroomId, oldStartTime);
         ReservationViewModel reservationViewModel = ViewModelProviders.of(this, factory).get(ReservationViewModel.class);
         reservationViewModel.getReservation().observe(this, reservation -> {
             if (reservation != null) {
@@ -121,7 +121,6 @@ public class EditReservation extends AppCompatActivity {
         classroomRepository.getById(classroomId, getApplication()).observe(EditReservation.this, classroom -> {
             if (occupantsNumber > classroom.getCapacity()) {
                 participants.setError("Max participants is " + classroom.getCapacity());
-                return;
             }
         });
         if (occupantsNumber < 1) {
@@ -167,7 +166,7 @@ public class EditReservation extends AppCompatActivity {
         Reservation copyOfReservation = copyReservation();
 
         //delete reservation
-        ReservationViewModel.Factory factory = new ReservationViewModel.Factory(((BaseApp) getApplication()), classroomId, oldStartTime);
+        ReservationViewModel.Factory factory = new ReservationViewModel.Factory(getApplication(), classroomId, oldStartTime);
         ReservationViewModel reservationViewModel = ViewModelProviders.of(this, factory).get(ReservationViewModel.class);
         reservationViewModel.deleteReservation(copyOfReservation, new OnAsyncEventListener() {
             @Override
@@ -200,7 +199,7 @@ public class EditReservation extends AppCompatActivity {
 
     private void updateReservation(LocalDateTime startTime, LocalDateTime endTime, int occupantsNumber) {
         Reservation newReservation = new Reservation(classroomId, startTime, endTime, teacherId, occupantsNumber, reservationText.getText().toString());
-        ReservationViewModel.Factory factory = new ReservationViewModel.Factory(((BaseApp) getApplication()), classroomId, oldStartTime);
+        ReservationViewModel.Factory factory = new ReservationViewModel.Factory(getApplication(), classroomId, oldStartTime);
         ReservationViewModel reservationViewModel = ViewModelProviders.of(this, factory).get(ReservationViewModel.class);
         reservationViewModel.updateReservation(newReservation, new OnAsyncEventListener() {
             @Override
@@ -223,7 +222,7 @@ public class EditReservation extends AppCompatActivity {
         Reservation copyOfReservation = copyReservation();
 
         //delete reservation
-        ReservationViewModel.Factory factory = new ReservationViewModel.Factory(((BaseApp) getApplication()), classroomId, oldStartTime);
+        ReservationViewModel.Factory factory = new ReservationViewModel.Factory(getApplication(), classroomId, oldStartTime);
         ReservationViewModel reservationViewModel = ViewModelProviders.of(this, factory).get(ReservationViewModel.class);
         reservationViewModel.deleteReservation(copyOfReservation, new OnAsyncEventListener() {
             @Override
@@ -243,7 +242,7 @@ public class EditReservation extends AppCompatActivity {
 
     private Reservation copyReservation() {
         Reservation copyOfReservation = new Reservation(classroomId, oldStartTime, null, teacherId, 0, null);
-        ReservationViewModel.Factory factory1 = new ReservationViewModel.Factory(((BaseApp) getApplication()), classroomId, oldStartTime);
+        ReservationViewModel.Factory factory1 = new ReservationViewModel.Factory(getApplication(), classroomId, oldStartTime);
         ReservationViewModel reservationViewModel1 = ViewModelProviders.of(this, factory1).get(ReservationViewModel.class);
         reservationViewModel1.getReservation().observe(this, reservation -> {
             if (reservation != null) {
