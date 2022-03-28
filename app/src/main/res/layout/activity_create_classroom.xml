@@ -26,7 +26,6 @@
         android:ems="10"
         android:hint="Classroom name"
         android:inputType="textPersonName|text"
-        android:text="ClassroomName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.773"
         app:layout_constraintStart_toStartOf="parent"

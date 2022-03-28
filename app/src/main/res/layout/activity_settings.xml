@@ -10,22 +10,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="57dp"
         android:text="Change password"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/change_pwd_btn"
-        app:layout_constraintTop_toBottomOf="@+id/dete_my_acc_tv" />
-
-    <TextView
-        android:id="@+id/dete_my_acc_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="52dp"
-        android:text="Delete my account"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/delte_account_btn"
-        app:layout_constraintTop_toBottomOf="@+id/use_us_date_format_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/about_text" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/night_mode_button"
@@ -79,28 +68,28 @@
         android:id="@+id/us_date_format_switch"
         android:layout_width="57dp"
         android:layout_height="55dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="25dp"
         android:minWidth="48dp"
         android:minHeight="48dp"
-        app:layout_constraintStart_toStartOf="@+id/about_button"
-        app:layout_constraintTop_toBottomOf="@+id/about_button" />
+        app:layout_constraintStart_toStartOf="@+id/change_pwd_btn"
+        app:layout_constraintTop_toBottomOf="@+id/change_pwd_btn" />
 
     <TextView
         android:id="@+id/use_us_date_format_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="56dp"
-        android:textSize="20sp"
+        android:layout_marginTop="58dp"
         android:text="Use U.S. date and time format"
+        android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/us_date_format_switch"
-        app:layout_constraintTop_toBottomOf="@+id/about_text" />
+        app:layout_constraintTop_toBottomOf="@+id/change_pass_tv" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/delte_account_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="25dp"
         android:backgroundTint="@color/delete_red"
         android:clickable="true"
         app:layout_constraintStart_toStartOf="@+id/us_date_format_switch"
@@ -111,10 +100,10 @@
         android:id="@+id/change_pwd_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="25dp"
         android:clickable="true"
-        app:layout_constraintStart_toStartOf="@+id/delte_account_btn"
-        app:layout_constraintTop_toBottomOf="@+id/delte_account_btn"
+        app:layout_constraintStart_toStartOf="@+id/about_button"
+        app:layout_constraintTop_toBottomOf="@+id/about_button"
         app:srcCompat="@android:drawable/ic_lock_lock" />
 
 
