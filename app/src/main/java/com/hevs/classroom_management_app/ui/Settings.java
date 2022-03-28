@@ -20,7 +20,6 @@ import com.hevs.classroom_management_app.database.entity.Teacher;
 import com.hevs.classroom_management_app.database.repository.ReservationRepository;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
-import com.hevs.classroom_management_app.viewModel.TeacherViewModel;
 
 
 public class Settings extends AppCompatActivity {
@@ -29,8 +28,6 @@ public class Settings extends AppCompatActivity {
     public static final String US_DATE_FORMAT = "usDateFormat";
     private SharedPreferences sharedPref;
     private TeacherRepository repo;
-    private TeacherViewModel teacherViewModel;
-    private Teacher teacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +38,7 @@ public class Settings extends AppCompatActivity {
         repo = TeacherRepository.getInstance();
 
         //toggle night theme button
-        FloatingActionButton nightMode = (FloatingActionButton) findViewById(R.id.night_mode_button);
+        FloatingActionButton nightMode = findViewById(R.id.night_mode_button);
         nightMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,7 +47,7 @@ public class Settings extends AppCompatActivity {
         });
 
         //about button
-        FloatingActionButton about = (FloatingActionButton) findViewById(R.id.about_button);
+        FloatingActionButton about = findViewById(R.id.about_button);
         about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,7 +57,7 @@ public class Settings extends AppCompatActivity {
         });
 
         //Delete btn
-        FloatingActionButton deleteAccount = (FloatingActionButton) findViewById(R.id.delte_account_btn);
+        FloatingActionButton deleteAccount = findViewById(R.id.delte_account_btn);
         deleteAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +75,7 @@ public class Settings extends AppCompatActivity {
         });
 
         //Change password btn
-        FloatingActionButton changePwd = (FloatingActionButton) findViewById(R.id.change_pwd_btn);
+        FloatingActionButton changePwd = findViewById(R.id.change_pwd_btn);
         changePwd.setOnClickListener(view -> {
             Intent i = new Intent(Settings.this, ChangePwd.class);
             startActivity(i);

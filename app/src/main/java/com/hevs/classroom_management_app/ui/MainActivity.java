@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void login(AppCompatActivity parent) {
-        EditText emailEt = (EditText) findViewById(R.id.editTextTextEmailAddress);
+        EditText emailEt = findViewById(R.id.editTextTextEmailAddress);
         String email = emailEt.getText().toString();
         String password = ((EditText) findViewById(R.id.editTextTextPassword)).getText().toString();
 
