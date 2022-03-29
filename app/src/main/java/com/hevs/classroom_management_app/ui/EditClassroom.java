@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -49,8 +50,10 @@ public class EditClassroom extends AppCompatActivity {
         classroomCapacityEt = ((EditText) findViewById(R.id.maxParticipantsCreateEt));
 
         repo.getById(classroomId, getApplication()).observe(this, classroom -> {
-            classroomNameEt.setText(classroom.getName());
-            classroomCapacityEt.setText(Integer.toString(classroom.getCapacity()));
+            if (classroom != null) {
+                classroomNameEt.setText(classroom.getName());
+                classroomCapacityEt.setText(Integer.toString(classroom.getCapacity()));
+            }
         });
     }
 
@@ -94,7 +97,7 @@ public class EditClassroom extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 //Will throw an unique index exception
-                if(e.getClass() == SQLiteConstraintException.class){
+                if (e.getClass() == SQLiteConstraintException.class) {
                     classroomNameEt.setError("Name is already taken. Try another one");
                     return;
                 }

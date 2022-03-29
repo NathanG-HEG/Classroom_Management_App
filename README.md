@@ -16,6 +16,10 @@ The information is only stored locally on your device.
 
 You can log out from the classroom lists screen.
 
+Sample users:
+- email: nathan@mail.ch password: 123
+- email: benjamin@mail.ch password: 123
+
 ## Technical features
 - Room database with three full CRUD tables
 - Time dimension reservation management
