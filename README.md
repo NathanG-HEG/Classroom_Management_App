@@ -4,7 +4,7 @@
 Classroom Management App is an app allowing signed in teachers to book a classroom for a specific time period of maximum 24 hours. Teachers can also add and edit classrooms in the system.
 
 ## Usage
-Start the application using a physical or virtual Android 11.0+ (API 30) device. 
+Start the application using a physical or virtual Android 10.0+ (API 30) device. 
 
 Available settings:
 - Toggle night mode: Toggle the application theme to a more comfortable one for low light use.
