@@ -9,29 +9,16 @@ import androidx.room.ForeignKey;
 import java.sql.Date;
 import java.time.LocalDateTime;
 
-@Entity(tableName = "Reservation", primaryKeys = {"classroomId", "startTime", "endTime"},
-        foreignKeys = {
-                @ForeignKey(entity = Teacher.class, parentColumns = "id", childColumns = "teacherId"),
-                @ForeignKey(entity = Classroom.class, parentColumns = "id", childColumns = "classroomId",
-                        onDelete = ForeignKey.CASCADE)
-        })
 public class Reservation {
 
-    @ColumnInfo(name = "classroomId")
-    private long classroomId;
-    @NonNull @ColumnInfo(name = "startTime")
+    private String classroomId;
     private LocalDateTime startTime;
-    @NonNull @ColumnInfo(name = "endTime")
     private LocalDateTime endTime;
-    @ColumnInfo(name = "teacherId")
-    private long teacherId;
-
-    @ColumnInfo
+    private String teacherId;
     private int occupantsNumber;
-    @ColumnInfo
     private String reservationText;
 
-    public Reservation(long classroomId, LocalDateTime startTime, LocalDateTime endTime, long teacherId, int occupantsNumber, String reservationText) {
+    public Reservation(String classroomId, LocalDateTime startTime, LocalDateTime endTime, String teacherId, int occupantsNumber, String reservationText) {
         this.classroomId = classroomId;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -49,19 +36,19 @@ public class Reservation {
         return o.getClassroomId() == this.getClassroomId() && o.getStartTime() == this.getStartTime();
     }
 
-    public long getTeacherId() {
+    public String getTeacherId() {
         return teacherId;
     }
 
-    public void setTeacherId(long teacherId) {
+    public void setTeacherId(String teacherId) {
         this.teacherId = teacherId;
     }
 
-    public long getClassroomId() {
+    public String getClassroomId() {
         return classroomId;
     }
 
-    public void setClassroomId(long classroomId) {
+    public void setClassroomId(String classroomId) {
         this.classroomId = classroomId;
     }
 

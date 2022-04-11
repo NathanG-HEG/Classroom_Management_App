@@ -1,22 +1,11 @@
 package com.hevs.classroom_management_app.database.entity;
 
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.Index;
-import androidx.room.Insert;
-import androidx.room.PrimaryKey;
+import com.google.firebase.database.Exclude;
 
-@Entity(tableName = "Classroom",
-         indices = {@Index(value = {"name"}, unique = true)})
 public class Classroom {
 
-    @PrimaryKey(autoGenerate = true)
-    private long id;
-    @ColumnInfo
+    private String id;
     private String name;
-    @ColumnInfo
     private int capacity;
 
     public Classroom(String name, int capacity) {
@@ -35,12 +24,12 @@ public class Classroom {
         Classroom o = (Classroom) obj;
         return o.getName().equals(this.getName());
     }
-
-    public long getId() {
+    @Exclude
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
