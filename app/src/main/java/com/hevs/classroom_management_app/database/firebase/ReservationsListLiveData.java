@@ -2,6 +2,7 @@ package com.hevs.classroom_management_app.database.firebase;
 
 import androidx.lifecycle.LiveData;
 import androidx.annotation.NonNull;
+
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -11,8 +12,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.entity.Teacher;
 import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
+import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -39,41 +42,27 @@ public class ReservationsListLiveData extends LiveData<List<ReservationWithTeach
         Log.d(TAG, "onInactive");
     }
 
+    private List<ReservationWithTeacher> toReservationsWithTeacher(DataSnapshot snapshot) {
+        List<ReservationWithTeacher> reservations = new LinkedList<>();
+        TeacherRepository teacherRepository = TeacherRepository.getInstance();
+        for (DataSnapshot childSnapShot : snapshot.getChildren()) {
+            ReservationWithTeacher reservationWithTeacher = new ReservationWithTeacher();
+            reservationWithTeacher.reservation = childSnapShot.getValue(Reservation.class);
+            reservationWithTeacher.reservation.setReservationId(childSnapShot.getKey());
+            reservationWithTeacher.teacher = teacherRepository.getById(reservationWithTeacher.reservation.getTeacherId()).getValue();
+        }
+        return reservations;
+    }
+
     private class MyValueEventListener implements ValueEventListener {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            setValue(toReservationWithTeacher(dataSnapshot));
+            setValue(toReservationsWithTeacher(dataSnapshot));
         }
 
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
             Log.e(TAG, "Can't listen to query " + reference, databaseError.toException());
         }
-    }
-
-    private List<ReservationWithTeacher> toReservationWithTeacher(DataSnapshot snapshot) {
-        List<ReservationWithTeacher> clientWithAccountsList = new ArrayList<>();
-        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-            if (!childSnapshot.getKey().equals(owner)) {
-                ReservationWithTeacher reservationWithTeacher = new ReservationWithTeacher();
-                reservationWithTeacher.reservation = childSnapshot.getValue(Reservation.class);
-                reservationWithTeacher.reservation.setReservationId(childSnapshot.getKey());
-                reservationWithTeacher.teacher = toAccounts(childSnapshot.child("accounts"),
-                        childSnapshot.getKey());
-                clientWithAccountsList.add(reservationWithTeacher);
-            }
-        }
-        return clientWithAccountsList;
-    }
-
-    private List<AccountEntity> toAccounts(DataSnapshot snapshot, String ownerId) {
-        List<AccountEntity> accounts = new ArrayList<>();
-        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-            AccountEntity entity = childSnapshot.getValue(AccountEntity.class);
-            entity.setId(childSnapshot.getKey());
-            entity.setOwner(ownerId);
-            accounts.add(entity);
-        }
-        return accounts;
     }
 }

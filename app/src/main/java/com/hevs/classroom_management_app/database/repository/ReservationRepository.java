@@ -8,7 +8,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.hevs.classroom_management_app.BaseApp;
+import com.hevs.classroom_management_app.database.entity.Classroom;
 import com.hevs.classroom_management_app.database.entity.Reservation;
+import com.hevs.classroom_management_app.database.firebase.ClassroomLiveData;
+import com.hevs.classroom_management_app.database.firebase.ReservationLiveData;
 import com.hevs.classroom_management_app.database.firebase.ReservationsListLiveData;
 import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
@@ -35,12 +38,19 @@ public class ReservationRepository {
         return instance;
     }
 
+    public LiveData<Reservation> getById(final String id) {
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference(RESERVATIONS)
+                .child(id);
+        return new ReservationLiveData(ref);
+    }
+
     public ReservationsListLiveData getReservationsByClassId(final String id) {
         Query query = FirebaseDatabase.getInstance().getReference(CLASSROOMS).child("classroomId").equalTo(id);
         return new ReservationsListLiveData(query.getRef());
     }
 
-    public ReservationsListLiveData getReservationsByTeacherId(final String id, Application application) {
+    public ReservationsListLiveData getReservationsByTeacherId(final String id) {
         Query query = FirebaseDatabase.getInstance().getReference(CLASSROOMS).child("teacherId").equalTo(id);
         return new ReservationsListLiveData(query.getRef());
     }

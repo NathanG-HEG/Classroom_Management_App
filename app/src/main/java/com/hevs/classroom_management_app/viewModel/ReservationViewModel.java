@@ -22,13 +22,13 @@ public class ReservationViewModel extends AndroidViewModel {
     private ReservationRepository repo;
     private final MediatorLiveData<Reservation> observableReservation;
 
-    public ReservationViewModel(@NonNull Application application, final long classroomId, final LocalDateTime startTime, ReservationRepository reservationRepository) {
+    public ReservationViewModel(@NonNull Application application, final String reservationId, ReservationRepository reservationRepository) {
         super(application);
         this.application = application;
         this.repo = reservationRepository;
         observableReservation = new MediatorLiveData<>();
         observableReservation.setValue(null);
-        LiveData<Reservation> reservation = repo.getReservationsByClassAndStartTime(classroomId, startTime,application);
+        LiveData<Reservation> reservation = repo.getById(reservationId);
         // observe the changes of the account entity from the database and forward them
         observableReservation.addSource(reservation, observableReservation::setValue);
     }
@@ -36,20 +36,20 @@ public class ReservationViewModel extends AndroidViewModel {
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
         @NonNull
         private final Application application;
-        private final long classroomId;
+        private final String reservationId;
         private final LocalDateTime startTime;
         private final ReservationRepository repo;
 
-        public Factory(@NonNull Application application, long classroomId, LocalDateTime startTime){
+        public Factory(@NonNull Application application, String reservationId, LocalDateTime startTime){
             this.application = application;
-            this.classroomId = classroomId;
+            this.reservationId = reservationId;
             this.startTime = startTime;
             repo = ((BaseApp) application).getReservationRepository();
         }
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
-            return (T) new ReservationViewModel(application, classroomId, startTime, repo);
+            return (T) new ReservationViewModel(application, reservationId, repo);
         }
     }
 
@@ -58,15 +58,15 @@ public class ReservationViewModel extends AndroidViewModel {
     }
 
     public void createReservation(Reservation reservation, OnAsyncEventListener callback){
-        repo.insert(reservation, callback, application);
+        repo.insert(reservation, callback);
     }
 
     public void updateReservation(Reservation reservation, OnAsyncEventListener callback){
-        repo.update(reservation, callback, application);
+        repo.update(reservation, callback);
     }
 
 
     public void deleteReservation(Reservation reservation, OnAsyncEventListener callback) {
-        repo.delete(reservation, callback, application);
+        repo.delete(reservation, callback);
     }
 }
