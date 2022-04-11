@@ -1,21 +1,20 @@
 package com.hevs.classroom_management_app.database.repository;
 
 import android.app.Application;
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.hevs.classroom_management_app.BaseApp;
-import com.hevs.classroom_management_app.database.AppDatabase;
-import com.hevs.classroom_management_app.database.async.classroom.CreateClassroom;
-import com.hevs.classroom_management_app.database.async.classroom.DeleteClassroom;
-import com.hevs.classroom_management_app.database.async.classroom.UpdateClassroom;
 import com.hevs.classroom_management_app.database.entity.Classroom;
+import com.hevs.classroom_management_app.database.firebase.ClassroomLiveData;
+import com.hevs.classroom_management_app.database.firebase.ClassroomsListLiveData;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
 import java.util.List;
 
 public class ClassroomRepository {
+    private final String CLASSROOMS = "classrooms";
     private static ClassroomRepository instance;
     private ClassroomRepository(){}
 
@@ -30,28 +29,63 @@ public class ClassroomRepository {
         return instance;
     }
 
-    public LiveData<Classroom> getById(final long id, Application application) {
-        return  ((BaseApp)application).getDatabase().classroomDao().getById(id);
+    public LiveData<Classroom> getById(final String id) {
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference(CLASSROOMS)
+                .child(id);
+        return new ClassroomLiveData(ref);
     }
 
-    public LiveData<Classroom> getByName(final String name, Application application) {
-        return  ((BaseApp)application).getDatabase().classroomDao().getByName(name);
+    public LiveData<List<Classroom>> getAll () {
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference(CLASSROOMS);
+        return new ClassroomsListLiveData(ref);
     }
 
-    public LiveData<List<Classroom>> getAll (Application application) {
-        return  ((BaseApp)application).getDatabase().classroomDao().getAll();
+
+    public void insert(final Classroom classroom, OnAsyncEventListener callback) {
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference(CLASSROOMS);
+        String key = ref.push().getKey();
+        FirebaseDatabase.getInstance()
+                .getReference(CLASSROOMS)
+                .child(key)
+                .setValue(classroom, (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
 
-
-    public void insert(final Classroom classroom, OnAsyncEventListener callback, Application application) {
-        new CreateClassroom(application, callback).execute(classroom);
+    public void update(final Classroom classroom, OnAsyncEventListener callback) {
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference(CLASSROOMS);
+        FirebaseDatabase.getInstance()
+                .getReference(CLASSROOMS)
+                .child(classroom.getId())
+                .updateChildren(classroom.toMap(), (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
 
-    public void update(final Classroom classroom, OnAsyncEventListener callback, Application application) {
-        new UpdateClassroom(application, callback).execute(classroom);
-    }
-
-    public void delete(final Classroom classroom, OnAsyncEventListener callback, Application application) {
-        new DeleteClassroom(application, callback).execute(classroom);
+    public void delete(final Classroom classroom, OnAsyncEventListener callback) {
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference(CLASSROOMS);
+        FirebaseDatabase.getInstance()
+                .getReference(CLASSROOMS)
+                .child(classroom.getId())
+                .removeValue((databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
 }

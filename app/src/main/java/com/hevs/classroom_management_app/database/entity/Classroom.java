@@ -2,6 +2,9 @@ package com.hevs.classroom_management_app.database.entity;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Classroom {
 
     private String id;
@@ -14,6 +17,14 @@ public class Classroom {
     }
 
     public Classroom() {
+    }
+
+    @Exclude
+    public Map<String, Object> toMap(){
+        HashMap<String, Object> res = new HashMap<>();
+        res.put("name", name);
+        res.put("capacity", capacity);
+        return res;
     }
 
     @Override
