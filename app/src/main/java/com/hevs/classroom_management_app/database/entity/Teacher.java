@@ -1,16 +1,6 @@
 package com.hevs.classroom_management_app.database.entity;
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.Index;
-import androidx.room.PrimaryKey;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-
+import com.google.firebase.database.Exclude;
 
 public class Teacher {
 
@@ -35,6 +25,14 @@ public class Teacher {
         Teacher o = (Teacher) obj;
         //return o.getEmail().equals(this.getEmail());
         return firstname == o.firstname && lastname == o.lastname;
+    }
+
+    @Exclude
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getLastname() {
