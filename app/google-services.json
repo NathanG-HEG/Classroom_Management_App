@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "414421102611",
+    "firebase_url": "https://classroom-management-app-3f0c3-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "classroom-management-app-3f0c3",
+    "storage_bucket": "classroom-management-app-3f0c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414421102611:android:c8025c5b0bfab1fb3ccfe6",
+        "android_client_info": {
+          "package_name": "com.hevs.classroom_management_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414421102611-t576n2e65chc2khodqj8lrkdf7t5krdl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABLi4wlT42dWSBgC818VGKcfmWw-pMaq4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414421102611-t576n2e65chc2khodqj8lrkdf7t5krdl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
