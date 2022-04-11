@@ -6,11 +6,14 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 
+import com.google.firebase.database.Exclude;
+
 import java.sql.Date;
 import java.time.LocalDateTime;
 
 public class Reservation {
 
+    private String reservationId;
     private String classroomId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -27,6 +30,10 @@ public class Reservation {
         this.reservationText = reservationText;
     }
 
+    public Reservation() {
+
+    }
+
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj == null) return false;
@@ -34,6 +41,15 @@ public class Reservation {
         if (!(obj instanceof Reservation)) return false;
         Reservation o = (Reservation) obj;
         return o.getClassroomId() == this.getClassroomId() && o.getStartTime() == this.getStartTime();
+    }
+
+    @Exclude
+    public String getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(String reservationId) {
+        this.reservationId = reservationId;
     }
 
     public String getTeacherId() {

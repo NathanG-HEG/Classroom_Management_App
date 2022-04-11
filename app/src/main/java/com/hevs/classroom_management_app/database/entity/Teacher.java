@@ -4,7 +4,7 @@ import com.google.firebase.database.Exclude;
 
 public class Teacher {
 
-    private long id;
+    private String id;
     private String lastname;
     private String firstname;
     private String email;
@@ -30,11 +30,11 @@ public class Teacher {
     }
 
     @Exclude
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
