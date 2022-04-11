@@ -2,6 +2,8 @@ package com.hevs.classroom_management_app.database.entity;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.HashMap;
+
 public class Teacher {
 
     private String id;
@@ -18,6 +20,13 @@ public class Teacher {
         this.firstname = firstname;
         this.email = email;
         this.password = password;
+    }
+
+    public HashMap<String, Object> toMap(){
+        HashMap<String, Object> res = new HashMap<>();
+        res.put("lastName", lastname);
+        res.put("firstName", firstname);
+        return res;
     }
 
     @Override

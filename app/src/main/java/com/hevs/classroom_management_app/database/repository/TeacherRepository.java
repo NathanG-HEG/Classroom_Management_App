@@ -1,20 +1,16 @@
 package com.hevs.classroom_management_app.database.repository;
 
-import android.app.Application;
-import android.content.Context;
 
 import androidx.lifecycle.LiveData;
-
-import com.hevs.classroom_management_app.BaseApp;
-import com.hevs.classroom_management_app.database.AppDatabase;
-import com.hevs.classroom_management_app.database.async.teacher.CreateTeacher;
-import com.hevs.classroom_management_app.database.async.teacher.DeleteTeacher;
-import com.hevs.classroom_management_app.database.async.teacher.UpdateTeacher;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.hevs.classroom_management_app.database.entity.Teacher;
+import com.hevs.classroom_management_app.database.firebase.TeacherLiveData;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
 public class TeacherRepository {
     private static TeacherRepository instance;
+    private final String TEACHERS = "teachers";
     private TeacherRepository(){
     }
 
@@ -29,27 +25,56 @@ public class TeacherRepository {
         return instance;
     }
 
-    public LiveData<Teacher> getByLogin(final String email, final String password, Application application) {
-        return ((BaseApp) application).getDatabase().teacherDao().getByLogin(email, password);
+    public LiveData<Teacher> getById(final String id) {
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference(TEACHERS)
+                .child(id);
+        return new TeacherLiveData(ref);
     }
 
-    public LiveData<Teacher> getByEmail (final String email, Application application) {
-        return ((BaseApp)application).getDatabase().teacherDao().getByEmail(email);
+    public void insert(final Teacher teacher, OnAsyncEventListener callback) {
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference(TEACHERS);
+        String key = ref.push().getKey();
+        FirebaseDatabase.getInstance()
+                .getReference(TEACHERS)
+                .child(key)
+                .setValue(teacher, (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
 
-    public LiveData<Teacher> getById(final long id, Context context) {
-        return AppDatabase.getInstance(context).teacherDao().getById(id);
+    public void update(final Teacher teacher, OnAsyncEventListener callback) {
+        FirebaseDatabase.getInstance()
+                .getReference(TEACHERS);
+        FirebaseDatabase.getInstance()
+                .getReference(TEACHERS)
+                .child(teacher.getId())
+                .updateChildren(teacher.toMap(), (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
 
-    public void insert(final Teacher teacher, OnAsyncEventListener callback, Application application) {
-        new CreateTeacher(application, callback).execute(teacher);
-    }
-
-    public void update(final Teacher teacher, OnAsyncEventListener callback, Application application) {
-        new UpdateTeacher(application, callback).execute(teacher);
-    }
-
-    public void delete(final Teacher teacher, OnAsyncEventListener callback, Application application) {
-        new DeleteTeacher(application, callback).execute(teacher);
+    public void delete(final Teacher teacher, OnAsyncEventListener callback) {
+        FirebaseDatabase.getInstance()
+                .getReference(TEACHERS);
+        FirebaseDatabase.getInstance()
+                .getReference(TEACHERS)
+                .child(teacher.getId())
+                .removeValue((databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
 }

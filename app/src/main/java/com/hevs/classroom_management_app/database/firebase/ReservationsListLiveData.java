@@ -21,13 +21,11 @@ public class ReservationsListLiveData extends LiveData<List<ReservationWithTeach
     private static final String TAG = "ClientAccountsLiveData";
 
     private final DatabaseReference reference;
-    private final String owner;
     private final ReservationsListLiveData.MyValueEventListener listener =
             new ReservationsListLiveData.MyValueEventListener();
 
-    public ReservationsListLiveData(DatabaseReference ref, String owner) {
+    public ReservationsListLiveData(DatabaseReference ref) {
         reference = ref;
-        this.owner = owner;
     }
 
     @Override

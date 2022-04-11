@@ -4,11 +4,12 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.hevs.classroom_management_app.BaseApp;
-import com.hevs.classroom_management_app.database.async.reservation.CreateReservation;
-import com.hevs.classroom_management_app.database.async.reservation.DeleteReservation;
-import com.hevs.classroom_management_app.database.async.reservation.UpdateReservation;
 import com.hevs.classroom_management_app.database.entity.Reservation;
+import com.hevs.classroom_management_app.database.firebase.ReservationsListLiveData;
 import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
@@ -17,9 +18,13 @@ import java.util.List;
 
 public class ReservationRepository {
     private static ReservationRepository instance;
-    private ReservationRepository(){}
+    private final String CLASSROOMS = "classrooms";
+    private final String RESERVATIONS = "reservations";
 
-    public static ReservationRepository getInstance(){
+    private ReservationRepository() {
+    }
+
+    public static ReservationRepository getInstance() {
         if (instance == null) {
             synchronized (ReservationRepository.class) {
                 if (instance == null) {
@@ -30,32 +35,60 @@ public class ReservationRepository {
         return instance;
     }
 
-    public LiveData<List<Reservation>> getReservationsByClassId(final long id, Application application) {
-        return  ((BaseApp)application).getDatabase().reservationDao().getReservationsByClassId(id);
+    public ReservationsListLiveData getReservationsByClassId(final String id) {
+        Query query = FirebaseDatabase.getInstance().getReference(CLASSROOMS).child("classroomId").equalTo(id);
+        return new ReservationsListLiveData(query.getRef());
     }
 
-    public LiveData<Reservation> getReservationsByClassAndStartTime(long id, LocalDateTime startTime, Application application) {
-        return ((BaseApp)application).getDatabase().reservationDao().getReservationsByClassAndStartTime(id, startTime);
+    public ReservationsListLiveData getReservationsByTeacherId(final String id, Application application) {
+        Query query = FirebaseDatabase.getInstance().getReference(CLASSROOMS).child("teacherId").equalTo(id);
+        return new ReservationsListLiveData(query.getRef());
     }
 
-    public LiveData<List<ReservationWithTeacher>> getReservationsByClassID(final long id, Application application) {
-        return ((BaseApp)application).getDatabase().reservationDao().getReservationsByClassID(id);
+    public void insert(final Reservation reservation, OnAsyncEventListener callback) {
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference(RESERVATIONS);
+        String key = ref.push().getKey();
+        FirebaseDatabase.getInstance()
+                .getReference(RESERVATIONS)
+                .child(key)
+                .setValue(reservation, (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
 
-    public LiveData<List<Reservation>> getReservationsByTeacherId(final long id, Application application) {
-        return ((BaseApp)application).getDatabase().reservationDao().getByTeacherId(id);
+    public void update(final Reservation reservation, OnAsyncEventListener callback) {
+        FirebaseDatabase.getInstance()
+                .getReference(RESERVATIONS);
+        FirebaseDatabase.getInstance()
+                .getReference(RESERVATIONS)
+                .child(reservation.getReservationId())
+                .updateChildren(reservation.toMap(), (databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
 
-    public void insert(final Reservation reservation, OnAsyncEventListener callback, Application application) {
-        new CreateReservation(application, callback).execute(reservation);
-    }
-
-    public void update(final Reservation reservation, OnAsyncEventListener callback, Application application) {
-        new UpdateReservation(application, callback).execute(reservation);
-    }
-
-    public void delete(final Reservation reservation, OnAsyncEventListener callback, Application application) {
-        new DeleteReservation(application, callback).execute(reservation);
+    public void delete(final Reservation reservation, OnAsyncEventListener callback) {
+        FirebaseDatabase.getInstance()
+                .getReference(RESERVATIONS);
+        FirebaseDatabase.getInstance()
+                .getReference(RESERVATIONS)
+                .child(reservation.getReservationId())
+                .removeValue((databaseError, databaseReference) -> {
+                    if (databaseError != null) {
+                        callback.onFailure(databaseError.toException());
+                    } else {
+                        callback.onSuccess();
+                    }
+                });
     }
 
 }

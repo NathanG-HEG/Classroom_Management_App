@@ -7,9 +7,12 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 
 import com.google.firebase.database.Exclude;
+import com.hevs.classroom_management_app.database.LocalDateTimeConverter;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Reservation {
 
@@ -32,6 +35,17 @@ public class Reservation {
 
     public Reservation() {
 
+    }
+
+    public Map<String, Object> toMap(){
+        HashMap<String, Object> res = new HashMap<>();
+        res.put("classroomId", classroomId);
+        res.put("startTime", LocalDateTimeConverter.toDateString(startTime));
+        res.put("endTime", LocalDateTimeConverter.toDateString(endTime));
+        res.put("teacherId", teacherId);
+        res.put("occupants", occupantsNumber);
+        res.put("reservationText", reservationText);
+        return res;
     }
 
     @Override

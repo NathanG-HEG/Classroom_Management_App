@@ -60,7 +60,7 @@ public class ClassroomRepository {
     }
 
     public void update(final Classroom classroom, OnAsyncEventListener callback) {
-        DatabaseReference ref = FirebaseDatabase.getInstance()
+        FirebaseDatabase.getInstance()
                 .getReference(CLASSROOMS);
         FirebaseDatabase.getInstance()
                 .getReference(CLASSROOMS)
@@ -75,7 +75,7 @@ public class ClassroomRepository {
     }
 
     public void delete(final Classroom classroom, OnAsyncEventListener callback) {
-        DatabaseReference ref = FirebaseDatabase.getInstance()
+        FirebaseDatabase.getInstance()
                 .getReference(CLASSROOMS);
         FirebaseDatabase.getInstance()
                 .getReference(CLASSROOMS)
