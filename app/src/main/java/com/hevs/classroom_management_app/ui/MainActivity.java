@@ -1,5 +1,6 @@
 package com.hevs.classroom_management_app.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -10,9 +11,16 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
+import com.hevs.classroom_management_app.database.entity.Teacher;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 
 import java.nio.charset.StandardCharsets;
@@ -22,11 +30,13 @@ import java.security.NoSuchAlgorithmException;
 public class MainActivity extends AppCompatActivity {
 
     public static final String ID_TEACHER = "idTeacher";
+    private FirebaseAuth mAuth;
     private TeacherRepository teacherRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
 
         /*
         if the user already log in once on this phone, he doesn't have to go
@@ -66,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(MainActivity.this, ClassroomListActivity.class);
             startActivity(i);
         }
+
     }
 
     private void setTheme(SharedPreferences sharedPref) {
@@ -79,63 +90,37 @@ public class MainActivity extends AppCompatActivity {
 
     private void login(AppCompatActivity parent) {
         EditText emailEt = findViewById(R.id.editTextTextEmailAddress);
+        EditText passwordEt = findViewById(R.id.editTextTextPassword);
         String email = emailEt.getText().toString();
-        teacherRepository.getByEmail(email, getApplication()).observe(this, teacher -> {
-            if (teacher != null) {
-                // Gets the typed password
-                String password = ((EditText) findViewById(R.id.editTextTextPassword)).getText().toString();
-                //Gets the corresponding salt
-                String salt = teacher.getSalt();
-                // gets the Message digest
-                String hashedAndSaltPwd = hash(password, salt);
+        String password = passwordEt.getText().toString();
 
-                if (hashedAndSaltPwd.equals(teacher.getDigest())) {
-                    Intent i = new Intent(parent, ClassroomListActivity.class);
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putLong(ID_TEACHER, teacher.getId());
-                    editor.commit();
-                    startActivity(i);
-                } else {
-                    //Incorrect password
-                    emailEt.setError("Incorrect email or password.");
-                    emailEt.requestFocus();
-                }
-            } else {
-                // Incorrect email
-                emailEt.setError("Incorrect email or password.");
-                emailEt.requestFocus();
-            }
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            setSharedPreferences(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(MainActivity.this, getResources().getString(R.string.login_error),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void setSharedPreferences(FirebaseUser user) {
+        teacherRepository.getByEmail(user.getEmail()).observe(MainActivity.this, teacher -> {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString(ID_TEACHER, teacher.getId());
         });
+
+
     }
 
-//        teacherRepository.getByLogin(email, digest, getApplication()).observe(MainActivity.this, teacher -> {
-//            if (teacher != null) {
-//                Intent i = new Intent(parent, ClassroomListActivity.class);
-//                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-//                SharedPreferences.Editor editor = sharedPref.edit();
-//                editor.putLong(ID_TEACHER, teacher.getId());
-//                editor.commit();
-//                startActivity(i);
-//            } else {
-//                emailEt.setError("Incorrect email or password.");
-//                emailEt.requestFocus();
-//            }
-//
-//        });
-//    }
-
-    private String hash(String text, String salt){
-        byte[] s = salt.getBytes(StandardCharsets.UTF_8);
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("SHA-512");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        md.update(s);
-        return new String(md.digest(text.getBytes(StandardCharsets.UTF_8)));
-    }
 
     private void signUp(AppCompatActivity parent) {
         Intent i = new Intent(parent, SignUp.class);

@@ -4,7 +4,9 @@ package com.hevs.classroom_management_app.database.repository;
 import androidx.lifecycle.LiveData;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.hevs.classroom_management_app.database.entity.Teacher;
+import com.hevs.classroom_management_app.database.firebase.ReservationsListLiveData;
 import com.hevs.classroom_management_app.database.firebase.TeacherLiveData;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
@@ -30,6 +32,12 @@ public class TeacherRepository {
                 .getReference(TEACHERS)
                 .child(id);
         return new TeacherLiveData(ref);
+    }
+
+    public LiveData<Teacher> getByEmail(final String email) {
+        Query query = FirebaseDatabase.getInstance().getReference(TEACHERS).child("email").equalTo(email);
+        return new TeacherLiveData(query.getRef());
+
     }
 
     public void insert(final Teacher teacher, OnAsyncEventListener callback) {

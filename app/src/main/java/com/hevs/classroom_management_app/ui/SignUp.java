@@ -3,13 +3,20 @@ package com.hevs.classroom_management_app.ui;
 import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.database.entity.Teacher;
@@ -17,11 +24,12 @@ import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
 public class SignUp extends AppCompatActivity {
-
     private TeacherRepository teacherRepository;
 
     //flag for compliance of all information
     private boolean areInformationCompliant = true;
+
+    private FirebaseAuth mAuth;
 
     //fields
     private EditText firstNameEt;
@@ -35,6 +43,8 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         teacherRepository = ((BaseApp) getApplication()).getTeacherRepository();
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
         Button signUp = findViewById(R.id.signUp_button);
 
@@ -53,33 +63,29 @@ public class SignUp extends AppCompatActivity {
 
                 //account creation
                 if (areInformationCompliant) {
-                    Teacher teacher = new Teacher(lastNameEt.getText().toString(), firstNameEt.getText().toString(),
-                            emailEt.getText().toString(), passwordEt.getText().toString());
-                    teacherRepository = ((BaseApp) getApplication()).getTeacherRepository();
-                    teacherRepository.insert(teacher, new OnAsyncEventListener() {
-                        @Override
-                        public void onSuccess() {
-                            Toast.makeText(getApplication().getApplicationContext(), "Welcome " + teacher.getFirstname(), Toast.LENGTH_LONG).show();
-                            //redirect new teacher to login
-                            Intent i = new Intent(SignUp.this, MainActivity.class);
-                            startActivity(i);
-                        }
-
-                        @Override
-                        public void onFailure(Exception e) {
-                            //insertion fails if the email is already in use
-                            if(e.getClass() == SQLiteConstraintException.class){
-                                emailEt.setError("Email already used.");
-                                emailEt.requestFocus();
-                                return;
-                            }
-                            Toast toast = Toast.makeText(SignUp.this, getString(R.string.unexpected_error), Toast.LENGTH_LONG);
-                            toast.show();
-                        }
-                    }, getApplication());
+                    createAccount();
                 }
             }
         });
+    }
+
+    private void createAccount() {
+        Teacher teacher = new Teacher(lastNameEt.getText().toString(), firstNameEt.getText().toString(),
+                emailEt.getText().toString(), passwordEt.getText().toString());
+        mAuth.createUserWithEmailAndPassword(teacher.getEmail(), teacher.getPassword())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Intent i = new Intent(SignUp.this, MainActivity.class);
+                            startActivity(i);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(SignUp.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     private boolean isEmailValid(CharSequence email) {
