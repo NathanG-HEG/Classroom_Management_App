@@ -117,10 +117,7 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString(ID_TEACHER, teacher.getId());
         });
-
-
     }
-
 
     private void signUp(AppCompatActivity parent) {
         Intent i = new Intent(parent, SignUp.class);

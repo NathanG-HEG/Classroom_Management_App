@@ -20,7 +20,7 @@ public class TeacherViewModel extends AndroidViewModel {
     private Application application;
     private final MediatorLiveData<Teacher> observableTeacher;
 
-    public TeacherViewModel(@NonNull Application application, TeacherRepository teacherRepository, final long id) {
+    public TeacherViewModel(@NonNull Application application, TeacherRepository teacherRepository, final String id) {
         super(application);
 
         this.teacherRepository = teacherRepository;
@@ -30,7 +30,7 @@ public class TeacherViewModel extends AndroidViewModel {
         observableTeacher = new MediatorLiveData<>();
         observableTeacher.setValue(null);
 
-        LiveData<Teacher> teacher = teacherRepository.getById(id, application);
+        LiveData<Teacher> teacher = teacherRepository.getById(id);
 
         // observe the changes of the client entity from the database and forward them
         observableTeacher.addSource(teacher, observableTeacher::setValue);
@@ -44,11 +44,11 @@ public class TeacherViewModel extends AndroidViewModel {
         @NonNull
         private final Application application;
 
-        private final long id;
+        private final String id;
 
         private final TeacherRepository repository;
 
-        public Factory(@NonNull Application application, long id) {
+        public Factory(@NonNull Application application, String id) {
             this.application = application;
             this.id = id;
             repository = TeacherRepository.getInstance();
@@ -66,15 +66,15 @@ public class TeacherViewModel extends AndroidViewModel {
     }
 
     public void createClient(Teacher teacher, OnAsyncEventListener callback) {
-        teacherRepository.insert(teacher, callback, application);
+        teacherRepository.insert(teacher, callback);
     }
 
     public void updateClient(Teacher teacher, OnAsyncEventListener callback) {
-        teacherRepository.update(teacher, callback, application);
+        teacherRepository.update(teacher, callback);
     }
 
     public void deleteClient(Teacher teacher, OnAsyncEventListener callback) {
-        teacherRepository.delete(teacher, callback, application);
+        teacherRepository.delete(teacher, callback);
     }
 
 }

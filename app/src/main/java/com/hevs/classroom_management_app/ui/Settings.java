@@ -17,6 +17,7 @@ import com.hevs.classroom_management_app.R;
 
 import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.entity.Teacher;
+import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
 import com.hevs.classroom_management_app.database.repository.ReservationRepository;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
@@ -75,11 +76,12 @@ public class Settings extends AppCompatActivity {
         });
 
         //Change password btn
+        /* REMOVED FUNC
         FloatingActionButton changePwd = findViewById(R.id.change_pwd_btn);
         changePwd.setOnClickListener(view -> {
             Intent i = new Intent(Settings.this, ChangePwd.class);
             startActivity(i);
-        });
+        });*/
 
         // Use US DateTime format
         Switch usDateTime = findViewById(R.id.us_date_format_switch);
@@ -112,12 +114,12 @@ public class Settings extends AppCompatActivity {
     }
 
     private void deleteAccount() {
-        long teacherId = sharedPref.getLong(MainActivity.ID_TEACHER, 0L);
+        String teacherId = sharedPref.getString(MainActivity.ID_TEACHER, null);
         //delete reservations related to this teacher
         ReservationRepository reservationRepository = ReservationRepository.getInstance();
-        reservationRepository.getReservationsByTeacherId(teacherId, getApplication()).observe(Settings.this, reservations -> {
-            for (Reservation r : reservations) {
-                reservationRepository.delete(r, new OnAsyncEventListener() {
+        reservationRepository.getReservationsByTeacherId(teacherId).observe(Settings.this, reservations -> {
+            for (ReservationWithTeacher r : reservations) {
+                reservationRepository.delete(r.reservation, new OnAsyncEventListener() {
                     @Override
                     public void onSuccess() {
                         //assert that all reservations have been deleted before deleting the teacher
@@ -130,13 +132,13 @@ public class Settings extends AppCompatActivity {
                     public void onFailure(Exception e) {
                         Toast.makeText(Settings.this, "Internal error", Toast.LENGTH_LONG).show();
                     }
-                }, getApplication());
+                });
             }
         });
 
     }
 
-    private void deleteTeacher(long teacherId) {
+    private void deleteTeacher(String teacherId) {
         SharedPreferences.Editor editor = sharedPref.edit();
         Teacher teacherToDelete = new Teacher();
         teacherToDelete.setId(teacherId);
@@ -154,6 +156,6 @@ public class Settings extends AppCompatActivity {
                 System.out.println(e.getMessage());
                 Toast.makeText(getApplication(), getString(R.string.unexpected_error), Toast.LENGTH_LONG).show();
             }
-        }, getApplication());
+        });
     }
 }

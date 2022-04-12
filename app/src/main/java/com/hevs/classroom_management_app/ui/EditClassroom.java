@@ -23,8 +23,7 @@ public class EditClassroom extends AppCompatActivity {
 
     private ClassroomRepository repo;
     private ClassroomViewModel classroomViewModel;
-    private final long DEFAULT_CLASSROOM_ID = 1L;
-    private long classroomId;
+    private String classroomId;
     private EditText classroomNameEt;
     private EditText classroomCapacityEt;
 
@@ -33,7 +32,7 @@ public class EditClassroom extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_classroom);
 
-        classroomId = getIntent().getExtras().getLong(ClassroomDetails.ID_CLASSROOM, DEFAULT_CLASSROOM_ID);
+        classroomId = getIntent().getExtras().getString(ClassroomDetails.ID_CLASSROOM, null);
         repo = ClassroomRepository.getInstance();
 
         viewInitialize();
@@ -49,7 +48,7 @@ public class EditClassroom extends AppCompatActivity {
         classroomNameEt = ((EditText) findViewById(R.id.classroomNameCreateEt));
         classroomCapacityEt = ((EditText) findViewById(R.id.maxParticipantsCreateEt));
 
-        repo.getById(classroomId, getApplication()).observe(this, classroom -> {
+        repo.getById(classroomId).observe(this, classroom -> {
             if (classroom != null) {
                 classroomNameEt.setText(classroom.getName());
                 classroomCapacityEt.setText(Integer.toString(classroom.getCapacity()));
@@ -127,7 +126,7 @@ public class EditClassroom extends AppCompatActivity {
                     Toast toast = Toast.makeText(EditClassroom.this, getString(R.string.unexpected_error), Toast.LENGTH_LONG);
                     toast.show();
                 }
-            }, getApplication());
+            });
         });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
         alertDialog.show();

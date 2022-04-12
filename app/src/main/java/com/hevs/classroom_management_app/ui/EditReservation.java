@@ -28,7 +28,7 @@ public class EditReservation extends AppCompatActivity {
     private final String BAD_DATE_ERROR = "Enter a valid date";
     private final String BAD_TIME_ERROR = "Enter a valid time";
     private ClassroomRepository classroomRepository;
-    private long teacherId, classroomId;
+    private String teacherId, classroomId;
     private EditText dateEt, startTimeEt, endTimeEt, participants, reservationText;
     private SharedPreferences sharedPreferences;
     private LocalDateTime oldStartTime;
@@ -50,8 +50,8 @@ public class EditReservation extends AppCompatActivity {
 
         // Get teacherId and classroomId
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        classroomId = getIntent().getExtras().getLong(ClassroomDetails.ID_CLASSROOM);
-        teacherId = sharedPreferences.getLong(MainActivity.ID_TEACHER, -1);
+        classroomId = getIntent().getExtras().getString(ClassroomDetails.ID_CLASSROOM);
+        teacherId = sharedPreferences.getString(MainActivity.ID_TEACHER, null);
 
         fillFields();
 
@@ -72,7 +72,7 @@ public class EditReservation extends AppCompatActivity {
     private void fillFields() {
         //set classroom name
         TextView classroomNameTv = findViewById(R.id.classroomNameTv_edit);
-        classroomRepository.getById(classroomId, getApplication()).observe(EditReservation.this, classroom -> {
+        classroomRepository.getById(classroomId).observe(EditReservation.this, classroom -> {
             classroomNameTv.setText(classroom.getName());
         });
 
@@ -118,7 +118,7 @@ public class EditReservation extends AppCompatActivity {
         // Get occupantsNumber
         occupantsNumber = Integer.parseInt(participants.getText().toString());
         // Checks if the occupants number is greater than the classroom capacity, less than 1 or null
-        classroomRepository.getById(classroomId, getApplication()).observe(EditReservation.this, classroom -> {
+        classroomRepository.getById(classroomId).observe(EditReservation.this, classroom -> {
             if (occupantsNumber > classroom.getCapacity()) {
                 participants.setError("Max participants is " + classroom.getCapacity());
             }

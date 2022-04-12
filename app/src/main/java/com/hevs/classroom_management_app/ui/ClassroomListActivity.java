@@ -80,7 +80,7 @@ public class ClassroomListActivity extends AppCompatActivity {
         });
 
         //fill the adapter with classrooms
-        classroomRepository.getAll(getApplication()).observe(ClassroomListActivity.this, classroomsList -> {
+        classroomRepository.getAll().observe(ClassroomListActivity.this, classroomsList -> {
             if (classroomsList != null) {
                 classrooms = classroomsList;
                 adapter.setData(classrooms);
@@ -99,9 +99,9 @@ public class ClassroomListActivity extends AppCompatActivity {
         TextView greetingsTv = findViewById(R.id.greetingsTv);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        long teacherId = sharedPref.getLong(MainActivity.ID_TEACHER, 0L);
+        String teacherId = sharedPref.getString(MainActivity.ID_TEACHER, null);
         TeacherRepository repo = TeacherRepository.getInstance();
-        repo.getById(teacherId, getApplication()).observe(ClassroomListActivity.this, teacher -> {
+        repo.getById(teacherId).observe(ClassroomListActivity.this, teacher -> {
             if (teacher == null) {
                 return;
             }

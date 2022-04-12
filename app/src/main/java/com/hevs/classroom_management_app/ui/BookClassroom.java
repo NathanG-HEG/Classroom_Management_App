@@ -26,7 +26,7 @@ public class BookClassroom extends AppCompatActivity {
     private ClassroomRepository classroomRepository;
     private final String BAD_DATE_ERROR = "Enter a valid date";
     private final String BAD_TIME_ERROR = "Enter a valid time";
-    private long teacherId, classroomId;
+    private String teacherId, classroomId;
     private EditText dateEt, startTimeEt, endTimeEt, participants, reservationText;
     private SharedPreferences sharedPreferences;
 
@@ -47,8 +47,8 @@ public class BookClassroom extends AppCompatActivity {
 
         // Get teacherId and classroomId
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        classroomId = getIntent().getExtras().getLong(ClassroomDetails.ID_CLASSROOM);
-        teacherId = sharedPreferences.getLong(MainActivity.ID_TEACHER, -1);
+        classroomId = getIntent().getExtras().getString(ClassroomDetails.ID_CLASSROOM);
+        teacherId = sharedPreferences.getString(MainActivity.ID_TEACHER, null);
 
         // Sets correct date format
         if (sharedPreferences.getBoolean(Settings.US_DATE_FORMAT, false)) {
@@ -58,7 +58,7 @@ public class BookClassroom extends AppCompatActivity {
         }
 
         TextView classroomNameTv = findViewById(R.id.classroomNameTv);
-        classroomRepository.getById(classroomId, getApplication()).observe(BookClassroom.this, classroom -> classroomNameTv.setText(classroom.getName()));
+        classroomRepository.getById(classroomId).observe(BookClassroom.this, classroom -> classroomNameTv.setText(classroom.getName()));
 
         Button bookButton = (Button) findViewById(R.id.bookNowButton);
         bookButton.setOnClickListener(view -> bookAClassroom());
@@ -81,7 +81,7 @@ public class BookClassroom extends AppCompatActivity {
             return;
         }
 
-        classroomRepository.getById(classroomId, getApplication()).observe(BookClassroom.this, classroom -> {
+        classroomRepository.getById(classroomId).observe(BookClassroom.this, classroom -> {
             if (occupantsNumber > classroom.getCapacity()) {
                 participants.setError("Max participants is " + classroom.getCapacity());
             }
@@ -129,7 +129,7 @@ public class BookClassroom extends AppCompatActivity {
                 Toast toast = Toast.makeText(BookClassroom.this, getString(R.string.unexpected_error), Toast.LENGTH_LONG);
                 toast.show();
             }
-        }, getApplication());
+        });
 
     }
 

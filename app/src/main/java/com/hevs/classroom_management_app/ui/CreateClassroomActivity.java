@@ -33,7 +33,7 @@ public class CreateClassroomActivity extends AppCompatActivity {
 
     private void createBtn() {
         //Initialize the viewModel
-        ClassroomViewModel.Factory factory = new ClassroomViewModel.Factory(getApplication(), 0L);
+        ClassroomViewModel.Factory factory = new ClassroomViewModel.Factory(getApplication(), null);
         classroomViewModel = ViewModelProviders.of(this, factory).get(ClassroomViewModel.class);
 
         EditText classroomNameEt = ((EditText) findViewById(R.id.classroomNameCreateEt));

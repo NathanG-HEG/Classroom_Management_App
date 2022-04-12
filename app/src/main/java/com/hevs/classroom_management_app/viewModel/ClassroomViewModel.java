@@ -20,13 +20,13 @@ public class ClassroomViewModel extends AndroidViewModel {
     private ClassroomRepository repo;
     private final MediatorLiveData<Classroom> observableClassroom;
 
-    public ClassroomViewModel(@NonNull Application application, final long classroomId, ClassroomRepository classroomRepository) {
+    public ClassroomViewModel(@NonNull Application application, final String classroomId, ClassroomRepository classroomRepository) {
         super(application);
         this.application = application;
         this.repo = classroomRepository;
         observableClassroom = new MediatorLiveData<>();
         observableClassroom.setValue(null);
-        LiveData<Classroom> classroom = repo.getById(classroomId, application);
+        LiveData<Classroom> classroom = repo.getById(classroomId);
         // observe the changes of the account entity from the database and forward them
         observableClassroom.addSource(classroom, observableClassroom::setValue);
     }
@@ -34,10 +34,10 @@ public class ClassroomViewModel extends AndroidViewModel {
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
         @NonNull
         private final Application application;
-        private final long classroomId;
+        private final String classroomId;
         private final ClassroomRepository repo;
 
-        public Factory(@NonNull Application application, long classroomId){
+        public Factory(@NonNull Application application, String classroomId){
             this.application = application;
             this.classroomId = classroomId;
             repo = ((BaseApp) application).getClassroomRepository();
@@ -54,10 +54,10 @@ public class ClassroomViewModel extends AndroidViewModel {
     }
 
     public void createClassroom(Classroom classroom, OnAsyncEventListener callback){
-        repo.insert(classroom, callback, application);
+        repo.insert(classroom, callback);
     }
 
     public void updateClassroom(Classroom classroom, OnAsyncEventListener callback){
-        repo.update(classroom, callback, application);
+        repo.update(classroom, callback);
     }
 }

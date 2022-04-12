@@ -36,7 +36,7 @@ public class ClassroomDetails extends AppCompatActivity {
     private ClassroomRepository classroomRepository;
     private List<ReservationWithTeacher> reservationsList;
     private RecyclerAdapter<ReservationWithTeacher> adapter;
-    private long classroomId;
+    private String classroomId;
     private ReservationListViewModel reservationListViewModel;
     private RecyclerView recyclerView;
     SharedPreferences sharedPref;
@@ -48,17 +48,16 @@ public class ClassroomDetails extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.reservations_w_teacher);
         classroomRepository = ((BaseApp) getApplication()).getClassroomRepository();
-        classroomId = getIntent().getExtras().getLong(ClassroomListActivity.ID_CLASSROOM);
+        classroomId = getIntent().getExtras().getString(ClassroomListActivity.ID_CLASSROOM);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
         TextView classroomNameTv = findViewById(R.id.classroomNameDetailsTv);
-        classroomRepository.getById(classroomId, getApplication()).observe(this, classroom -> classroomNameTv.setText(classroom.getName()));
+        classroomRepository.getById(classroomId).observe(this, classroom -> classroomNameTv.setText(classroom.getName()));
 
-        ReservationListViewModel.Factory factory = new ReservationListViewModel.Factory(
-                getApplication(), classroomId);
+        ReservationListViewModel.Factory factory = new ReservationListViewModel.Factory(getApplication(), classroomId);
         reservationListViewModel = ViewModelProviders.of(this, factory).get(ReservationListViewModel.class);
         reservationListViewModel.getReservationWithTeachers().observe(this, teacherReservations -> {
             if (teacherReservations != null) {
