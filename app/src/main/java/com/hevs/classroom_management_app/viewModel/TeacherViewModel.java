@@ -65,9 +65,9 @@ public class TeacherViewModel extends AndroidViewModel {
         return observableTeacher;
     }
 
-    public void createClient(Teacher teacher, OnAsyncEventListener callback) {
+    /*public void createClient(Teacher teacher, OnAsyncEventListener callback) {
         teacherRepository.insert(teacher, callback);
-    }
+    }*/
 
     public void updateClient(Teacher teacher, OnAsyncEventListener callback) {
         teacherRepository.update(teacher, callback);

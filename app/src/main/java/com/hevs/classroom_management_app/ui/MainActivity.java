@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setSharedPreferences(FirebaseUser user) {
-        teacherRepository.getByEmail(user.getEmail()).observe(MainActivity.this, teacher -> {
+        teacherRepository.getById(user.getUid()).observe(MainActivity.this, teacher -> {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString(ID_TEACHER, teacher.getId());

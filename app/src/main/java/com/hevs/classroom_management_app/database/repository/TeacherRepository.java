@@ -45,10 +45,9 @@ public class TeacherRepository {
         return new TeacherLiveData(query.getRef());
     }
 
-    public void insert(final Teacher teacher, OnAsyncEventListener callback) {
+    public void insert(final Teacher teacher, String key, OnAsyncEventListener callback) {
         DatabaseReference ref = FirebaseDatabase.getInstance()
                 .getReference(TEACHERS);
-        String key = ref.push().getKey();
         FirebaseDatabase.getInstance()
                 .getReference(TEACHERS)
                 .child(key)
