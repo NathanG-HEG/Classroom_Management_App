@@ -77,8 +77,19 @@ public class SignUp extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Intent i = new Intent(SignUp.this, MainActivity.class);
-                            startActivity(i);
+                            teacherRepository.insert(teacher, new OnAsyncEventListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Intent i = new Intent(SignUp.this, MainActivity.class);
+                                    startActivity(i);
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {
+                                    Toast.makeText(SignUp.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(SignUp.this, "Authentication failed.",
@@ -86,6 +97,7 @@ public class SignUp extends AppCompatActivity {
                         }
                     }
                 });
+
     }
 
     private boolean isEmailValid(CharSequence email) {

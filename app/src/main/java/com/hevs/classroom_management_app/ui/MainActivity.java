@@ -69,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkIfUserIsLoggedIn() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        long teacherId = sharedPref.getLong(MainActivity.ID_TEACHER, 0L);
-        if (teacherId != 0L) {
+        String teacherId = sharedPref.getString(MainActivity.ID_TEACHER, null);
+        if (teacherId != null) {
             setTheme(sharedPref); //light or dark mode
             //skips login screen
             Intent i = new Intent(MainActivity.this, ClassroomListActivity.class);
@@ -116,6 +116,9 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString(ID_TEACHER, teacher.getId());
+            editor.commit();
+            Intent i = new Intent(this, ClassroomListActivity.class);
+            startActivity(i);
         });
     }
 
