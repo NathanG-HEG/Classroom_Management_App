@@ -37,13 +37,11 @@ public class ReservationViewModel extends AndroidViewModel {
         @NonNull
         private final Application application;
         private final String reservationId;
-        private final LocalDateTime startTime;
         private final ReservationRepository repo;
 
-        public Factory(@NonNull Application application, String reservationId, LocalDateTime startTime){
+        public Factory(@NonNull Application application, String reservationId){
             this.application = application;
             this.reservationId = reservationId;
-            this.startTime = startTime;
             repo = ((BaseApp) application).getReservationRepository();
         }
 

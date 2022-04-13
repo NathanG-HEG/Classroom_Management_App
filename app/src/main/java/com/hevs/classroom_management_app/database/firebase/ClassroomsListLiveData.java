@@ -31,6 +31,12 @@ public class ClassroomsListLiveData extends LiveData<List<Classroom>> {
             // Manage error
         }
     }
+
+    @Override
+    protected void onActive() {
+        reference.addValueEventListener(listener);
+    }
+
     private List<Classroom> toClassrooms(DataSnapshot snapshot){
         List<Classroom> classrooms = new LinkedList<>();
         for(DataSnapshot childSnapshot : snapshot.getChildren()){

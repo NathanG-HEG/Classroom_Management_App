@@ -33,6 +33,7 @@ public class ClassroomDetails extends AppCompatActivity {
 
     public static final String ID_CLASSROOM = "idClassroom";
     public static final String START_TIME = "startTime";
+    public static final String ID_RESERVATION = "idReservation";
     private ClassroomRepository classroomRepository;
     private List<ReservationWithTeacher> reservationsList;
     private RecyclerAdapter<ReservationWithTeacher> adapter;
@@ -89,6 +90,7 @@ public class ClassroomDetails extends AppCompatActivity {
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.edit_reservation), (dialog, which) -> {
                     Intent i = new Intent(ClassroomDetails.this, EditReservation.class);
                     i.putExtra(ClassroomListActivity.ID_CLASSROOM, classroomId);
+                    i.putExtra(ID_RESERVATION, reservationsList.get(position).reservation.getReservationId());
                     LocalDateTime startTime = reservationsList.get(position).reservation.getStartTime();
                     i.putExtra(START_TIME, startTime.toString());
                     startActivity(i);

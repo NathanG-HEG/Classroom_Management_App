@@ -26,7 +26,10 @@ public class ClassroomViewModel extends AndroidViewModel {
         this.repo = classroomRepository;
         observableClassroom = new MediatorLiveData<>();
         observableClassroom.setValue(null);
-        LiveData<Classroom> classroom = repo.getById(classroomId);
+        LiveData<Classroom> classroom = null;
+        if (classroomId != null) {
+           classroom = repo.getById(classroomId);
+        }
         // observe the changes of the account entity from the database and forward them
         observableClassroom.addSource(classroom, observableClassroom::setValue);
     }

@@ -2,6 +2,7 @@ package com.hevs.classroom_management_app.database.firebase;
 
 import androidx.lifecycle.LiveData;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 
@@ -13,6 +14,10 @@ import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.entity.Teacher;
 import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
+import com.hevs.classroom_management_app.ui.ClassroomDetails;
+import com.hevs.classroom_management_app.ui.MainActivity;
+import com.hevs.classroom_management_app.viewModel.ReservationListViewModel;
+import com.hevs.classroom_management_app.viewModel.TeacherViewModel;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -49,7 +54,9 @@ public class ReservationsListLiveData extends LiveData<List<ReservationWithTeach
             ReservationWithTeacher reservationWithTeacher = new ReservationWithTeacher();
             reservationWithTeacher.reservation = childSnapShot.getValue(Reservation.class);
             reservationWithTeacher.reservation.setReservationId(childSnapShot.getKey());
-            reservationWithTeacher.teacher = teacherRepository.getById(reservationWithTeacher.reservation.getTeacherId()).getValue();
+            /*teacherRepository.getById(reservationWithTeacher.reservation.getTeacherId()).observe(ClassroomDetails.this, teacher -> {
+                reservationWithTeacher.teacher = teacher;
+            });*/
         }
         return reservations;
     }

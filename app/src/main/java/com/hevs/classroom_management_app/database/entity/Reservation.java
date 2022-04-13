@@ -86,16 +86,16 @@ public class Reservation {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
+    public void setStartTime(String startTime) {
+        this.startTime = LocalDateTimeConverter.toDate(startTime);
     }
 
     public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
+    public void setEndTime(String endTime) {
+        this.endTime = LocalDateTimeConverter.toDate(endTime);
     }
 
     public int getOccupantsNumber() {

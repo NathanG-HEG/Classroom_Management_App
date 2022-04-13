@@ -46,8 +46,11 @@ public class ReservationRepository {
     }
 
     public ReservationsListLiveData getReservationsByClassId(final String id) {
-        Query query = FirebaseDatabase.getInstance().getReference(CLASSROOMS).child("classroomId").equalTo(id);
-        return new ReservationsListLiveData(query.getRef());
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference(CLASSROOMS)
+                .child(id)
+                .child(RESERVATIONS);
+        return new ReservationsListLiveData(ref);
     }
 
     public ReservationsListLiveData getReservationsByTeacherId(final String id) {
@@ -57,12 +60,16 @@ public class ReservationRepository {
 
     public void insert(final Reservation reservation, OnAsyncEventListener callback) {
         DatabaseReference ref = FirebaseDatabase.getInstance()
-                .getReference(RESERVATIONS);
+                .getReference(CLASSROOMS)
+                .child(reservation.getClassroomId())
+                .child(RESERVATIONS);
         String key = ref.push().getKey();
         FirebaseDatabase.getInstance()
-                .getReference(RESERVATIONS)
+                .getReference(CLASSROOMS)
+                .child(reservation.getClassroomId())
+                .child(RESERVATIONS)
                 .child(key)
-                .setValue(reservation, (databaseError, databaseReference) -> {
+                .setValue(reservation.toMap(), (databaseError, databaseReference) -> {
                     if (databaseError != null) {
                         callback.onFailure(databaseError.toException());
                     } else {
