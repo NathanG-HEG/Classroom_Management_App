@@ -88,8 +88,7 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void createTeacher(Teacher teacher){
-        String key = teacher.getEmail();
-        teacherRepository.insert(teacher, key, new OnAsyncEventListener() {
+        teacherRepository.insert(teacher, new OnAsyncEventListener() {
             @Override
             public void onSuccess() {
                 Intent i = new Intent(SignUp.this, MainActivity.class);
