@@ -88,8 +88,7 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void createTeacher(Teacher teacher){
-        mAuth.signInWithEmailAndPassword(teacher.getEmail(), teacher.getPassword());
-        String key = mAuth.getCurrentUser().getUid();
+        String key = teacher.getEmail();
         teacherRepository.insert(teacher, key, new OnAsyncEventListener() {
             @Override
             public void onSuccess() {
