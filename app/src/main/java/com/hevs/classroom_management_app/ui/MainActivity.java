@@ -70,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
     private void checkIfUserIsLoggedIn() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String teacherId = sharedPref.getString(MainActivity.ID_TEACHER, null);
-        if (teacherId != null) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (teacherId != null && user != null) {
             setTheme(sharedPref); //light or dark mode
             //skips login screen
             Intent i = new Intent(MainActivity.this, ClassroomListActivity.class);

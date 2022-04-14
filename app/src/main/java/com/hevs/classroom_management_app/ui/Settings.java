@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.hevs.classroom_management_app.R;
 
 import com.hevs.classroom_management_app.database.entity.Reservation;
@@ -28,11 +30,13 @@ public class Settings extends AppCompatActivity {
     public static final String US_DATE_FORMAT = "usDateFormat";
     private SharedPreferences sharedPref;
     private TeacherRepository repo;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(Settings.this);
         repo = TeacherRepository.getInstance();
@@ -75,12 +79,11 @@ public class Settings extends AppCompatActivity {
         });
 
         //Change password btn
-        /* REMOVED FUNC
         FloatingActionButton changePwd = findViewById(R.id.change_pwd_btn);
         changePwd.setOnClickListener(view -> {
             Intent i = new Intent(Settings.this, ChangePwd.class);
             startActivity(i);
-        });*/
+        });
 
         // Use US DateTime format
         Switch usDateTime = findViewById(R.id.us_date_format_switch);
@@ -91,6 +94,10 @@ public class Settings extends AppCompatActivity {
                 switchDateFormat();
             }
         });
+    }
+
+    private void changePwd(){
+
     }
 
     private void toggleTheme() {
@@ -114,27 +121,7 @@ public class Settings extends AppCompatActivity {
 
     private void deleteAccount() {
         String teacherId = sharedPref.getString(MainActivity.ID_TEACHER, null);
-        //delete reservations related to this teacher
-        ReservationRepository reservationRepository = ReservationRepository.getInstance();
-        reservationRepository.getReservationsByTeacherId(teacherId).observe(Settings.this, reservations -> {
-            for (Reservation r : reservations) {
-                reservationRepository.delete(r, new OnAsyncEventListener() {
-                    @Override
-                    public void onSuccess() {
-                        //assert that all reservations have been deleted before deleting the teacher
-                        if (r.equals(reservations.get(reservations.size() - 1))) {
-                            deleteTeacher(teacherId);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Exception e) {
-                        Toast.makeText(Settings.this, "Internal error", Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        });
-
+        deleteTeacher(teacherId);
     }
 
     private void deleteTeacher(String teacherId) {

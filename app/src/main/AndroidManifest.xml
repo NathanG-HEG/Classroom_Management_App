@@ -46,6 +46,9 @@
         <activity android:name=".ui.About"
             android:parentActivityName=".ui.Settings"
             android:label="About"/>
+        <activity android:name=".ui.ChangePwd"
+            android:parentActivityName=".ui.Settings"
+            android:label="Change password"/>
         <activity android:name=".ui.EditReservation"
             android:parentActivityName=".ui.ClassroomDetails"
             android:label="Edit Reservation"/>
