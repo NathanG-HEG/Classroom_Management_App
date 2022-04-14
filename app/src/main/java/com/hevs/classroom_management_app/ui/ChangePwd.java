@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hevs.classroom_management_app.R;
@@ -28,10 +30,10 @@ import java.security.NoSuchAlgorithmException;
 
 public class ChangePwd extends AppCompatActivity {
 
-    private SharedPreferences sharedPref;
-    private Teacher teacher;
-    private EditText oldPwdField, newPwdField1, newPwdField2;
     FirebaseAuth mAuth;
+    private SharedPreferences sharedPref;
+    private TeacherRepository teacherRepository;
+    private EditText oldPwdField, newPwdField1, newPwdField2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,20 +45,38 @@ public class ChangePwd extends AppCompatActivity {
 
         oldPwdField = findViewById(R.id.old_password_edit);
 
-        TeacherRepository.getInstance().getById(sharedPref.getString(MainActivity.ID_TEACHER, null))
-                .observe(this, teacher1 -> teacher = teacher1);
+        teacherRepository = TeacherRepository.getInstance();
 
         Button changePwd = (Button) findViewById(R.id.change_pwd_btn2);
         changePwd.setOnClickListener(view -> changePwd());
     }
 
-    private void changePwd(){
+    private void changePwd() {
         // Re authenticate the teacher
         FirebaseUser user = mAuth.getCurrentUser();
+        // Get auth credentials from the user for re-authentication.
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(user.getEmail(), oldPwdField.getText().toString());
+
+        // Prompt the user to re-provide their sign-in credentials
+        user.reauthenticate(credential)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            sendEmail(user);
+                        } else {
+                            Toast.makeText(ChangePwd.this, "Incorrect password.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void sendEmail(FirebaseUser user) {
         mAuth.sendPasswordResetEmail(user.getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Toast.makeText(ChangePwd.this, "A reset password mail has been sent", Toast.LENGTH_LONG).show();
                 }
             }
