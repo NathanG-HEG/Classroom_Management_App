@@ -38,7 +38,7 @@ public class Reservation {
         res.put("startTime", LocalDateTimeConverter.toDateString(startTime));
         res.put("endTime", LocalDateTimeConverter.toDateString(endTime));
         res.put("teacherName", teacherName);
-        res.put("occupants", occupantsNumber);
+        res.put("occupantsNumber", occupantsNumber);
         res.put("reservationText", reservationText);
         return res;
     }
