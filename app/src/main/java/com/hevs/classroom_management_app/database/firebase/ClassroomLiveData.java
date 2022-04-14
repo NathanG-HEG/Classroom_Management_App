@@ -27,8 +27,10 @@ public class ClassroomLiveData extends LiveData<Classroom> {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot){
             Classroom classroom = dataSnapshot.getValue(Classroom.class);
-            classroom.setId(dataSnapshot.getKey());
-            setValue(classroom);
+            if (classroom != null) {
+                classroom.setId(dataSnapshot.getKey());
+                setValue(classroom);
+            }
         }
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError){

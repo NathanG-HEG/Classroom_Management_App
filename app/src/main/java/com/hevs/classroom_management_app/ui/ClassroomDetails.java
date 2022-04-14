@@ -21,7 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.adapter.RecyclerAdapter;
-import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
+import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.repository.ClassroomRepository;
 import com.hevs.classroom_management_app.util.RecyclerViewItemClickListener;
 import com.hevs.classroom_management_app.viewModel.ReservationListViewModel;
@@ -35,8 +35,8 @@ public class ClassroomDetails extends AppCompatActivity {
     public static final String START_TIME = "startTime";
     public static final String ID_RESERVATION = "idReservation";
     private ClassroomRepository classroomRepository;
-    private List<ReservationWithTeacher> reservationsList;
-    private RecyclerAdapter<ReservationWithTeacher> adapter;
+    private List<Reservation> reservationsList;
+    private RecyclerAdapter<Reservation> adapter;
     private String classroomId;
     private ReservationListViewModel reservationListViewModel;
     private RecyclerView recyclerView;
@@ -60,7 +60,7 @@ public class ClassroomDetails extends AppCompatActivity {
 
         ReservationListViewModel.Factory factory = new ReservationListViewModel.Factory(getApplication(), classroomId);
         reservationListViewModel = ViewModelProviders.of(this, factory).get(ReservationListViewModel.class);
-        reservationListViewModel.getReservationWithTeachers().observe(this, teacherReservations -> {
+        reservationListViewModel.getReservations().observe(this, teacherReservations -> {
             if (teacherReservations != null) {
                 reservationsList = teacherReservations;
                 adapter.setData(reservationsList);
@@ -75,7 +75,7 @@ public class ClassroomDetails extends AppCompatActivity {
                 final AlertDialog alertDialog = new AlertDialog.Builder(ClassroomDetails.this, R.style.MyAlertDialogTheme).create();
                 alertDialog.setTitle(R.string.reservation_text);
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog, which) -> alertDialog.dismiss());
-                String text = reservationsList.get(position).reservation.getReservationText();
+                String text = reservationsList.get(position).getReservationText();
                 alertDialog.setMessage(text);
                 alertDialog.show();
             }
@@ -90,13 +90,13 @@ public class ClassroomDetails extends AppCompatActivity {
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.edit_reservation), (dialog, which) -> {
                     Intent i = new Intent(ClassroomDetails.this, EditReservation.class);
                     i.putExtra(ClassroomListActivity.ID_CLASSROOM, classroomId);
-                    i.putExtra(ID_RESERVATION, reservationsList.get(position).reservation.getReservationId());
-                    LocalDateTime startTime = reservationsList.get(position).reservation.getStartTime();
+                    i.putExtra(ID_RESERVATION, reservationsList.get(position).getReservationId());
+                    LocalDateTime startTime = reservationsList.get(position).getStartTime();
                     i.putExtra(START_TIME, startTime.toString());
                     startActivity(i);
                 });
 
-                String text = reservationsList.get(position).reservation.getReservationText();
+                String text = reservationsList.get(position).getReservationText();
                 alertDialog.setMessage(text);
                 alertDialog.show();
             }

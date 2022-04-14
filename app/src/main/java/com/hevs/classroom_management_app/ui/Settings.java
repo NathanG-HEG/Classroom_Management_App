@@ -17,7 +17,6 @@ import com.hevs.classroom_management_app.R;
 
 import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.entity.Teacher;
-import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
 import com.hevs.classroom_management_app.database.repository.ReservationRepository;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
@@ -118,8 +117,8 @@ public class Settings extends AppCompatActivity {
         //delete reservations related to this teacher
         ReservationRepository reservationRepository = ReservationRepository.getInstance();
         reservationRepository.getReservationsByTeacherId(teacherId).observe(Settings.this, reservations -> {
-            for (ReservationWithTeacher r : reservations) {
-                reservationRepository.delete(r.reservation, new OnAsyncEventListener() {
+            for (Reservation r : reservations) {
+                reservationRepository.delete(r, new OnAsyncEventListener() {
                     @Override
                     public void onSuccess() {
                         //assert that all reservations have been deleted before deleting the teacher

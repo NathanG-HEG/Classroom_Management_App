@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.hevs.classroom_management_app.BaseApp;
+import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.firebase.ReservationsListLiveData;
-import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
 import com.hevs.classroom_management_app.database.repository.ReservationRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
@@ -22,7 +22,7 @@ public class ReservationListViewModel extends AndroidViewModel {
     private ReservationRepository repository;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
-    private final MediatorLiveData<List<ReservationWithTeacher>> observableReservationWithTeacher;
+    private final MediatorLiveData<List<Reservation>> observableReservations;
 
     public ReservationListViewModel(@NonNull Application application, final String classroomId, ReservationRepository reservationRepository) {
         super(application);
@@ -31,15 +31,15 @@ public class ReservationListViewModel extends AndroidViewModel {
 
         repository = reservationRepository;
 
-        observableReservationWithTeacher = new MediatorLiveData<>();
+        observableReservations = new MediatorLiveData<>();
         // set by default null, until we get data from the database.
-        observableReservationWithTeacher.setValue(null);
+        observableReservations.setValue(null);
 
         ReservationsListLiveData teacherReservations =
                 reservationRepository.getReservationsByClassId(classroomId);
 
         // observe the changes of the entities from the database and forward them
-        observableReservationWithTeacher.addSource(teacherReservations, observableReservationWithTeacher::setValue);
+        observableReservations.addSource(teacherReservations, observableReservations::setValue);
     }
 
     public static class Factory extends ViewModelProvider.NewInstanceFactory {
@@ -64,12 +64,12 @@ public class ReservationListViewModel extends AndroidViewModel {
         }
     }
 
-    public LiveData<List<ReservationWithTeacher>> getReservationWithTeachers() {
-        return observableReservationWithTeacher;
+    public LiveData<List<Reservation>> getReservations() {
+        return observableReservations;
     }
 
-    public void deleteReservation(ReservationWithTeacher reservationWithTeacher, OnAsyncEventListener callback) {
-        repository.delete(reservationWithTeacher.reservation, callback);
+    public void deleteReservation(Reservation reservation, OnAsyncEventListener callback) {
+        repository.delete(reservation, callback);
     }
 
 

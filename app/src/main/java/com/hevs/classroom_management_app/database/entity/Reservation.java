@@ -1,15 +1,10 @@
 package com.hevs.classroom_management_app.database.entity;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.ForeignKey;
 
 import com.google.firebase.database.Exclude;
 import com.hevs.classroom_management_app.database.LocalDateTimeConverter;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,15 +15,15 @@ public class Reservation {
     private String classroomId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private String teacherId;
+    private String teacherName;
     private int occupantsNumber;
     private String reservationText;
 
-    public Reservation(String classroomId, LocalDateTime startTime, LocalDateTime endTime, String teacherId, int occupantsNumber, String reservationText) {
+    public Reservation(String classroomId, LocalDateTime startTime, LocalDateTime endTime, String teacherName, int occupantsNumber, String reservationText) {
         this.classroomId = classroomId;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.teacherId = teacherId;
+        this.teacherName = teacherName;
         this.occupantsNumber = occupantsNumber;
         this.reservationText = reservationText;
     }
@@ -42,7 +37,7 @@ public class Reservation {
         res.put("classroomId", classroomId);
         res.put("startTime", LocalDateTimeConverter.toDateString(startTime));
         res.put("endTime", LocalDateTimeConverter.toDateString(endTime));
-        res.put("teacherId", teacherId);
+        res.put("teacherName", teacherName);
         res.put("occupants", occupantsNumber);
         res.put("reservationText", reservationText);
         return res;
@@ -66,12 +61,12 @@ public class Reservation {
         this.reservationId = reservationId;
     }
 
-    public String getTeacherId() {
-        return teacherId;
+    public String getTeacherName() {
+        return teacherName;
     }
 
-    public void setTeacherId(String teacherId) {
-        this.teacherId = teacherId;
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 
     public String getClassroomId() {

@@ -18,6 +18,7 @@ import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.database.LocalDateTimeConverter;
 import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.repository.ClassroomRepository;
+import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 import com.hevs.classroom_management_app.viewModel.ReservationViewModel;
 
@@ -83,7 +84,7 @@ public class EditReservation extends AppCompatActivity {
         String startTimeString = getIntent().getStringExtra(ClassroomDetails.START_TIME);
         oldStartTime = LocalDateTime.parse(startTimeString);
 
-        ReservationViewModel.Factory factory = new ReservationViewModel.Factory(getApplication(), reservationId);
+        ReservationViewModel.Factory factory = new ReservationViewModel.Factory(getApplication(), reservationId, classroomId);
         ReservationViewModel reservationViewModel = ViewModelProviders.of(this, factory).get(ReservationViewModel.class);
         reservationViewModel.getReservation().observe(this, reservation -> {
             if (reservation != null) {
@@ -155,55 +156,21 @@ public class EditReservation extends AppCompatActivity {
             return;
         }
 
-        // make changes in db
-        if (!startTime.equals(oldStartTime) || !endTime.equals(oldEndTime)) {
-            deleteThenCreate(startTime, endTime, occupantsNumber); //primary key was changed, a new record must be created
-        } else {
-            updateReservation(startTime, endTime, occupantsNumber);
-        }
-    }
-
-    private void deleteThenCreate(LocalDateTime startTime, LocalDateTime endTime, int occupantsNumber) {
-        //used to delete reservation
-        Reservation copyOfReservation = copyReservation();
-
-        //delete reservation
-        ReservationViewModel.Factory factory = new ReservationViewModel.Factory(getApplication(), reservationId);
-        ReservationViewModel reservationViewModel = ViewModelProviders.of(this, factory).get(ReservationViewModel.class);
-        reservationViewModel.deleteReservation(copyOfReservation, new OnAsyncEventListener() {
-            @Override
-            public void onSuccess() {
-                Reservation newReservation = new Reservation(classroomId, startTime, endTime, teacherId, occupantsNumber, reservationText.getText().toString());
-                reservationViewModel.createReservation(newReservation, new OnAsyncEventListener() {
-                    @Override
-                    public void onSuccess() {
-                        Toast toast = Toast.makeText(EditReservation.this, getString(R.string.saved_successfully), Toast.LENGTH_SHORT);
-                        toast.show();
-                        NavUtils.navigateUpFromSameTask(EditReservation.this);
-                    }
-
-                    @Override
-                    public void onFailure(Exception e) {
-                        Toast toast = Toast.makeText(EditReservation.this, getString(R.string.unexpected_error), Toast.LENGTH_LONG);
-                        toast.show();
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Toast toast = Toast.makeText(EditReservation.this, getString(R.string.unexpected_error), Toast.LENGTH_LONG);
-                toast.show();
-            }
+        TeacherRepository.getInstance().getById(teacherId).observe(this, teacher -> {
+            String teacherInitials = teacher.getFirstname().charAt(0) + ". " + teacher.getLastname();
+            Reservation reservation = new Reservation(classroomId, startTime, endTime, teacherInitials, occupantsNumber, reservationText.getText().toString());
+            reservation.setReservationId(reservationId);
+            reservation.setClassroomId(classroomId);
+            // make changes in db
+            updateReservation(reservation);
         });
-
     }
 
-    private void updateReservation(LocalDateTime startTime, LocalDateTime endTime, int occupantsNumber) {
-        Reservation newReservation = new Reservation(classroomId, startTime, endTime, teacherId, occupantsNumber, reservationText.getText().toString());
-        ReservationViewModel.Factory factory = new ReservationViewModel.Factory(getApplication(), reservationId);
+
+    private void updateReservation(Reservation reservation) {
+        ReservationViewModel.Factory factory = new ReservationViewModel.Factory(getApplication(), reservationId, classroomId);
         ReservationViewModel reservationViewModel = ViewModelProviders.of(this, factory).get(ReservationViewModel.class);
-        reservationViewModel.updateReservation(newReservation, new OnAsyncEventListener() {
+        reservationViewModel.updateReservation(reservation, new OnAsyncEventListener() {
             @Override
             public void onSuccess() {
                 Toast toast = Toast.makeText(EditReservation.this, getString(R.string.saved_successfully), Toast.LENGTH_SHORT);
@@ -220,13 +187,14 @@ public class EditReservation extends AppCompatActivity {
     }
 
     private void deleteReservation() {
-        //used to delete reservation
-        Reservation copyOfReservation = copyReservation();
+        Reservation reservation = new Reservation();
+        reservation.setReservationId(reservationId);
+        reservation.setClassroomId(classroomId);
 
         //delete reservation
-        ReservationViewModel.Factory factory = new ReservationViewModel.Factory(getApplication(), reservationId);
+        ReservationViewModel.Factory factory = new ReservationViewModel.Factory(getApplication(), reservationId, classroomId);
         ReservationViewModel reservationViewModel = ViewModelProviders.of(this, factory).get(ReservationViewModel.class);
-        reservationViewModel.deleteReservation(copyOfReservation, new OnAsyncEventListener() {
+        reservationViewModel.deleteReservation(reservation, new OnAsyncEventListener() {
             @Override
             public void onSuccess() {
                 Toast toast = Toast.makeText(EditReservation.this, getString(R.string.delete_reservation_confirm), Toast.LENGTH_SHORT);
@@ -240,20 +208,6 @@ public class EditReservation extends AppCompatActivity {
                 toast.show();
             }
         });
-    }
-
-    private Reservation copyReservation() {
-        Reservation copyOfReservation = new Reservation(classroomId, oldStartTime, null, teacherId, 0, null);
-        ReservationViewModel.Factory factory1 = new ReservationViewModel.Factory(getApplication(), reservationId);
-        ReservationViewModel reservationViewModel1 = ViewModelProviders.of(this, factory1).get(ReservationViewModel.class);
-        reservationViewModel1.getReservation().observe(this, reservation -> {
-            if (reservation != null) {
-                copyOfReservation.setTeacherId(reservation.getTeacherId());
-                copyOfReservation.setEndTime(LocalDateTimeConverter.toDateString(reservation.getEndTime()));
-                copyOfReservation.setReservationText(reservation.getReservationText());
-            }
-        });
-        return copyOfReservation;
     }
 
     private LocalDateTime extractLocalDateTimeFromString(final String date, final String time, boolean usFormat) throws DateTimeException {

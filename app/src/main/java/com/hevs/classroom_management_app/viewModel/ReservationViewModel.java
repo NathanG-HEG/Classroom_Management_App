@@ -14,21 +14,19 @@ import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.repository.ReservationRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
-import java.time.LocalDateTime;
-
 public class ReservationViewModel extends AndroidViewModel {
 
     private Application application;
     private ReservationRepository repo;
     private final MediatorLiveData<Reservation> observableReservation;
 
-    public ReservationViewModel(@NonNull Application application, final String reservationId, ReservationRepository reservationRepository) {
+    public ReservationViewModel(@NonNull Application application, final String reservationId, final String classroomId, ReservationRepository reservationRepository) {
         super(application);
         this.application = application;
         this.repo = reservationRepository;
         observableReservation = new MediatorLiveData<>();
         observableReservation.setValue(null);
-        LiveData<Reservation> reservation = repo.getById(reservationId);
+        LiveData<Reservation> reservation = repo.getById(reservationId, classroomId);
         // observe the changes of the account entity from the database and forward them
         observableReservation.addSource(reservation, observableReservation::setValue);
     }
@@ -37,17 +35,19 @@ public class ReservationViewModel extends AndroidViewModel {
         @NonNull
         private final Application application;
         private final String reservationId;
+        private final String classroomId;
         private final ReservationRepository repo;
 
-        public Factory(@NonNull Application application, String reservationId){
+        public Factory(@NonNull Application application, String reservationId, String classroomId){
             this.application = application;
             this.reservationId = reservationId;
+            this.classroomId = classroomId;
             repo = ((BaseApp) application).getReservationRepository();
         }
 
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
-            return (T) new ReservationViewModel(application, reservationId, repo);
+            return (T) new ReservationViewModel(application, reservationId, classroomId, repo);
         }
     }
 

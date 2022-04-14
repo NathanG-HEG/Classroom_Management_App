@@ -33,8 +33,10 @@ public class ReservationLiveData extends LiveData<Reservation> {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot){
             Reservation reservation = dataSnapshot.getValue(Reservation.class);
-            reservation.setReservationId(dataSnapshot.getKey());
-            setValue(reservation);
+            if (reservation != null) {
+                reservation.setReservationId(dataSnapshot.getKey());
+                setValue(reservation);
+            }
         }
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError){

@@ -15,6 +15,7 @@ import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.repository.ClassroomRepository;
 import com.hevs.classroom_management_app.database.repository.ReservationRepository;
+import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
 import java.time.DateTimeException;
@@ -114,8 +115,18 @@ public class BookClassroom extends AppCompatActivity {
         //Get Reservation text
         String reservationText = this.reservationText.getText().toString();
 
+        //put teacher name in the reservation
+        TeacherRepository teacherRepo = TeacherRepository.getInstance();
+        teacherRepo.getById(teacherId).observe(BookClassroom.this, teacher -> {
+            Reservation newReservation = new Reservation(classroomId, startTime, endTime, teacher.getFirstname().charAt(0) + ". " + teacher.getLastname()
+                    , occupantsNumber, reservationText);
+            //inserts reservation in database
+            insertReservation(newReservation);
+        });
+    }
+
+    private void insertReservation(Reservation newReservation) {
         // Inserts in DB
-        Reservation newReservation = new Reservation(classroomId, startTime, endTime, teacherId, occupantsNumber, reservationText);
         reservationRepo.insert(newReservation, new OnAsyncEventListener() {
             @Override
             public void onSuccess() {
@@ -130,8 +141,8 @@ public class BookClassroom extends AppCompatActivity {
                 toast.show();
             }
         });
-
     }
+
 
     private LocalDateTime extractLocalDateTimeFromString(final String date, final String time, boolean usFormat) throws DateTimeException {
         int year, month, day, hour, minute;

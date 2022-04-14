@@ -1,23 +1,14 @@
 package com.hevs.classroom_management_app.database.repository;
 
-import android.app.Application;
-
 import androidx.lifecycle.LiveData;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.hevs.classroom_management_app.BaseApp;
-import com.hevs.classroom_management_app.database.entity.Classroom;
 import com.hevs.classroom_management_app.database.entity.Reservation;
-import com.hevs.classroom_management_app.database.firebase.ClassroomLiveData;
 import com.hevs.classroom_management_app.database.firebase.ReservationLiveData;
 import com.hevs.classroom_management_app.database.firebase.ReservationsListLiveData;
-import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class ReservationRepository {
     private static ReservationRepository instance;
@@ -38,10 +29,12 @@ public class ReservationRepository {
         return instance;
     }
 
-    public LiveData<Reservation> getById(final String id) {
+    public LiveData<Reservation> getById(final String resId, final String classroomId) {
         DatabaseReference ref = FirebaseDatabase.getInstance()
-                .getReference(RESERVATIONS)
-                .child(id);
+                .getReference(CLASSROOMS)
+                .child(classroomId)
+                .child(RESERVATIONS)
+                .child(resId);
         return new ReservationLiveData(ref);
     }
 
@@ -80,9 +73,9 @@ public class ReservationRepository {
 
     public void update(final Reservation reservation, OnAsyncEventListener callback) {
         FirebaseDatabase.getInstance()
-                .getReference(RESERVATIONS);
-        FirebaseDatabase.getInstance()
-                .getReference(RESERVATIONS)
+                .getReference(CLASSROOMS)
+                .child(reservation.getClassroomId())
+                .child(RESERVATIONS)
                 .child(reservation.getReservationId())
                 .updateChildren(reservation.toMap(), (databaseError, databaseReference) -> {
                     if (databaseError != null) {
@@ -95,9 +88,9 @@ public class ReservationRepository {
 
     public void delete(final Reservation reservation, OnAsyncEventListener callback) {
         FirebaseDatabase.getInstance()
-                .getReference(RESERVATIONS);
-        FirebaseDatabase.getInstance()
-                .getReference(RESERVATIONS)
+                .getReference(CLASSROOMS)
+                .child(reservation.getClassroomId())
+                .child(RESERVATIONS)
                 .child(reservation.getReservationId())
                 .removeValue((databaseError, databaseReference) -> {
                     if (databaseError != null) {

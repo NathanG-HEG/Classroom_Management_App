@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hevs.classroom_management_app.R;
-import com.hevs.classroom_management_app.database.pojo.ReservationWithTeacher;
+import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.ui.Settings;
 import com.hevs.classroom_management_app.util.RecyclerViewItemClickListener;
 
@@ -44,8 +44,8 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Vie
     @Override
     public void onBindViewHolder(RecyclerAdapter.ViewHolder holder, int position) {
         T item = mData.get(position);
-        if (item.getClass().equals(ReservationWithTeacher.class)) {
-            ReservationWithTeacher reservation = (ReservationWithTeacher) item;
+        if (item.getClass().equals(Reservation.class)) {
+            Reservation reservation = (Reservation) item;
             holder.mTextView.setText(getReservationText(reservation, sharedPreferences.getBoolean(Settings.US_DATE_FORMAT, false)));
         }
     }
@@ -59,21 +59,19 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Vie
         }
     }
 
-    private String getReservationText(ReservationWithTeacher rwt, boolean usDateFormat) {
+    private String getReservationText(Reservation rv, boolean usDateFormat) {
         StringBuilder sb = new StringBuilder();
-        sb.append(rwt.teacher.getFirstname().charAt(0)).
-                append(". ").
-                append(rwt.teacher.getLastname()).
+        sb.append(rv.getTeacherName()).
                 append("\t\t").
-                append(usDateFormat ? prettyTime(rwt.reservation.getStartTime().getMonthValue()) : prettyTime(rwt.reservation.getStartTime().getDayOfMonth())).
+                append(usDateFormat ? prettyTime(rv.getStartTime().getMonthValue()) : prettyTime(rv.getStartTime().getDayOfMonth())).
                 append("/").
-                append(usDateFormat ? prettyTime(rwt.reservation.getStartTime().getDayOfMonth()) : prettyTime(rwt.reservation.getStartTime().getMonthValue())).
+                append(usDateFormat ? prettyTime(rv.getStartTime().getDayOfMonth()) : prettyTime(rv.getStartTime().getMonthValue())).
                 append("/").
-                append(rwt.reservation.getStartTime().getYear()).
+                append(rv.getStartTime().getYear()).
                 append(" ").
-                append(prettyTime(rwt.reservation.getStartTime().getHour(), rwt.reservation.getStartTime().getMinute(), usDateFormat)).
+                append(prettyTime(rv.getStartTime().getHour(), rv.getStartTime().getMinute(), usDateFormat)).
                 append("-").
-                append(prettyTime(rwt.reservation.getEndTime().getHour(), rwt.reservation.getEndTime().getMinute(), usDateFormat));
+                append(prettyTime(rv.getEndTime().getHour(), rv.getEndTime().getMinute(), usDateFormat));
 
         return sb.toString();
     }
@@ -116,19 +114,19 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Vie
 
                 @Override
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    if (mData instanceof ReservationWithTeacher) {
-                        return ((ReservationWithTeacher) mData.get(oldItemPosition)).equals(
-                                ((ReservationWithTeacher) data.get(newItemPosition)));
+                    if (mData instanceof Reservation) {
+                        return ((Reservation) mData.get(oldItemPosition)).equals(
+                                ((Reservation) data.get(newItemPosition)));
                     }
                     return false;
                 }
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    if (mData instanceof ReservationWithTeacher) {
-                        ReservationWithTeacher newClient = (ReservationWithTeacher) data.get(newItemPosition);
-                        ReservationWithTeacher oldClient = (ReservationWithTeacher) mData.get(newItemPosition);
-                        return newClient.equals(oldClient);
+                    if (mData instanceof Reservation) {
+                        Reservation newReservation = (Reservation) data.get(newItemPosition);
+                        Reservation oldReservation = (Reservation) mData.get(newItemPosition);
+                        return newReservation.equals(oldReservation);
                     }
                     return false;
                 }
