@@ -9,18 +9,18 @@
         android:id="@+id/change_pwd_btn2"
         android:layout_width="120dp"
         android:layout_height="60dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="52dp"
         android:text="@string/change_pwd_btn2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_edit2" />
+        app:layout_constraintTop_toBottomOf="@+id/old_password_edit" />
 
     <EditText
         android:id="@+id/old_password_edit"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="264dp"
         android:ems="10"
         android:hint="@string/old_password"
         android:inputType="textPassword"
@@ -29,29 +29,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/password_edit1"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="@string/new_password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/old_password_edit" />
-
-    <EditText
-        android:id="@+id/password_edit2"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="@string/new_password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_edit1" />
 </androidx.constraintlayout.widget.ConstraintLayout>
