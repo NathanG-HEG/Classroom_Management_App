@@ -96,10 +96,6 @@ public class Settings extends AppCompatActivity {
         });
     }
 
-    private void changePwd(){
-
-    }
-
     private void toggleTheme() {
         boolean isNightMode = sharedPref.getBoolean(THEME_PREFERENCE, true);
         SharedPreferences.Editor editor = sharedPref.edit();
