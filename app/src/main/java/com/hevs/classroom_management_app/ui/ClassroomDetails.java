@@ -100,7 +100,13 @@ public class ClassroomDetails extends AppCompatActivity {
                         i.putExtra(START_TIME, startTime.toString());
                         startActivity(i);
                     }else{
-                        Toast.makeText(ClassroomDetails.this, "Your e-mail address must be verified to edit a reservation", Toast.LENGTH_LONG).show();
+                        final AlertDialog alertDialog2 = new AlertDialog.Builder(ClassroomDetails.this, R.style.MyAlertDialogTheme).create();
+                        alertDialog2.setTitle("Unauthorized");
+                        alertDialog2.setMessage("Your e-mail address must be verified to edit a reservation.");
+                        alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog2, which2) -> {
+                            alertDialog2.dismiss();
+                        });
+                        alertDialog2.show();
                     }
                 });
 

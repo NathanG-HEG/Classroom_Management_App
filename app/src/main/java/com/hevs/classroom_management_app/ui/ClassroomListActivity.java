@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import static android.content.ContentValues.TAG;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.adapter.RecyclerAdapterForGridLayout;
@@ -39,6 +40,7 @@ public class ClassroomListActivity extends AppCompatActivity {
     public final static String ID_CLASSROOM = "idClassroom";
     private List<Classroom> classrooms;
     private RecyclerAdapterForGridLayout<Classroom> adapter;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class ClassroomListActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.accountsRecyclerView);
         ClassroomRepository classroomRepository = ((BaseApp) getApplication()).getClassroomRepository();
+        mAuth = FirebaseAuth.getInstance();
 
         disableBackButton();
         setGreetingsMessage();
@@ -91,8 +94,18 @@ public class ClassroomListActivity extends AppCompatActivity {
 
         FloatingActionButton createButton = findViewById(R.id.createClassroomFromListButton);
         createButton.setOnClickListener(view -> {
-            Intent i = new Intent(ClassroomListActivity.this, CreateClassroomActivity.class);
-            startActivity(i);
+            if (mAuth.getCurrentUser().isEmailVerified()) {
+                Intent i = new Intent(ClassroomListActivity.this, CreateClassroomActivity.class);
+                startActivity(i);
+            } else {
+                final AlertDialog alertDialog = new AlertDialog.Builder(ClassroomListActivity.this, R.style.MyAlertDialogTheme).create();
+                alertDialog.setTitle("Unauthorized");
+                alertDialog.setMessage("Your e-mail address must be verified to create a classroom");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog, which) -> {
+                    alertDialog.dismiss();
+                });
+                alertDialog.show();
+            }
         });
     }
 
