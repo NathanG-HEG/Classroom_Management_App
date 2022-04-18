@@ -43,6 +43,11 @@ public class ClassroomListActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     @Override
+    public void onBackPressed() {
+        //do nothing because to prevent the user from getting back to login page
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.classroom_list_activity);

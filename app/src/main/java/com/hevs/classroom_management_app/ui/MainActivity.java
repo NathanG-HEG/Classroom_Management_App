@@ -34,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
     private TeacherRepository teacherRepository;
 
     @Override
+    public void onBackPressed() {
+        //do nothing to avoid the user to go back to activities without being logged in
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
