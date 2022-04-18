@@ -86,6 +86,22 @@ public class Settings extends AppCompatActivity {
             startActivity(i);
         });
 
+        //Send verification email
+        FloatingActionButton verifyEmail = findViewById(R.id.send_verification_email_button);
+        verifyEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mAuth.getCurrentUser().isEmailVerified()) {
+                    Toast.makeText(Settings.this, R.string.already_verified, Toast.LENGTH_LONG).show();
+                    return;
+                }
+                mAuth.getCurrentUser().sendEmailVerification();
+                Toast.makeText(Settings.this, getResources().getString(R.string.verification_email_sent) +
+                        " to: " + mAuth.getCurrentUser().getEmail(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
         // Use US DateTime format
         Switch usDateTime = findViewById(R.id.us_date_format_switch);
         usDateTime.setChecked(sharedPref.getBoolean(US_DATE_FORMAT, false));
