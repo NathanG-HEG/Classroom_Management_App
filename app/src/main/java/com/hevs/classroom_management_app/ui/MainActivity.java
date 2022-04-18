@@ -77,16 +77,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void sendNewPassword(){
+    private void sendNewPassword() {
         EditText emailEt = findViewById(R.id.editTextTextEmailAddress);
         String email = emailEt.getText().toString();
 
-        FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(MainActivity.this, "A password reset link has been sent", Toast.LENGTH_LONG).show();
-            }
-        });
+        if (!email.equals("")) {
+            FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Toast.makeText(MainActivity.this, "A password reset link has been sent", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
     private void checkIfUserIsLoggedIn() {
@@ -99,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(MainActivity.this, ClassroomListActivity.class);
             startActivity(i);
         }
-
     }
 
     private void setTheme(SharedPreferences sharedPref) {
