@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
 import com.hevs.classroom_management_app.adapter.RecyclerAdapter;
@@ -40,7 +42,8 @@ public class ClassroomDetails extends AppCompatActivity {
     private String classroomId;
     private ReservationListViewModel reservationListViewModel;
     private RecyclerView recyclerView;
-    SharedPreferences sharedPref;
+    private SharedPreferences sharedPref;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class ClassroomDetails extends AppCompatActivity {
         classroomRepository = ((BaseApp) getApplication()).getClassroomRepository();
         classroomId = getIntent().getExtras().getString(ClassroomListActivity.ID_CLASSROOM);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        mAuth = FirebaseAuth.getInstance();
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -88,12 +92,16 @@ public class ClassroomDetails extends AppCompatActivity {
                 alertDialog.setTitle(R.string.reservation_text);
                 alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.edit_reservation), (dialog, which) -> {
-                    Intent i = new Intent(ClassroomDetails.this, EditReservation.class);
-                    i.putExtra(ClassroomListActivity.ID_CLASSROOM, classroomId);
-                    i.putExtra(ID_RESERVATION, reservationsList.get(position).getReservationId());
-                    LocalDateTime startTime = reservationsList.get(position).getStartTime();
-                    i.putExtra(START_TIME, startTime.toString());
-                    startActivity(i);
+                    if (mAuth.getCurrentUser().isEmailVerified()) {
+                        Intent i = new Intent(ClassroomDetails.this, EditReservation.class);
+                        i.putExtra(ClassroomListActivity.ID_CLASSROOM, classroomId);
+                        i.putExtra(ID_RESERVATION, reservationsList.get(position).getReservationId());
+                        LocalDateTime startTime = reservationsList.get(position).getStartTime();
+                        i.putExtra(START_TIME, startTime.toString());
+                        startActivity(i);
+                    }else{
+                        Toast.makeText(ClassroomDetails.this, "Your e-mail address must be verified to edit a reservation", Toast.LENGTH_LONG).show();
+                    }
                 });
 
                 String text = reservationsList.get(position).getReservationText();
@@ -107,21 +115,42 @@ public class ClassroomDetails extends AppCompatActivity {
         bookBtnInitialize();
     }
 
-    private void editBtnInitialize(){
+    private void editBtnInitialize() {
         FloatingActionButton editBtn = ((FloatingActionButton) findViewById(R.id.EditClassroomBtn));
         editBtn.setOnClickListener(view -> {
-            Intent i = new Intent(ClassroomDetails.this, EditClassroom.class);
-            i.putExtra(ClassroomDetails.ID_CLASSROOM, classroomId);
-            startActivity(i);
-        });
+                    if (mAuth.getCurrentUser().isEmailVerified()) {
+                        Intent i = new Intent(ClassroomDetails.this, EditClassroom.class);
+                        i.putExtra(ClassroomDetails.ID_CLASSROOM, classroomId);
+                        startActivity(i);
+                    } else {
+                        final AlertDialog alertDialog = new AlertDialog.Builder(ClassroomDetails.this, R.style.MyAlertDialogTheme).create();
+                        alertDialog.setTitle("Unauthorized");
+                        alertDialog.setMessage("Your e-mail address must be verified to edit a classroom");
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog, which) -> {
+                            alertDialog.dismiss();
+                        });
+                        alertDialog.show();
+                    }
+                }
+        );
     }
 
-    private void bookBtnInitialize(){
+    private void bookBtnInitialize() {
         Button bookBtn = ((Button) findViewById(R.id.book_now_btn));
         bookBtn.setOnClickListener(view -> {
-            Intent i = new Intent(ClassroomDetails.this, BookClassroom.class);
-            i.putExtra(ClassroomDetails.ID_CLASSROOM, classroomId);
-            startActivity(i);
+            if (mAuth.getCurrentUser().isEmailVerified()) {
+                Intent i = new Intent(ClassroomDetails.this, BookClassroom.class);
+                i.putExtra(ClassroomDetails.ID_CLASSROOM, classroomId);
+                startActivity(i);
+            } else {
+                final AlertDialog alertDialog = new AlertDialog.Builder(ClassroomDetails.this, R.style.MyAlertDialogTheme).create();
+                alertDialog.setTitle("Unauthorized");
+                alertDialog.setMessage("Your e-mail address must be verified to book a classroom");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog, which) -> {
+                    alertDialog.dismiss();
+                });
+                alertDialog.show();
+            }
         });
     }
 }

@@ -36,8 +36,10 @@ public class TeacherLiveData extends LiveData<Teacher> {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
             Teacher entity = dataSnapshot.getValue(Teacher.class);
-            entity.setId(dataSnapshot.getKey());
-            setValue(entity);
+            if (entity != null) {
+                entity.setId(dataSnapshot.getKey());
+                setValue(entity);
+            }
         }
 
         @Override

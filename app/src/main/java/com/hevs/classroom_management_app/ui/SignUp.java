@@ -94,6 +94,7 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onSuccess() {
                 Intent i = new Intent(SignUp.this, MainActivity.class);
+                sendConfirmationEmail(mAuth.getCurrentUser());
                 startActivity(i);
             }
 
@@ -101,6 +102,15 @@ public class SignUp extends AppCompatActivity {
             public void onFailure(Exception e) {
                 Toast.makeText(SignUp.this, "Authentication failed.",
                         Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void sendConfirmationEmail(FirebaseUser user){
+        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(SignUp.this, "A confirmation mail has been sent.", Toast.LENGTH_LONG).show();
             }
         });
     }

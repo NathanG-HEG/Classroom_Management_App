@@ -37,7 +37,7 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-
+        mAuth = FirebaseAuth.getInstance();
         sharedPref = PreferenceManager.getDefaultSharedPreferences(Settings.this);
         repo = TeacherRepository.getInstance();
 
@@ -72,7 +72,8 @@ public class Settings extends AppCompatActivity {
                     alertDialog.dismiss();
                 });
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.confirm), (dialog, which) -> {
-                    deleteAccount();
+                    String teacherId = sharedPref.getString(MainActivity.ID_TEACHER, null);
+                    deleteTeacher(teacherId);
                 });
                 alertDialog.show();
             }
@@ -115,11 +116,6 @@ public class Settings extends AppCompatActivity {
         System.out.println(sharedPref.getBoolean(US_DATE_FORMAT, false));
     }
 
-    private void deleteAccount() {
-        String teacherId = sharedPref.getString(MainActivity.ID_TEACHER, null);
-        deleteTeacher(teacherId);
-    }
-
     private void deleteTeacher(String teacherId) {
         SharedPreferences.Editor editor = sharedPref.edit();
         Teacher teacherToDelete = new Teacher();
@@ -128,7 +124,8 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onSuccess() {
                 editor.remove(MainActivity.ID_TEACHER);
-                editor.apply();
+                editor.commit();
+                mAuth.getCurrentUser().delete();
                 Intent i = new Intent(Settings.this, MainActivity.class);
                 startActivity(i);
             }
