@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -70,6 +71,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Forgot password listener
+        TextView forgot = findViewById(R.id.forgotPassword);
+        forgot.setOnClickListener(view -> sendNewPassword());
+
+    }
+
+    private void sendNewPassword(){
+        EditText emailEt = findViewById(R.id.editTextTextEmailAddress);
+        String email = emailEt.getText().toString();
+
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(MainActivity.this, "A password reset link has been sent", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void checkIfUserIsLoggedIn() {
