@@ -29,9 +29,11 @@ Sample users:
 
 ## Troubleshooting
 - I can't create a classroom, create or edit a reservation, even though I clicked the verification link.
+  
     Log out and log in to solve this issue. This is due to a Firebase Authentication limitation.
   
-- I don't receive a verification link. 
+- I don't receive a verification link.
+  
     Most mail servers mark Firebase e-mail as spam. Check your spam inbox regularly, wait for your e-mail server to release the e-mail. Gmail usually does not mark Firebase e-mail as spam, try using a gmail.com address.
 
 ## Authors and contributors
