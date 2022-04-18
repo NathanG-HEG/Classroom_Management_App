@@ -47,4 +47,7 @@
     <string name="password_no_match">Passwords do not match</string>
     <string name="password_criteria">Password must be at least 8 characters long</string>
     <string name="email_already_use">This email is already assigned to an account.</string>
+    <string name="send_verification_email">Send verification email</string>
+    <string name="verification_email_sent">Verification email sent</string>
+    <string name="already_verified">Email already verified</string>
 </resources>
