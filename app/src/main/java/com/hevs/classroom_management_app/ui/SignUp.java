@@ -80,14 +80,23 @@ public class SignUp extends AppCompatActivity {
                             createTeacher(teacher);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(SignUp.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            //it may be because the email is already in use
+                            teacherRepository.getByEmail(teacher.getEmail()).observe(SignUp.this, teacherTemp -> {
+                                if (teacher != null) {
+                                    Toast.makeText(SignUp.this, R.string.email_already_use,
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    //unless it is an unknown error
+                                    Toast.makeText(SignUp.this, R.string.unexpected_error,
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
                     }
                 });
     }
 
-    private void createTeacher(Teacher teacher){
+    private void createTeacher(Teacher teacher) {
         mAuth.signInWithEmailAndPassword(teacher.getEmail(), teacher.getPassword());
         String key = mAuth.getCurrentUser().getUid();
         teacherRepository.insert(teacher, key, new OnAsyncEventListener() {
@@ -106,7 +115,7 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
-    private void sendConfirmationEmail(FirebaseUser user){
+    private void sendConfirmationEmail(FirebaseUser user) {
         user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
