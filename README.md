@@ -34,7 +34,7 @@ Sample users:
   
 - I don't receive a verification link.
   
-    Most mail servers mark Firebase e-mail as spam. Check your spam inbox regularly, wait for your e-mail server to release the e-mail. Gmail usually does not mark Firebase e-mail as spam, try using a gmail.com address.
+    Most mail servers mark Firebase e-mails as spam. Check your spam inbox regularly, wait for your e-mail server to release the e-mail. Gmail usually does not mark Firebase e-mail as spam, try using a gmail.com address.
 
 ## Authors and contributors
 Authors: B. Biollaz, N. Gaillard
