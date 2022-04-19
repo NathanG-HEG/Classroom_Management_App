@@ -3,14 +3,11 @@ package com.hevs.classroom_management_app.ui;
 import static android.content.ContentValues.TAG;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,8 +39,7 @@ public class ClassroomDetails extends AppCompatActivity {
     private String classroomId;
     private ReservationListViewModel reservationListViewModel;
     private RecyclerView recyclerView;
-    private SharedPreferences sharedPref;
-    private FirebaseAuth mAuth;
+        private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +49,6 @@ public class ClassroomDetails extends AppCompatActivity {
         recyclerView = findViewById(R.id.reservations_w_teacher);
         classroomRepository = ((BaseApp) getApplication()).getClassroomRepository();
         classroomId = getIntent().getExtras().getString(ClassroomListActivity.ID_CLASSROOM);
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         mAuth = FirebaseAuth.getInstance();
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -103,9 +98,7 @@ public class ClassroomDetails extends AppCompatActivity {
                         final AlertDialog alertDialog2 = new AlertDialog.Builder(ClassroomDetails.this, R.style.MyAlertDialogTheme).create();
                         alertDialog2.setTitle("Unauthorized");
                         alertDialog2.setMessage("Your e-mail address must be verified to edit a reservation.");
-                        alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog2, which2) -> {
-                            alertDialog2.dismiss();
-                        });
+                        alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog2, which2) -> alertDialog2.dismiss());
                         alertDialog2.show();
                     }
                 });
@@ -132,9 +125,7 @@ public class ClassroomDetails extends AppCompatActivity {
                         final AlertDialog alertDialog = new AlertDialog.Builder(ClassroomDetails.this, R.style.MyAlertDialogTheme).create();
                         alertDialog.setTitle("Unauthorized");
                         alertDialog.setMessage("Your e-mail address must be verified to edit a classroom");
-                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog, which) -> {
-                            alertDialog.dismiss();
-                        });
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog, which) -> alertDialog.dismiss());
                         alertDialog.show();
                     }
                 }
@@ -152,9 +143,7 @@ public class ClassroomDetails extends AppCompatActivity {
                 final AlertDialog alertDialog = new AlertDialog.Builder(ClassroomDetails.this, R.style.MyAlertDialogTheme).create();
                 alertDialog.setTitle("Unauthorized");
                 alertDialog.setMessage("Your e-mail address must be verified to book a classroom");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog, which) -> {
-                    alertDialog.dismiss();
-                });
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog, which) -> alertDialog.dismiss());
                 alertDialog.show();
             }
         });

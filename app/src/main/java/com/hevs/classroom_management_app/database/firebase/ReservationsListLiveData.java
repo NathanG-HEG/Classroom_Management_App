@@ -10,7 +10,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.hevs.classroom_management_app.database.entity.Reservation;
-import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -43,8 +42,10 @@ public class ReservationsListLiveData extends LiveData<List<Reservation>> {
         List<Reservation> reservations = new LinkedList<>();
         for (DataSnapshot childSnapShot : snapshot.getChildren()) {
             Reservation reservation = childSnapShot.getValue(Reservation.class);
-            reservation.setReservationId(childSnapShot.getKey());
-            reservations.add(reservation);
+            if (reservation != null) {
+                reservation.setReservationId(childSnapShot.getKey());
+                reservations.add(reservation);
+            }
         }
         return reservations;
     }

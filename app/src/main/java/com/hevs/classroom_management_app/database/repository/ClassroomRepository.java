@@ -1,11 +1,9 @@
 package com.hevs.classroom_management_app.database.repository;
 
-import android.app.Application;
 import androidx.lifecycle.LiveData;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.database.entity.Classroom;
 import com.hevs.classroom_management_app.database.firebase.ClassroomLiveData;
 import com.hevs.classroom_management_app.database.firebase.ClassroomsListLiveData;

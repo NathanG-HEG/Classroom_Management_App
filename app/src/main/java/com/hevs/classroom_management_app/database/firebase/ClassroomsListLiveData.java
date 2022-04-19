@@ -37,12 +37,14 @@ public class ClassroomsListLiveData extends LiveData<List<Classroom>> {
         reference.addValueEventListener(listener);
     }
 
-    private List<Classroom> toClassrooms(DataSnapshot snapshot){
+    private List<Classroom> toClassrooms(DataSnapshot snapshot) {
         List<Classroom> classrooms = new LinkedList<>();
-        for(DataSnapshot childSnapshot : snapshot.getChildren()){
+        for (DataSnapshot childSnapshot : snapshot.getChildren()) {
             Classroom classroom = childSnapshot.getValue(Classroom.class);
-            classroom.setId(childSnapshot.getKey());
-            classrooms.add(classroom);
+            if (classroom != null) {
+                classroom.setId(childSnapshot.getKey());
+                classrooms.add(classroom);
+            }
         }
         return classrooms;
     }

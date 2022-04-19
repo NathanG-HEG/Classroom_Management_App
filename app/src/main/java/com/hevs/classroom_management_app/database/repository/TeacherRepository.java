@@ -1,17 +1,12 @@
 package com.hevs.classroom_management_app.database.repository;
 
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.hevs.classroom_management_app.database.entity.Teacher;
-import com.hevs.classroom_management_app.database.firebase.ReservationsListLiveData;
 import com.hevs.classroom_management_app.database.firebase.TeacherLiveData;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
@@ -46,8 +41,6 @@ public class TeacherRepository {
     }
 
     public void insert(final Teacher teacher, final String key, OnAsyncEventListener callback) {
-        DatabaseReference ref = FirebaseDatabase.getInstance()
-                .getReference(TEACHERS);
         FirebaseDatabase.getInstance()
                 .getReference(TEACHERS)
                 .child(key)

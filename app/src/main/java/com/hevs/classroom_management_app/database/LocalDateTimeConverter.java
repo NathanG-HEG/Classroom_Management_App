@@ -2,7 +2,6 @@ package com.hevs.classroom_management_app.database;
 
 import androidx.room.TypeConverter;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 public class LocalDateTimeConverter {

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.firebase.ReservationLiveData;
 import com.hevs.classroom_management_app.database.firebase.ReservationsListLiveData;
@@ -44,11 +43,6 @@ public class ReservationRepository {
                 .child(id)
                 .child(RESERVATIONS);
         return new ReservationsListLiveData(ref);
-    }
-
-    public ReservationsListLiveData getReservationsByTeacherId(final String id) {
-        Query query = FirebaseDatabase.getInstance().getReference(CLASSROOMS).child("teacherId").equalTo(id);
-        return new ReservationsListLiveData(query.getRef());
     }
 
     public void insert(final Reservation reservation, OnAsyncEventListener callback) {

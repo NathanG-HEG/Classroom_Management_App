@@ -1,5 +1,8 @@
 package com.hevs.classroom_management_app.ui;
 
+import static android.content.ContentValues.TAG;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,11 +17,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.GridLayoutManager;
-
-import static android.content.ContentValues.TAG;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -106,9 +106,7 @@ public class ClassroomListActivity extends AppCompatActivity {
                 final AlertDialog alertDialog = new AlertDialog.Builder(ClassroomListActivity.this, R.style.MyAlertDialogTheme).create();
                 alertDialog.setTitle("Unauthorized");
                 alertDialog.setMessage("Your e-mail address must be verified to create a classroom");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog, which) -> {
-                    alertDialog.dismiss();
-                });
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.ok), (dialog, which) -> alertDialog.dismiss());
                 alertDialog.show();
             }
         });
@@ -165,6 +163,7 @@ public class ClassroomListActivity extends AppCompatActivity {
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -191,9 +190,7 @@ public class ClassroomListActivity extends AppCompatActivity {
             Intent i = new Intent(ClassroomListActivity.this, MainActivity.class);
             startActivity(i);
         });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), (dialog, which) -> {
-            alertDialog.dismiss();
-        });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
         alertDialog.show();
 
 
