@@ -1,9 +1,7 @@
 package com.hevs.classroom_management_app.ui;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -82,7 +80,7 @@ public class SignUp extends AppCompatActivity {
                             // If sign in fails, display a message to the user.
                             //it may be because the email is already in use
                             teacherRepository.getByEmail(teacher.getEmail()).observe(SignUp.this, teacherTemp -> {
-                                if (teacher != null) {
+                                if (teacherTemp != null) {
                                     Toast.makeText(SignUp.this, R.string.email_already_use,
                                             Toast.LENGTH_SHORT).show();
                                 } else {

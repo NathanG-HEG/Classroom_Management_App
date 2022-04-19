@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,16 +20,15 @@ import java.util.List;
 public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private List<T> mData;
     private RecyclerViewItemClickListener mListener;
-    private ViewGroup parent;
     private SharedPreferences sharedPreferences;
 
     public RecyclerAdapter(RecyclerViewItemClickListener listener) {
         mListener = listener;
     }
 
+    @NonNull
     @Override
     public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        this.parent = parent;
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(parent.getContext());
         TextView v = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_2, parent, false);
@@ -42,7 +42,7 @@ public class RecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerAdapter.Vie
     }
 
     @Override
-    public void onBindViewHolder(RecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
         T item = mData.get(position);
         if (item.getClass().equals(Reservation.class)) {
             Reservation reservation = (Reservation) item;

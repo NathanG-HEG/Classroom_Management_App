@@ -18,7 +18,6 @@ import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 import java.util.List;
 
 public class ReservationListViewModel extends AndroidViewModel {
-    private Application application;
     private ReservationRepository repository;
 
     // MediatorLiveData can observe other LiveData objects and react on their emissions.
@@ -26,8 +25,6 @@ public class ReservationListViewModel extends AndroidViewModel {
 
     public ReservationListViewModel(@NonNull Application application, final String classroomId, ReservationRepository reservationRepository) {
         super(application);
-
-        this.application = application;
 
         repository = reservationRepository;
 

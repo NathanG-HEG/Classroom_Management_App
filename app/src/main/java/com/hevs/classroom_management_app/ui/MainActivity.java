@@ -21,12 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
-import com.hevs.classroom_management_app.database.entity.Teacher;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login(MainActivity.this);
+                login();
             }
         });
 
@@ -112,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void login(AppCompatActivity parent) {
+    private void login() {
         EditText emailEt = findViewById(R.id.editTextTextEmailAddress);
         EditText passwordEt = findViewById(R.id.editTextTextPassword);
         String email = emailEt.getText().toString();

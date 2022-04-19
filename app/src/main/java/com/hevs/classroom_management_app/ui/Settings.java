@@ -14,12 +14,9 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.hevs.classroom_management_app.R;
 
-import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.entity.Teacher;
-import com.hevs.classroom_management_app.database.repository.ReservationRepository;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
 import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
@@ -88,18 +85,15 @@ public class Settings extends AppCompatActivity {
 
         //Send verification email
         FloatingActionButton verifyEmail = findViewById(R.id.send_verification_email_button);
-        verifyEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mAuth.getCurrentUser().isEmailVerified()) {
-                    Toast.makeText(Settings.this, R.string.already_verified, Toast.LENGTH_LONG).show();
-                    return;
-                }
-                mAuth.getCurrentUser().sendEmailVerification();
-                Toast.makeText(Settings.this, getResources().getString(R.string.verification_email_sent) +
-                        " to: " + mAuth.getCurrentUser().getEmail(), Toast.LENGTH_LONG).show();
-
+        verifyEmail.setOnClickListener(view -> {
+            if (mAuth.getCurrentUser().isEmailVerified()) {
+                Toast.makeText(Settings.this, R.string.already_verified, Toast.LENGTH_LONG).show();
+                return;
             }
+            mAuth.getCurrentUser().sendEmailVerification();
+            Toast.makeText(Settings.this, getResources().getString(R.string.verification_email_sent) +
+                    " to: " + mAuth.getCurrentUser().getEmail(), Toast.LENGTH_LONG).show();
+
         });
 
         // Use US DateTime format

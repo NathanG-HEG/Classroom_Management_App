@@ -16,13 +16,11 @@ import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
 public class ClassroomViewModel extends AndroidViewModel {
 
-    private Application application;
     private ClassroomRepository repo;
     private final MediatorLiveData<Classroom> observableClassroom;
 
     public ClassroomViewModel(@NonNull Application application, final String classroomId, ClassroomRepository classroomRepository) {
         super(application);
-        this.application = application;
         this.repo = classroomRepository;
         observableClassroom = new MediatorLiveData<>();
         observableClassroom.setValue(null);
@@ -46,6 +44,7 @@ public class ClassroomViewModel extends AndroidViewModel {
             repo = ((BaseApp) application).getClassroomRepository();
         }
 
+        @NonNull
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             return (T) new ClassroomViewModel(application, classroomId, repo);

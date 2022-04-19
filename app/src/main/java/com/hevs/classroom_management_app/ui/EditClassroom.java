@@ -8,7 +8,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,7 +21,6 @@ import com.hevs.classroom_management_app.viewModel.ClassroomViewModel;
 public class EditClassroom extends AppCompatActivity {
 
     private ClassroomRepository repo;
-    private ClassroomViewModel classroomViewModel;
     private String classroomId;
     private EditText classroomNameEt;
     private EditText classroomCapacityEt;
@@ -59,7 +57,7 @@ public class EditClassroom extends AppCompatActivity {
     private void saveBtnAction() {
         // Initializes the viewModel
         ClassroomViewModel.Factory factory = new ClassroomViewModel.Factory(getApplication(), classroomId);
-        classroomViewModel = ViewModelProviders.of(this, factory).get(ClassroomViewModel.class);
+        ClassroomViewModel classroomViewModel = ViewModelProviders.of(this, factory).get(ClassroomViewModel.class);
 
         // Gets input data
         String newCapacity_s = classroomCapacityEt.getText().toString();

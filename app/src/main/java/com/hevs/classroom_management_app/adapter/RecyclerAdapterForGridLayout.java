@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,15 +18,14 @@ import java.util.List;
 public class RecyclerAdapterForGridLayout<T> extends RecyclerView.Adapter<RecyclerAdapterForGridLayout.ViewHolder> {
     private List<T> mData;
     private RecyclerViewItemClickListener mListener;
-    private ViewGroup parent;
 
     public RecyclerAdapterForGridLayout(RecyclerViewItemClickListener listener) {
         mListener = listener;
     }
 
+    @NonNull
     @Override
     public RecyclerAdapterForGridLayout.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        this.parent = parent;
 
         TextView v = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view, parent, false);
         GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) v.getLayoutParams();
@@ -41,7 +41,7 @@ public class RecyclerAdapterForGridLayout<T> extends RecyclerView.Adapter<Recycl
     }
 
     @Override
-    public void onBindViewHolder(RecyclerAdapterForGridLayout.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerAdapterForGridLayout.ViewHolder holder, int position) {
         T item = mData.get(position);
         if (item.getClass().equals(Classroom.class))
             holder.mTextView.setText(((Classroom) item).getName());

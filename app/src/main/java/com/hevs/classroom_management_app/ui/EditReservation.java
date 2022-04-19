@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hevs.classroom_management_app.BaseApp;
 import com.hevs.classroom_management_app.R;
-import com.hevs.classroom_management_app.database.LocalDateTimeConverter;
 import com.hevs.classroom_management_app.database.entity.Reservation;
 import com.hevs.classroom_management_app.database.repository.ClassroomRepository;
 import com.hevs.classroom_management_app.database.repository.TeacherRepository;
@@ -33,8 +32,6 @@ public class EditReservation extends AppCompatActivity {
     private String teacherId, classroomId, reservationId;
     private EditText dateEt, startTimeEt, endTimeEt, participants, reservationText;
     private SharedPreferences sharedPreferences;
-    private LocalDateTime oldStartTime;
-    private LocalDateTime oldEndTime;
 
 
     @Override
@@ -81,9 +78,6 @@ public class EditReservation extends AppCompatActivity {
 
         System.out.println(classroomNameTv.getText().toString());
 
-        String startTimeString = getIntent().getStringExtra(ClassroomDetails.START_TIME);
-        oldStartTime = LocalDateTime.parse(startTimeString);
-
         ReservationViewModel.Factory factory = new ReservationViewModel.Factory(getApplication(), reservationId, classroomId);
         ReservationViewModel reservationViewModel = ViewModelProviders.of(this, factory).get(ReservationViewModel.class);
         reservationViewModel.getReservation().observe(this, reservation -> {
@@ -93,7 +87,6 @@ public class EditReservation extends AppCompatActivity {
                 endTimeEt.setText(formatTime(reservation.getEndTime()));
                 participants.setText("" + reservation.getOccupantsNumber());
                 reservationText.setText(reservation.getReservationText());
-                oldEndTime = reservation.getEndTime();
             }
         });
     }
@@ -225,7 +218,7 @@ public class EditReservation extends AppCompatActivity {
         }
 
         // Parses the time into hour and minutes and checks the validity
-        String timeArray[] = time.split(":");
+        String[] timeArray = time.split(":");
         if (timeArray.length != 2) throw new DateTimeException(BAD_TIME_ERROR);
         hour = Integer.parseInt(timeArray[0]);
         minute = Integer.parseInt(timeArray[1]);

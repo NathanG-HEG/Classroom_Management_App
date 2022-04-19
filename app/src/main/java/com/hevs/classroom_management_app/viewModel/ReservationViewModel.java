@@ -16,13 +16,11 @@ import com.hevs.classroom_management_app.util.OnAsyncEventListener;
 
 public class ReservationViewModel extends AndroidViewModel {
 
-    private Application application;
     private ReservationRepository repo;
     private final MediatorLiveData<Reservation> observableReservation;
 
     public ReservationViewModel(@NonNull Application application, final String reservationId, final String classroomId, ReservationRepository reservationRepository) {
         super(application);
-        this.application = application;
         this.repo = reservationRepository;
         observableReservation = new MediatorLiveData<>();
         observableReservation.setValue(null);
